@@ -5,3 +5,6 @@ coverage
 .DS_Store
 .vscode
 .idea
+# CI builds shouldn't try to compile the example
+examples/**/node_modules
+examples/**/dist

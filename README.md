@@ -20,6 +20,10 @@
   <a href="./LICENSE"><img src="https://img.shields.io/npm/l/fluidity-ts.svg" alt="license"/></a>
 </p>
 
+<p align="center">
+  <a href="https://stackblitz.com/github/Fluidiety/fluidity-ts/tree/main/examples/vite-react"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt="Open in StackBlitz" /></a>
+</p>
+
 ```bash
 npm install fluidity-ts
 ```
