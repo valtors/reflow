@@ -21,6 +21,8 @@
 </p>
 
 <p align="center">
+  <a href="https://fluidiety.github.io/fluidity-ts-demo/"><img src="https://img.shields.io/badge/▶_Live_Demo-0EA5A5?style=for-the-badge&logoColor=white" alt="Live demo" /></a>
+  &nbsp;
   <a href="https://stackblitz.com/github/Fluidiety/fluidity-ts-demo"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt="Open in StackBlitz" /></a>
 </p>
 
