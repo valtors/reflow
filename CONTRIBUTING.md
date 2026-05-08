@@ -1,72 +1,114 @@
 # Contributing to fluidity-ts
 
-Thanks for considering a contribution! This guide will get you productive in a few minutes.
+Thanks for your interest in contributing! 🎉
 
-## Quick start
+We welcome bug fixes, new features, documentation improvements, and ecosystem integrations. This guide covers the expected workflow for contributing to `fluidity-ts`.
+
+## Quick Start
 
 ```bash
-git clone https://github.com/fluidiety/fluidity-ts
+# Clone the repo
+git clone https://github.com/Fluidiety/fluidity-ts.git
 cd fluidity-ts
+
+# Install dependencies
 npm install
-npm run verify   # typecheck + lint + test + build + publint + attw + size
+
+# Run the full verification suite
+npm run verify
 ```
 
-## Project layout
+## Development
+
+### Scripts
+
+| Command | Description |
+|---|---|
+| `npm run build` | Build all entry points (ESM + CJS + DTS) |
+| `npm test` | Run tests with Vitest |
+| `npm run typecheck` | TypeScript type checking |
+| `npm run lint` | Lint with Biome |
+| `npm run verify` | Full CI check (typecheck + lint + test + build) |
+| `npm run lint:fix` | Auto-fix Biome lint issues where possible |
+| `npm run test:watch` | Run Vitest in watch mode |
+
+### Project Structure
 
 ```
 src/
-  core/      framework-agnostic primitives (no React, no DOM-only assumptions where avoidable)
-  react/     React adapter — hooks + components, all SSR-safe via useSyncExternalStore
-  styles/    pure-string CSS helpers (fluidClamp, containerQuery, responsiveStyle, …)
-  server/    Client-Hints + UA → breakpoint resolution
-  testing/   matchMedia + ResizeObserver mocks for downstream consumers
-  tailwind/  Tailwind preset
-test/        Vitest specs (happy-dom)
+├── core/        # Framework-agnostic core (breakpoints, media, viewport, etc.)
+├── react/       # React hooks & components
+├── vue/         # Vue 3 composables
+├── svelte/      # Svelte stores
+├── styles/      # Fluid typography & CSS clamp utilities
+├── server/      # SSR helpers (Next.js, Express)
+├── testing/     # Test utilities & viewport mocking
+└── tailwind/    # Tailwind CSS preset generation
 ```
 
-## Development workflow
+Tests live in `test/`.
 
-1. **Open an issue first** for non-trivial changes so we can align on scope.
-2. **Branch off `main`**: `feat/<short-slug>` or `fix/<short-slug>`.
-3. **Write a test** that fails before your change. We aim for ≥90 % line coverage.
-4. **Run `npm run verify`** before pushing.
-5. **Add a changeset** for any user-visible change:
-   ```bash
-   npx changeset
-   ```
-   Pick `patch` for fixes, `minor` for additions, `major` for breaks. Write a one-line summary; it ends up in the changelog.
-6. **Open a PR** referencing the issue. Fill in the template.
+### Architecture
 
-## Coding standards
+All framework adapters (`react/`, `vue/`, `svelte/`) wrap the same `core/` modules. When adding a feature:
 
-- TypeScript strict mode, no `any` unless justified with a comment.
-- Public API must be SSR-safe — never read `window` / `document` outside an effect or guarded helper.
-- Prefer `useSyncExternalStore` for any subscription-style hook.
-- Keep core/ free of React imports — it must work in Vue/Svelte/Solid.
-- Bundle budgets are enforced (`size-limit`); shaving bytes is welcome.
-- Format and lint with Biome: `npm run lint:fix`.
+1. Implement the core logic in `src/core/`
+2. Add framework bindings in each adapter
+3. Write tests in `test/`
 
-## Tests
+### Code Style
 
-- Run all: `npm test`
-- Watch: `npm run test:watch`
-- New code without tests will not be merged.
+- We use [Biome](https://biomejs.dev/) for linting and formatting
+- Run `npx biome check --write src test` to auto-fix
+- No ESLint or Prettier — Biome handles both
+- Keep framework-specific code out of `src/core/`
+- Maintain SSR-safe behavior for public APIs
 
-## Releasing (maintainers)
+### Testing
 
-We use [Changesets](https://github.com/changesets/changesets):
+- Framework: [Vitest](https://vitest.dev/) with `happy-dom`
+- Tests live in `test/`
+- Run `npm test` or `npx vitest --watch`
+- Add or update tests for any functional change
 
-1. Merge PRs that contain changesets into `main`.
-2. The release workflow opens a "Version Packages" PR with bumped versions + changelog.
-3. Merging that PR publishes to npm.
+## Submitting Changes
 
-## Reporting bugs
+1. Fork the repo and create a feature branch
+2. Make your changes
+3. Run `npm run verify` to ensure everything passes
+4. If your change affects users, add a changeset with `npx changeset`
+5. Open a PR with a clear description
 
-Use the **Bug** issue template and include:
-- A minimal reproduction (StackBlitz preferred).
-- Browser + OS, React version, fluidity-ts version.
-- What you expected vs. what happened.
+### Commit Convention
 
-## Code of conduct
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-By participating you agree to abide by the [Code of Conduct](./CODE_OF_CONDUCT.md).
+- `feat:` — New feature
+- `fix:` — Bug fix
+- `docs:` — Documentation
+- `test:` — Tests
+- `chore:` — Maintenance
+
+### PR Guidelines
+
+- Keep PRs focused — one feature or fix per PR
+- Include tests for new features
+- Update JSDoc for public API changes
+- Ensure `npm run verify` passes
+- Link related issues or discussions when relevant
+
+## Reporting Issues
+
+- Use [GitHub Issues](https://github.com/Fluidiety/fluidity-ts/issues)
+- Include reproduction steps and environment details
+- Check existing issues before opening a new one
+
+## Community
+
+- [GitHub Discussions](https://github.com/Fluidiety/fluidity-ts/discussions) — Questions, ideas, show & tell
+- [Roadmap](https://github.com/Fluidiety/fluidity-ts/discussions/6) — See what's planned
+- [Code of Conduct](./CODE_OF_CONDUCT.md) — Expected community standards
+
+## License
+
+By contributing, you agree that your contributions will be licensed under the [MIT License](./LICENSE).
