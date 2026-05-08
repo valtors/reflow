@@ -5,6 +5,7 @@ import { type SafeAreaInsets, getSafeArea, observeSafeArea } from "../core/safe-
 
 const ZERO: SafeAreaInsets = { top: 0, right: 0, bottom: 0, left: 0 };
 
+/** Read `env(safe-area-inset-*)` values reactively. SSR-safe (defaults to zero). */
 export function useSafeArea(serverDefault: SafeAreaInsets = ZERO): SafeAreaInsets {
   const subscribe = useCallback((onChange: () => void) => observeSafeArea(() => onChange()), []);
   return useSyncExternalStore(subscribe, getSafeArea, () => serverDefault);

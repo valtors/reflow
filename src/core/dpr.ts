@@ -10,11 +10,16 @@
 const isBrowser = (): boolean =>
   typeof window !== "undefined" && typeof window.matchMedia === "function";
 
+/** Return the current device pixel ratio. Returns `1` on the server. */
 export function getDevicePixelRatio(): number {
   if (typeof window === "undefined") return 1;
   return window.devicePixelRatio || 1;
 }
 
+/**
+ * Subscribe to device-pixel-ratio changes (zoom, monitor switch).
+ * Uses the MDN-recommended re-bind pattern. SSR-safe (returns no-op).
+ */
 export function observeDevicePixelRatio(listener: (dpr: number) => void): () => void {
   if (!isBrowser()) return () => {};
 

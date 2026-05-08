@@ -27,10 +27,12 @@ const QUERY_BY_KEY: Record<PreferenceKey, string> = {
   light: mq.prefersLight,
 };
 
+/** Read the current boolean state of a user preference. SSR-safe (returns `false`). */
 export function getPreference(key: PreferenceKey): boolean {
   return watchMedia(QUERY_BY_KEY[key]).matches();
 }
 
+/** Subscribe to changes in a user preference media feature. Returns an unsubscribe function. */
 export function observePreference(
   key: PreferenceKey,
   listener: (active: boolean) => void,
@@ -40,6 +42,7 @@ export function observePreference(
 
 export type Preferences = Record<PreferenceKey, boolean>;
 
+/** Snapshot of every tracked user preference as a boolean record. */
 export function getAllPreferences(): Preferences {
   return {
     reducedMotion: getPreference("reducedMotion"),

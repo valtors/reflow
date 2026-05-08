@@ -3,6 +3,7 @@
 import { mq } from "../core/media.js";
 import { useMediaQuery } from "./useMediaQuery.js";
 
+/** Pointer and hover capabilities for the current device. */
 export interface PointerInfo {
   hover: boolean;
   anyHover: boolean;
@@ -10,6 +11,7 @@ export interface PointerInfo {
   fine: boolean;
 }
 
+/** Detect pointer capabilities (hover, touch, fine). SSR-safe with configurable defaults. */
 export function usePointer(serverDefault?: Partial<PointerInfo>): PointerInfo {
   return {
     hover: useMediaQuery(mq.hover, serverDefault?.hover ?? true),

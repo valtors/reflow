@@ -12,6 +12,11 @@ export interface ContainerSize {
 
 const isBrowser = (): boolean => typeof window !== "undefined";
 
+/**
+ * Observe an element's size via `ResizeObserver`. Fires the listener with
+ * `{ width, height }` on every size change, throttled to animation frames.
+ * SSR-safe (returns no-op). Returns an unsubscribe function.
+ */
 export function observeContainer(
   target: Element,
   listener: (size: ContainerSize) => void,

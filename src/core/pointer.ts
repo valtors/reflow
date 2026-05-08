@@ -13,6 +13,7 @@ export interface PointerCapabilities {
   none: boolean;
 }
 
+/** Snapshot of the current pointer/hover capabilities. SSR-safe. */
 export function getPointerCapabilities(): PointerCapabilities {
   return {
     hover: watchMedia(mq.hover).matches(),
@@ -23,6 +24,7 @@ export function getPointerCapabilities(): PointerCapabilities {
   };
 }
 
+/** Subscribe to pointer capability changes (e.g., stylus connect/disconnect). */
 export function observePointerCapabilities(
   listener: (caps: PointerCapabilities) => void,
 ): () => void {

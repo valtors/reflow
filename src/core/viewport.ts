@@ -1,9 +1,11 @@
+/** Layout viewport dimensions and orientation. */
 export interface ViewportState {
   width: number;
   height: number;
   orientation: "portrait" | "landscape";
 }
 
+/** Visual viewport state — accounts for pinch-zoom, on-screen keyboard. */
 export interface VisualViewportState {
   width: number;
   height: number;
@@ -112,6 +114,10 @@ export function getVisualViewport(): VisualViewportState {
   };
 }
 
+/**
+ * Subscribe to visual viewport changes (pinch-zoom, on-screen keyboard).
+ * Falls back to no-op when `window.visualViewport` is unavailable.
+ */
 export function observeVisualViewport(listener: (state: VisualViewportState) => void): () => void {
   if (!isBrowser() || !window.visualViewport) return () => {};
   const vv = window.visualViewport;

@@ -15,6 +15,15 @@ const QUERY_BY_KEY: Record<PreferenceKey, string> = {
   light: mq.prefersLight,
 };
 
+/**
+ * SSR-safe hook returning the current user preference for the given key.
+ *
+ * @example
+ * ```tsx
+ * const reducedMotion = usePreference("reduced-motion");
+ * const isDark = usePreference("dark");
+ * ```
+ */
 export function usePreference(key: PreferenceKey, serverDefault = false): boolean {
   return useMediaQuery(QUERY_BY_KEY[key], serverDefault);
 }
