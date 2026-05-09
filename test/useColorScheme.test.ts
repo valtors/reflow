@@ -90,6 +90,25 @@ describe("useColorScheme", () => {
     expect(result.current.isDark).toBe(true);
   });
 
+  it("isolates overrides by storageKey", () => {
+    const { result: themeA } = renderHook(() => useColorScheme({ storageKey: "theme-a" }));
+    const { result: themeB } = renderHook(() => useColorScheme({ storageKey: "theme-b" }));
+
+    act(() => {
+      themeA.current.setColorScheme("dark");
+    });
+
+    expect(themeA.current.colorScheme).toBe("dark");
+    expect(themeB.current.colorScheme).toBe("light");
+
+    act(() => {
+      themeB.current.setColorScheme("light");
+    });
+
+    expect(themeA.current.colorScheme).toBe("dark");
+    expect(themeB.current.colorScheme).toBe("light");
+  });
+
   it("computes isDark from the resolved scheme", () => {
     const { result } = renderHook(() => useColorScheme());
 

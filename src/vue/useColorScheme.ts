@@ -16,22 +16,66 @@ export interface UseColorSchemeResult {
 
 const isBrowser = typeof window !== "undefined";
 
-let overrideScheme: ColorScheme | null = null;
-const overrideListeners = new Set<() => void>();
+type ColorSchemeOverride = ColorScheme | null;
 
-function notifyOverride() {
-  for (const listener of overrideListeners) listener();
+const DEFAULT_OVERRIDE_KEY = "__fluidity-color-scheme__";
+const overrideSchemes = new Map<string, ColorSchemeOverride>();
+const overrideListeners = new Map<string, Set<() => void>>();
+
+function getOverrideKey(storageKey?: string) {
+  return storageKey ?? DEFAULT_OVERRIDE_KEY;
 }
 
-function readStorage(key?: string): ColorScheme | null {
-  if (!isBrowser || !key) return null;
+function getOverrideScheme(overrideKey: string) {
+  return overrideSchemes.get(overrideKey) ?? null;
+}
+
+function getOverrideListenerSet(overrideKey: string) {
+  let listeners = overrideListeners.get(overrideKey);
+  if (!listeners) {
+    listeners = new Set<() => void>();
+    overrideListeners.set(overrideKey, listeners);
+  }
+  return listeners;
+}
+
+function syncOverrideScheme(overrideKey: string, storageKey?: string) {
+  if (!isBrowser || !storageKey) return;
   try {
-    const value = localStorage.getItem(key);
-    if (value === "dark" || value === "light") return value;
+    const value = localStorage.getItem(storageKey);
+    if (value === "dark" || value === "light") {
+      overrideSchemes.set(overrideKey, value);
+      return;
+    }
+    if (!overrideListeners.get(overrideKey)?.size) {
+      overrideSchemes.delete(overrideKey);
+    }
   } catch {
     // Storage unavailable.
   }
-  return null;
+}
+
+function setOverrideScheme(overrideKey: string, scheme: ColorSchemeOverride) {
+  if (scheme === null) {
+    overrideSchemes.delete(overrideKey);
+    return;
+  }
+  overrideSchemes.set(overrideKey, scheme);
+}
+
+function subscribeOverrideListener(overrideKey: string, listener: () => void) {
+  const listeners = getOverrideListenerSet(overrideKey);
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) {
+      overrideListeners.delete(overrideKey);
+    }
+  };
+}
+
+function notifyOverride(overrideKey: string) {
+  for (const listener of overrideListeners.get(overrideKey) ?? []) listener();
 }
 
 function writeStorage(key?: string, value?: ColorScheme | null) {
@@ -49,14 +93,13 @@ function writeStorage(key?: string, value?: ColorScheme | null) {
  */
 export function useColorScheme(options: UseColorSchemeOptions = {}): UseColorSchemeResult {
   const { serverDefault = "light", storageKey } = options;
+  const overrideKey = getOverrideKey(storageKey);
 
-  if (isBrowser && overrideScheme === null && storageKey) {
-    overrideScheme = readStorage(storageKey);
-  }
+  syncOverrideScheme(overrideKey, storageKey);
 
   const systemWatcher = isBrowser ? watchMedia(mq.prefersDark) : null;
   const systemDark = ref(systemWatcher ? systemWatcher.matches() : serverDefault === "dark");
-  const override = ref<ColorScheme | null>(overrideScheme);
+  const override = ref<ColorScheme | null>(getOverrideScheme(overrideKey));
 
   const colorScheme = computed<ColorScheme>(
     () => override.value ?? (systemDark.value ? "dark" : "light"),
@@ -65,8 +108,9 @@ export function useColorScheme(options: UseColorSchemeOptions = {}): UseColorSch
 
   if (getCurrentInstance()) {
     let unsubSystem: (() => void) | undefined;
+    let unsubOverride: (() => void) | undefined;
     const onOverrideChange = () => {
-      override.value = overrideScheme;
+      override.value = getOverrideScheme(overrideKey);
     };
 
     onMounted(() => {
@@ -76,21 +120,21 @@ export function useColorScheme(options: UseColorSchemeOptions = {}): UseColorSch
           systemDark.value = systemWatcher.matches();
         });
       }
-      overrideListeners.add(onOverrideChange);
+      unsubOverride = subscribeOverrideListener(overrideKey, onOverrideChange);
       onOverrideChange();
     });
 
     onUnmounted(() => {
       unsubSystem?.();
-      overrideListeners.delete(onOverrideChange);
+      unsubOverride?.();
     });
   }
 
   const setColorScheme = (scheme: ColorScheme | null) => {
-    overrideScheme = scheme;
-    override.value = scheme;
+    setOverrideScheme(overrideKey, scheme);
+    override.value = getOverrideScheme(overrideKey);
     writeStorage(storageKey, scheme);
-    notifyOverride();
+    notifyOverride(overrideKey);
   };
 
   return {

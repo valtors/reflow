@@ -1,5 +1,5 @@
-import { derived, readable, writable } from "svelte/store";
-import type { Readable, Writable } from "svelte/store";
+import { derived, readable } from "svelte/store";
+import type { Readable } from "svelte/store";
 import { watchMedia } from "../core/media.js";
 
 export type ColorScheme = "light" | "dark";
@@ -11,13 +11,64 @@ export interface ColorSchemeOptions {
 
 const isBrowser = typeof window !== "undefined";
 
-function readStorage(key?: string): ColorScheme | null {
-  if (!isBrowser || !key) return null;
+type ColorSchemeOverride = ColorScheme | null;
+
+const DEFAULT_OVERRIDE_KEY = "__fluidity-color-scheme__";
+const overrideSchemes = new Map<string, ColorSchemeOverride>();
+const overrideListeners = new Map<string, Set<() => void>>();
+
+function getOverrideKey(storageKey?: string) {
+  return storageKey ?? DEFAULT_OVERRIDE_KEY;
+}
+
+function getOverrideScheme(overrideKey: string) {
+  return overrideSchemes.get(overrideKey) ?? null;
+}
+
+function getOverrideListenerSet(overrideKey: string) {
+  let listeners = overrideListeners.get(overrideKey);
+  if (!listeners) {
+    listeners = new Set<() => void>();
+    overrideListeners.set(overrideKey, listeners);
+  }
+  return listeners;
+}
+
+function syncOverrideScheme(overrideKey: string, storageKey?: string) {
+  if (!isBrowser || !storageKey) return;
   try {
-    const value = localStorage.getItem(key);
-    if (value === "dark" || value === "light") return value;
+    const value = localStorage.getItem(storageKey);
+    if (value === "dark" || value === "light") {
+      overrideSchemes.set(overrideKey, value);
+      return;
+    }
+    if (!overrideListeners.get(overrideKey)?.size) {
+      overrideSchemes.delete(overrideKey);
+    }
   } catch {}
-  return null;
+}
+
+function setOverrideScheme(overrideKey: string, scheme: ColorSchemeOverride) {
+  if (scheme === null) {
+    overrideSchemes.delete(overrideKey);
+    return;
+  }
+  overrideSchemes.set(overrideKey, scheme);
+}
+
+function subscribeOverrideListener(overrideKey: string, listener: () => void) {
+  const listeners = getOverrideListenerSet(overrideKey);
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) {
+      overrideListeners.delete(overrideKey);
+    }
+  };
+}
+
+function notifyOverrideListeners(overrideKey: string) {
+  for (const listener of overrideListeners.get(overrideKey) ?? []) listener();
 }
 
 function writeStorage(key?: string, value?: ColorScheme | null) {
@@ -44,6 +95,9 @@ function writeStorage(key?: string, value?: ColorScheme | null) {
  */
 export function colorScheme(options: ColorSchemeOptions = {}) {
   const { serverDefault = "light", storageKey } = options;
+  const overrideKey = getOverrideKey(storageKey);
+
+  syncOverrideScheme(overrideKey, storageKey);
 
   const systemDark: Readable<boolean> = readable(
     isBrowser ? watchMedia("(prefers-color-scheme: dark)").matches() : serverDefault === "dark",
@@ -55,7 +109,12 @@ export function colorScheme(options: ColorSchemeOptions = {}) {
     },
   );
 
-  const override: Writable<ColorScheme | null> = writable(readStorage(storageKey));
+  const override: Readable<ColorScheme | null> = readable(getOverrideScheme(overrideKey), (set) => {
+    const onChange = () => set(getOverrideScheme(overrideKey));
+    const unsubscribe = subscribeOverrideListener(overrideKey, onChange);
+    onChange();
+    return unsubscribe;
+  });
   const scheme = derived(
     [override, systemDark],
     ([$override, $systemDark]) => ($override ?? ($systemDark ? "dark" : "light")) as ColorScheme,
@@ -63,8 +122,9 @@ export function colorScheme(options: ColorSchemeOptions = {}) {
   const isDark = derived(scheme, ($scheme) => $scheme === "dark");
 
   const set = (value: ColorScheme | null) => {
-    override.set(value);
+    setOverrideScheme(overrideKey, value);
     writeStorage(storageKey, value);
+    notifyOverrideListeners(overrideKey);
   };
 
   return { scheme, isDark, set };

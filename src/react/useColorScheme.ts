@@ -33,23 +33,66 @@ export interface UseColorSchemeResult {
 
 const isBrowser = typeof window !== "undefined";
 
-// Module-level store for override so it works without external state
-let overrideScheme: ColorScheme | null = null;
-const overrideListeners = new Set<() => void>();
+type ColorSchemeOverride = ColorScheme | null;
 
-function notifyOverrideListeners() {
-  for (const fn of overrideListeners) fn();
+const DEFAULT_OVERRIDE_KEY = "__fluidity-color-scheme__";
+const overrideSchemes = new Map<string, ColorSchemeOverride>();
+const overrideListeners = new Map<string, Set<() => void>>();
+
+function getOverrideKey(storageKey: string | undefined) {
+  return storageKey ?? DEFAULT_OVERRIDE_KEY;
 }
 
-function readStorage(key: string | undefined): ColorScheme | null {
-  if (!isBrowser || !key) return null;
+function getOverrideScheme(overrideKey: string) {
+  return overrideSchemes.get(overrideKey) ?? null;
+}
+
+function getOverrideListenerSet(overrideKey: string) {
+  let listeners = overrideListeners.get(overrideKey);
+  if (!listeners) {
+    listeners = new Set<() => void>();
+    overrideListeners.set(overrideKey, listeners);
+  }
+  return listeners;
+}
+
+function syncOverrideScheme(overrideKey: string, storageKey: string | undefined) {
+  if (!isBrowser || !storageKey) return;
   try {
-    const v = localStorage.getItem(key);
-    if (v === "dark" || v === "light") return v;
+    const value = localStorage.getItem(storageKey);
+    if (value === "dark" || value === "light") {
+      overrideSchemes.set(overrideKey, value);
+      return;
+    }
+    if (!overrideListeners.get(overrideKey)?.size) {
+      overrideSchemes.delete(overrideKey);
+    }
   } catch {
     // Storage unavailable (SSR, iframe, privacy mode)
   }
-  return null;
+}
+
+function setOverrideScheme(overrideKey: string, scheme: ColorSchemeOverride) {
+  if (scheme === null) {
+    overrideSchemes.delete(overrideKey);
+    return;
+  }
+  overrideSchemes.set(overrideKey, scheme);
+}
+
+function subscribeOverrideListener(overrideKey: string, listener: () => void) {
+  const listeners = getOverrideListenerSet(overrideKey);
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) {
+      overrideListeners.delete(overrideKey);
+    }
+  };
+}
+
+function notifyOverrideListeners(overrideKey: string) {
+  for (const fn of overrideListeners.get(overrideKey) ?? []) fn();
 }
 
 function writeStorage(key: string | undefined, value: ColorScheme | null) {
@@ -83,11 +126,9 @@ function writeStorage(key: string | undefined, value: ColorScheme | null) {
  */
 export function useColorScheme(options: UseColorSchemeOptions = {}): UseColorSchemeResult {
   const { serverDefault = "light", storageKey } = options;
+  const overrideKey = getOverrideKey(storageKey);
 
-  // Initialize override from storage on first client render
-  if (isBrowser && overrideScheme === null && storageKey) {
-    overrideScheme = readStorage(storageKey);
-  }
+  syncOverrideScheme(overrideKey, storageKey);
 
   // System preference via matchMedia
   const systemSubscribe = useCallback(
@@ -102,13 +143,11 @@ export function useColorScheme(options: UseColorSchemeOptions = {}): UseColorSch
   const systemIsDark = useSyncExternalStore(systemSubscribe, systemSnapshot, systemServerSnapshot);
 
   // Override subscription
-  const overrideSubscribe = useCallback((onChange: () => void) => {
-    overrideListeners.add(onChange);
-    return () => {
-      overrideListeners.delete(onChange);
-    };
-  }, []);
-  const overrideSnapshot = useCallback(() => overrideScheme, []);
+  const overrideSubscribe = useCallback(
+    (onChange: () => void) => subscribeOverrideListener(overrideKey, onChange),
+    [overrideKey],
+  );
+  const overrideSnapshot = useCallback(() => getOverrideScheme(overrideKey), [overrideKey]);
   const overrideServerSnapshot = useCallback(() => null, []);
   const currentOverride = useSyncExternalStore(
     overrideSubscribe,
@@ -120,11 +159,11 @@ export function useColorScheme(options: UseColorSchemeOptions = {}): UseColorSch
 
   const setColorScheme = useCallback(
     (scheme: ColorScheme | null) => {
-      overrideScheme = scheme;
+      setOverrideScheme(overrideKey, scheme);
       writeStorage(storageKey, scheme);
-      notifyOverrideListeners();
+      notifyOverrideListeners(overrideKey);
     },
-    [storageKey],
+    [overrideKey, storageKey],
   );
 
   return {
