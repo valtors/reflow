@@ -8,16 +8,31 @@
     "breakpoints",
     "media-query",
     "container-queries",
+    "container-query",
     "fluid-typography",
+    "fluid-design",
     "clamp",
+    "css-clamp",
     "react",
     "react-hooks",
+    "vue",
+    "svelte",
+    "astro",
     "typescript",
     "ssr",
+    "ssr-safe",
+    "hydration",
     "nextjs",
+    "remix",
     "viewport",
+    "window-size",
     "device",
     "matchmedia",
+    "dark-mode",
+    "use-media-query",
+    "use-breakpoint",
+    "responsive-hooks",
+    "design-tokens",
     "useSyncExternalStore",
     "prefers-reduced-motion",
     "prefers-color-scheme",
@@ -32,6 +47,10 @@
   },
   "bugs": {
     "url": "https://github.com/fluidiety/fluidity-ts/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Fluidiety"
   },
   "type": "module",
   "main": "./dist/index.cjs",
@@ -145,8 +164,8 @@
   },
   "peerDependencies": {
     "react": ">=17.0.0",
-    "vue": ">=3.3.0",
-    "svelte": ">=4.0.0"
+    "svelte": ">=4.0.0",
+    "vue": ">=3.3.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -176,7 +195,8 @@
     "svelte": "^5.55.5",
     "tsup": "^8.3.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.0",
+    "vue": "^3.5.34"
   },
   "size-limit": [
     {
