@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { defaultSystem } from "../src/core/breakpoints";
 import { containerQuery, defineContainer } from "../src/styles/container";
 import { fluidClamp, fluidScale } from "../src/styles/fluid";
+import { containerGrid, gridPresets, responsiveGrid, responsiveStack } from "../src/styles/grid";
 import { logical, toLogical } from "../src/styles/logical";
 import { printOnly, printStyle } from "../src/styles/print";
 import { responsiveStyle } from "../src/styles/responsive-style";
@@ -79,6 +80,70 @@ describe("logical helpers", () => {
   });
   it("exposes the logical map", () => {
     expect(logical.width).toBe("inline-size");
+  });
+});
+
+describe("grid helpers", () => {
+  it("emits responsive grid CSS using breakpoint media queries", () => {
+    const css = responsiveGrid(defaultSystem, {
+      columns: { xs: 1, md: 2, lg: 4 },
+      gap: { xs: "1rem", lg: "2rem" },
+      rowGap: "1.5rem",
+      maxWidth: "80rem",
+      autoFlow: "row dense",
+    });
+
+    expect(css).toContain("display: grid;");
+    expect(css).toContain("max-width: 80rem;");
+    expect(css).toContain("grid-auto-flow: row dense;");
+    expect(css).toContain("row-gap: 1.5rem;");
+    expect(css).toContain("gap: 1rem;");
+    expect(css).toContain("grid-template-columns: repeat(1, minmax(0, 1fr));");
+    expect(css).toContain(
+      `@media ${defaultSystem.up("md")} { grid-template-columns: repeat(2, minmax(0, 1fr)); }`,
+    );
+    expect(css).toContain(
+      `@media ${defaultSystem.up("lg")} { gap: 2rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }`,
+    );
+  });
+
+  it("emits container-query grid CSS", () => {
+    const css = containerGrid({
+      breakpoints: {
+        wide: { minWidth: 720, columns: 3 },
+        base: { minWidth: 0, columns: 1 },
+      },
+      gap: "1rem",
+    });
+
+    expect(css).toContain("display: grid;");
+    expect(css).toContain("container-type: inline-size;");
+    expect(css).toContain("gap: 1rem;");
+    expect(css).toContain("grid-template-columns: repeat(1, minmax(0, 1fr));");
+    expect(css).toContain(
+      "@container (min-width: 720px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }",
+    );
+  });
+
+  it("includes reusable presets", () => {
+    expect(gridPresets.standard.columns.xs).toBe(1);
+    expect(gridPresets.standard.columns.xl).toBe(4);
+    expect(gridPresets.magazine.autoFlow).toBe("dense");
+    expect(gridPresets.sidebar.columns.lg).toBe(12);
+  });
+
+  it("switches stack direction at the chosen breakpoint", () => {
+    const css = responsiveStack(defaultSystem, "md", {
+      gap: "1rem",
+      align: "center",
+      reverse: true,
+    });
+
+    expect(css).toContain("display: flex;");
+    expect(css).toContain("gap: 1rem;");
+    expect(css).toContain("align-items: center;");
+    expect(css).toContain("flex-direction: column-reverse;");
+    expect(css).toContain(`@media ${defaultSystem.up("md")} { flex-direction: row-reverse; }`);
   });
 });
 

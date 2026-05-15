@@ -1,10 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  type A11yAuditResult,
   type ContainerSize,
+  accessibleFontSize,
+  announceBreakpoint,
+  auditResponsiveA11y,
+  createPerfMark,
+  debugLog,
+  formatDebugState,
   getContainerSize,
   matchesContainerRange,
   observeContainer,
-} from "../src/core/container";
+  optimalLineLength,
+  prefersHighContrast,
+  responsiveTouchTarget,
+} from "../src/core";
 import { getDevicePixelRatio, observeDevicePixelRatio } from "../src/core/dpr";
 import {
   type PointerCapabilities,
@@ -44,6 +54,64 @@ describe("dpr", () => {
     const unsub = observeDevicePixelRatio(() => {});
     expect(typeof unsub).toBe("function");
     unsub();
+  });
+});
+
+// ---------- Debug ----------
+
+describe("debug", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("formatDebugState returns a compact summary", () => {
+    expect(
+      formatDebugState({
+        breakpoint: "lg",
+        viewport: { width: 1280, height: 720 },
+        orientation: "landscape",
+        dpr: 2,
+        preferences: {
+          reducedMotion: true,
+          dark: true,
+          highContrast: false,
+        },
+        pointer: "fine",
+      }),
+    ).toBe("bp=lg vp=1280x720 orientation=landscape dpr=2 prefs=reduced-motion,dark pointer=fine");
+  });
+
+  it("debugLog only logs outside production", () => {
+    const debugSpy = vi.spyOn(console, "debug").mockImplementation(() => {});
+    const previous = process.env.NODE_ENV;
+
+    try {
+      process.env.NODE_ENV = "production";
+      debugLog("state", { ok: true });
+      expect(debugSpy).not.toHaveBeenCalled();
+
+      process.env.NODE_ENV = "test";
+      debugLog("state", { ok: true });
+      expect(debugSpy).toHaveBeenCalledWith("[fluidity:state]", { ok: true });
+    } finally {
+      process.env.NODE_ENV = previous;
+    }
+  });
+
+  it("createPerfMark tracks elapsed time and averages", () => {
+    const nowSpy = vi.spyOn(performance, "now");
+    nowSpy
+      .mockReturnValueOnce(10)
+      .mockReturnValueOnce(26)
+      .mockReturnValueOnce(40)
+      .mockReturnValueOnce(52);
+
+    const mark = createPerfMark("layout");
+    mark.start();
+    expect(mark.end()).toBe(16);
+    mark.start();
+    expect(mark.end()).toBe(12);
+    expect(mark.average()).toBe(14);
   });
 });
 
@@ -257,5 +325,69 @@ describe("safe-area", () => {
     const unsub = observeSafeArea((insets) => calls.push(insets));
     expect(typeof unsub).toBe("function");
     unsub();
+  });
+});
+
+// ---------- A11y ----------
+
+describe("a11y", () => {
+  let ctrl: MatchMediaMockController;
+
+  beforeEach(() => {
+    ctrl = installMatchMediaMock();
+  });
+
+  afterEach(() => {
+    ctrl.uninstall();
+  });
+
+  it("responsiveTouchTarget respects minimum WCAG targets", () => {
+    expect(responsiveTouchTarget(1280)).toBeGreaterThanOrEqual(24);
+    expect(responsiveTouchTarget(375, { level: "AAA" })).toBeGreaterThanOrEqual(44);
+  });
+
+  it("accessibleFontSize enforces readable defaults", () => {
+    const result = accessibleFontSize(14, 375);
+    expect(result).toEqual({
+      fontSize: "16.12px",
+      lineHeight: "24.18px",
+    });
+  });
+
+  it("auditResponsiveA11y reports pass and fail states", () => {
+    const passing: A11yAuditResult = auditResponsiveA11y({
+      touchTargetPx: 44,
+      fontSizePx: 16,
+      tapSpacingPx: 12,
+      level: "AAA",
+    });
+    const failing = auditResponsiveA11y({ touchTargetPx: 20, fontSizePx: 14, tapSpacingPx: 4 });
+
+    expect(passing.touchTarget.passes).toBe(true);
+    expect(passing.fontSize.passes).toBe(true);
+    expect(passing.tapSpacing.passes).toBe(true);
+    expect(failing.touchTarget.passes).toBe(false);
+    expect(failing.fontSize.passes).toBe(false);
+    expect(failing.tapSpacing.passes).toBe(false);
+  });
+
+  it("prefersHighContrast checks contrast-related preferences", () => {
+    expect(prefersHighContrast()).toBe(false);
+    ctrl.set("(prefers-contrast: more)", true);
+    expect(prefersHighContrast()).toBe(true);
+  });
+
+  it("announceBreakpoint creates clear live-region copy", () => {
+    expect(announceBreakpoint("md", "sm")).toBe("Layout adjusted from sm to md breakpoint.");
+    expect(announceBreakpoint("lg_desktop")).toBe("Layout adjusted to lg desktop breakpoint.");
+  });
+
+  it("optimalLineLength keeps line length in the readable range", () => {
+    expect(optimalLineLength(1280, 16)).toEqual({ maxWidth: "624px", chars: 75 });
+    expect(optimalLineLength(320, 16)).toEqual({ maxWidth: "288px", chars: 35 });
+    expect(optimalLineLength(320, 16, { maxChars: 32 })).toEqual({
+      maxWidth: "266.24px",
+      chars: 32,
+    });
   });
 });

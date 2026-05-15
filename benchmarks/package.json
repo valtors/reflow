@@ -1,0 +1,12 @@
+{
+  "name": "fluidity-ts-benchmarks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node --expose-gc bench.js",
+    "bench:compare": "node compare.js"
+  },
+  "dependencies": {
+    "mitata": "^1.0.0"
+  }
+}

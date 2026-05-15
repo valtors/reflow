@@ -1,0 +1,46 @@
+---
+import ReactBreakpoint from "../components/ReactBreakpoint";
+import SvelteBreakpoint from "../components/SvelteBreakpoint.svelte";
+import VueBreakpoint from "../components/VueBreakpoint.vue";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="fluidity-ts × Astro multi-framework demo">
+  <main class="page-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Astro + React + Vue + Svelte</p>
+        <h1>One breakpoint system. Three island frameworks.</h1>
+      </div>
+      <p>
+        This Astro page mounts React, Vue, and Svelte islands that all import the same
+        <code>fluidity-ts</code> breakpoint system and resolve the same layout rules.
+      </p>
+
+      <div class="summary-grid">
+        <article class="summary-card">
+          <strong>Shared breakpoints</strong>
+          <span>xs → md → lg/xl → 2xl</span>
+        </article>
+        <article class="summary-card">
+          <strong>Shared output</strong>
+          <span>stacked → 2 cols → 3 cols → 4 cols</span>
+        </article>
+        <article class="summary-card">
+          <strong>Shared idea</strong>
+          <span>framework-agnostic responsive logic</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="island-grid">
+      <ReactBreakpoint client:load />
+      <VueBreakpoint client:only="vue" />
+      <SvelteBreakpoint client:only="svelte" />
+    </section>
+
+    <p class="footer-note">
+      Resize the viewport: each island updates independently, but the breakpoint behavior stays identical.
+    </p>
+  </main>
+</Layout>

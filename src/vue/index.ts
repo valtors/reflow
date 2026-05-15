@@ -18,3 +18,5 @@ export type { PointerInfo } from "./usePointer.js";
 export { useSafeArea } from "./useSafeArea.js";
 export { createFluidityPlugin } from "./plugin.js";
 export type { FluidityPluginOptions } from "./plugin.js";
+export { Show } from "./Show.js";
+export type { ShowProps } from "./Show.js";

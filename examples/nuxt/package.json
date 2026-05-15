@@ -1,0 +1,16 @@
+{
+  "name": "fluidity-ts-nuxt-example",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "fluidity-ts": "latest"
+  },
+  "devDependencies": {
+    "nuxt": "^3.14.0",
+    "typescript": "^5.6.0"
+  }
+}

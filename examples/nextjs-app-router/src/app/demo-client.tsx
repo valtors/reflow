@@ -1,208 +1,279 @@
 "use client";
 
-import { useEffect } from "react";
-import { useBreakpoint, useColorScheme, useViewport } from "fluidity-ts/react";
+import Link from "next/link";
+import { Show, useBreakpoint, useResponsiveValue, useViewport } from "fluidity-ts/react";
 import { fluidClamp } from "fluidity-ts/styles";
 import type { AppBreakpoints } from "../breakpoints";
 
-const displayClamp = fluidClamp({ minPx: 40, maxPx: 76, minVwPx: 360, maxVwPx: 1440 });
-const bodyClamp = fluidClamp({ minPx: 16, maxPx: 19, minVwPx: 360, maxVwPx: 1440 });
-const shellPadding = fluidClamp({ minPx: 20, maxPx: 56, minVwPx: 360, maxVwPx: 1440 });
+const panelClass =
+  "rounded-[28px] border border-[color:var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow)] backdrop-blur-xl";
+const pillClass =
+  "inline-flex items-center rounded-full border border-[color:var(--border)] bg-[var(--surface-strong)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--accent-strong)]";
 
-const flowSteps = [
+const displayClamp = fluidClamp({ minPx: 42, maxPx: 88, minVwPx: 360, maxVwPx: 1600 });
+const leadClamp = fluidClamp({ minPx: 17, maxPx: 22, minVwPx: 360, maxVwPx: 1440 });
+
+const showcasePages = [
   {
-    title: "1. Middleware advertises Client Hints",
+    href: "/hooks",
+    title: "All hooks in one place",
     description:
-      "src/middleware.ts sends Accept-CH, Critical-CH, and Vary via clientHintsResponseHeaders.",
+      "Breakpoint, viewport, color scheme, media queries, container queries, pointer detection, safe areas, DPR, responsive values, and Show — all live.",
+    accent: "Instrumentation",
   },
   {
-    title: "2. Layout resolves a server breakpoint",
+    href: "/dashboard",
+    title: "Responsive dashboard layout",
     description:
-      "src/app/layout.tsx reads next/headers() and calls resolveServerBreakpoint(...) before render.",
+      "See a practical analytics shell adapt from a compact mobile stack to a denser desktop workspace without hydration flicker.",
+    accent: "Product UI",
   },
   {
-    title: "3. ResponsiveProvider seeds hydration",
+    href: "/typography",
+    title: "Fluid typography system",
     description:
-      "ResponsiveProvider receives serverWidth so the first client snapshot matches the server render.",
+      "Generate polished clamp() scales and preview how editorial content feels across breakpoints.",
+    accent: "Design systems",
   },
 ] as const;
 
-const demoCards = [
+const ssrSteps = [
   {
-    title: "Revenue overview",
-    blurb: "Dense dashboard content can start at one column and progressively expand.",
-    tag: "Analytics",
+    title: "Middleware forwards viewport context",
+    body: "Client Hints are negotiated and a viewport-width fallback is injected onto the request for the very first SSR render.",
   },
   {
-    title: "Editorial feature",
-    blurb: "Fluid type keeps long-form content readable across phones, tablets, and desktops.",
-    tag: "Content",
+    title: "Layout resolves the server snapshot",
+    body: "App Router reads headers() and calls resolveServerBreakpoint(...) before any client component renders.",
   },
   {
-    title: "Product comparison",
-    blurb: "Breakpoint helpers make it easy to reveal richer layouts as space becomes available.",
-    tag: "Commerce",
+    title: "ResponsiveProvider hydrates safely",
+    body: "The first client snapshot matches the server guess, so the dashboard and hooks demos render without breakpoint pop-in.",
   },
-  {
-    title: "Ops workspace",
-    blurb: "SSR-safe layout decisions eliminate hydration flicker when the app first loads.",
-    tag: "Internal tools",
-  },
-  {
-    title: "Marketing hero",
-    blurb: "Use a shared breakpoint system across CSS, hooks, and server rendering.",
-    tag: "Brand",
-  },
-  {
-    title: "Team directory",
-    blurb: "Keep cards compact on small screens, then fan them out with above() and below().",
-    tag: "Collaboration",
-  },
+] as const;
+
+const metrics = [
+  { label: "SSR breakpoint", value: "Resolved on the server" },
+  { label: "Theme", value: "Persisted with useColorScheme" },
+  { label: "Styling", value: "Tailwind CSS + fluidClamp()" },
+  { label: "Coverage", value: "Hooks, dashboard, typography" },
 ] as const;
 
 export default function DemoClient() {
   const breakpoint = useBreakpoint<AppBreakpoints>();
   const viewport = useViewport();
-  const { colorScheme, isDark, setColorScheme } = useColorScheme({
-    storageKey: "fluidity-next-theme",
-  });
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = colorScheme;
-  }, [colorScheme]);
-
-  const columns = breakpoint.above("desktop")
-    ? 4
-    : breakpoint.above("laptop")
-      ? 3
-      : breakpoint.above("tablet")
-        ? 2
-        : 1;
-
-  const helperChecks = [
-    { label: 'is("mobile")', value: breakpoint.is("mobile") },
-    { label: 'above("tablet")', value: breakpoint.above("tablet") },
-    { label: 'above("laptop")', value: breakpoint.above("laptop") },
-    { label: 'below("desktop")', value: breakpoint.below("desktop") },
-  ];
+  const layoutMood =
+    useResponsiveValue<string, AppBreakpoints>({
+      mobile: "single-column clarity",
+      tablet: "balanced storytelling",
+      laptop: "multi-panel orchestration",
+      desktop: "command-center density",
+    }) ?? "single-column clarity";
 
   return (
-    <main className="page-shell" style={{ padding: shellPadding, fontSize: bodyClamp }}>
-      <section className="hero">
-        <div className="hero-copy">
-          <span className="eyebrow">fluidity-ts × Next.js App Router</span>
-          <h1 style={{ fontSize: displayClamp }}>SSR-safe responsive UI with real server context</h1>
-          <p className="lede">
-            This demo resolves a breakpoint on the server, passes it into <code>ResponsiveProvider</code>,
-            and keeps the first paint aligned with the hydrated client store.
-          </p>
-          <div className="hero-actions">
-            <button
-              className="theme-toggle"
-              type="button"
-              onClick={() => setColorScheme(isDark ? "light" : "dark")}
+    <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 pb-10">
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_360px]">
+        <div className={`${panelClass} overflow-hidden`}>
+          <div className="inline-flex flex-wrap items-center gap-3">
+            <span className={pillClass}>Next.js App Router showcase</span>
+            <span className="rounded-full bg-sky-500/10 px-3 py-1 text-sm font-medium text-[var(--accent-strong)]">
+              Active breakpoint: {breakpoint.active}
+            </span>
+          </div>
+          <div className="mt-6 max-w-4xl space-y-5">
+            <h1 className="max-w-3xl text-balance font-semibold leading-[0.95] tracking-[-0.04em]" style={{ fontSize: displayClamp }}>
+              Build responsive interfaces that already know their layout before hydration.
+            </h1>
+            <p className="max-w-2xl text-balance leading-8 text-[var(--muted)]" style={{ fontSize: leadClamp }}>
+              This example turns fluidity-ts into a full product-quality playground: negotiated Client Hints,
+              Tailwind-powered visuals, a live hooks lab, a responsive analytics dashboard, and a fluid type
+              system you can copy into production.
+            </p>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/hooks"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/25 transition hover:-translate-y-0.5"
             >
-              Toggle {isDark ? "light" : "dark"} mode
-            </button>
-            <span className="scheme-chip">Color scheme: {colorScheme}</span>
+              Explore every hook
+            </Link>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--border)] bg-[var(--surface-strong)] px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-sky-400/40 hover:text-sky-500"
+            >
+              Open dashboard demo
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {metrics.map((metric) => (
+              <article
+                key={metric.label}
+                className="rounded-[22px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-4"
+              >
+                <p className="text-sm font-medium text-[var(--muted)]">{metric.label}</p>
+                <p className="mt-2 text-base font-semibold text-[var(--text)]">{metric.value}</p>
+              </article>
+            ))}
           </div>
         </div>
 
-        <aside className="panel panel--highlight">
-          <div className="panel-header">
+        <aside className={`${panelClass} bg-[linear-gradient(180deg,var(--surface-strong),var(--surface))]`}>
+          <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="panel-label">Live state</p>
-              <h2>Current responsive snapshot</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-strong)]">
+                Live telemetry
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">Current responsive snapshot</h2>
             </div>
-            <span className="badge">{breakpoint.active}</span>
+            <div className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-sm font-semibold text-emerald-500">
+              Ready
+            </div>
           </div>
-
-          <dl className="stats-grid">
-            <div className="stat-card">
-              <dt>Breakpoint</dt>
-              <dd>{breakpoint.active}</dd>
-            </div>
-            <div className="stat-card">
-              <dt>Viewport</dt>
-              <dd>
+          <dl className="mt-6 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-[22px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-4">
+              <dt className="text-sm text-[var(--muted)]">Viewport</dt>
+              <dd className="mt-2 text-lg font-semibold">
                 {viewport.width} × {viewport.height}
               </dd>
             </div>
-            <div className="stat-card">
-              <dt>Orientation</dt>
-              <dd>{viewport.orientation}</dd>
+            <div className="rounded-[22px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-4">
+              <dt className="text-sm text-[var(--muted)]">Orientation</dt>
+              <dd className="mt-2 text-lg font-semibold capitalize">{viewport.orientation}</dd>
             </div>
-            <div className="stat-card">
-              <dt>Theme</dt>
-              <dd>{colorScheme}</dd>
+            <div className="rounded-[22px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-4">
+              <dt className="text-sm text-[var(--muted)]">Layout mood</dt>
+              <dd className="mt-2 text-lg font-semibold capitalize">{layoutMood}</dd>
+            </div>
+            <div className="rounded-[22px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-4">
+              <dt className="text-sm text-[var(--muted)]">Breakpoint helper</dt>
+              <dd className="mt-2 text-lg font-semibold">
+                {breakpoint.above("laptop") ? "Dense mode" : "Adaptive mode"}
+              </dd>
             </div>
           </dl>
+          <pre className="mt-6 overflow-x-auto rounded-[24px] border border-slate-800 bg-[var(--surface-contrast)] p-4 text-sm leading-7 text-slate-200">
+{`resolveServerBreakpoint({
+  headers,
+  userAgent: headers.get("user-agent") ?? undefined,
+}, breakpointSystem)`}
+          </pre>
         </aside>
       </section>
 
-      <section className="section">
-        <div className="section-heading">
-          <div>
-            <p className="section-label">useBreakpoint()</p>
-            <h2>Typed helpers for layout rules</h2>
+      <section className={`${panelClass} space-y-6`}>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <span className={pillClass}>What&apos;s inside</span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">A practical showcase, not a toy landing page</h2>
           </div>
+          <p className="max-w-xl text-sm leading-7 text-[var(--muted)]">
+            Every route is designed to demonstrate a production use case while surfacing the responsive state
+            that fluidity-ts exposes.
+          </p>
         </div>
-        <div className="mini-grid">
-          {helperChecks.map((check) => (
-            <article key={check.label} className="mini-card">
-              <span className="mini-label">{check.label}</span>
-              <strong>{check.value ? "true" : "false"}</strong>
-            </article>
+        <div className="grid gap-4 lg:grid-cols-3">
+          {showcasePages.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group rounded-[24px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-5 transition hover:-translate-y-1 hover:border-sky-400/40"
+            >
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--accent-strong)]">{item.accent}</p>
+              <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em] group-hover:text-sky-500">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{item.description}</p>
+              <span className="mt-6 inline-flex text-sm font-semibold text-sky-500">Open demo →</span>
+            </Link>
           ))}
         </div>
       </section>
 
-      <section className="section">
-        <div className="section-heading">
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <div className={`${panelClass} space-y-5`}>
           <div>
-            <p className="section-label">SSR flow</p>
-            <h2>How Client Hints feed the initial breakpoint</h2>
+            <span className={pillClass}>Client Hints pipeline</span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">SSR-aware from the very first request</h2>
+          </div>
+          <div className="grid gap-4">
+            {ssrSteps.map((step, index) => (
+              <article
+                key={step.title}
+                className="rounded-[22px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-5"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sky-500/10 font-semibold text-sky-500">
+                    0{index + 1}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold">{step.title}</h3>
+                    <p className="mt-1 text-sm leading-7 text-[var(--muted)]">{step.body}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
-        <div className="flow-grid">
-          {flowSteps.map((step) => (
-            <article key={step.title} className="panel flow-card">
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
 
-      <section className="section">
-        <div className="section-heading">
-          <div>
-            <p className="section-label">Responsive grid</p>
-            <h2>Cards driven by breakpoint.above()</h2>
+        <div className={`${panelClass} overflow-hidden`}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span className={pillClass}>Adaptive preview</span>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Show different experiences by breakpoint</h2>
+            </div>
+            <span className="rounded-full border border-[color:var(--border)] px-3 py-1 text-sm font-medium text-[var(--muted)]">
+              Current: {breakpoint.active}
+            </span>
           </div>
-          <span className="scheme-chip">{columns} columns</span>
-        </div>
-        <div className="card-grid" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
-          {demoCards.map((card) => (
-            <article key={card.title} className="panel card">
-              <span className="card-tag">{card.tag}</span>
-              <h3>{card.title}</h3>
-              <p>{card.blurb}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="section-heading">
-          <div>
-            <p className="section-label">fluidClamp()</p>
-            <h2>Fluid typography without design-token guesswork</h2>
+          <div className="mt-6 rounded-[28px] border border-[color:var(--border)] bg-[var(--surface-strong)] p-4">
+            <Show<AppBreakpoints>
+              above="laptop"
+              fallback={
+                <div className="grid gap-4">
+                  <div className="rounded-[22px] bg-gradient-to-r from-cyan-500/15 to-indigo-500/10 p-5">
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent-strong)]">
+                      Mobile + tablet preview
+                    </p>
+                    <h3 className="mt-3 text-2xl font-semibold">Stacked, readable, fast to scan</h3>
+                    <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--muted)]">
+                      The interface prioritizes hero copy, action buttons, and a concise telemetry card before richer
+                      panels appear.
+                    </p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {['Hero', 'Telemetry', 'Feature links', 'SSR flow'].map((item) => (
+                      <div key={item} className="rounded-[20px] border border-[color:var(--border)] p-4">
+                        <p className="text-sm font-medium text-[var(--muted)]">{item}</p>
+                        <div className="mt-3 h-20 rounded-2xl border border-[color:var(--border)] bg-[var(--surface-strong)]" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              }
+            >
+              <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+                <div className="rounded-[24px] bg-gradient-to-br from-cyan-500/20 via-sky-500/12 to-indigo-500/10 p-6">
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent-strong)]">
+                    Desktop preview
+                  </p>
+                  <h3 className="mt-3 text-2xl font-semibold">Dense layout with multiple decision surfaces</h3>
+                  <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                    Once space is available, the same data expands into a dashboard-style surface with secondary
+                    analytics, live feed widgets, and richer comparisons.
+                  </p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {['Navigation rail', 'Performance chart', 'KPI strip', 'Activity feed'].map((item) => (
+                    <div key={item} className="rounded-[20px] border border-[color:var(--border)] p-4">
+                      <p className="text-sm font-medium text-[var(--muted)]">{item}</p>
+                      <div className="mt-3 h-24 rounded-2xl border border-[color:var(--border)] bg-[var(--surface-strong)]" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Show>
           </div>
         </div>
-        <pre className="code-block">
-{`fluidClamp({ minPx: 40, maxPx: 76, minVwPx: 360, maxVwPx: 1440 })\n// → ${displayClamp}`}
-        </pre>
       </section>
     </main>
   );

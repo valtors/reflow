@@ -1,11 +1,11 @@
 name: 🐛 Bug Report
-description: Report a bug or unexpected behavior
+description: Report a bug or unexpected behavior in fluidity-ts
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting a bug! Please fill out the details below.
+        Thanks for reporting a bug. Please provide as much detail as possible so we can reproduce and fix it.
   - type: input
     id: version
     attributes:
@@ -15,69 +15,66 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: entry-point
-    attributes:
-      label: Entry point
-      description: Which part of fluidity-ts is affected?
-      options:
-        - core
-        - react
-        - vue
-        - svelte
-        - styles
-        - server
-        - testing
-        - tailwind
-    validations:
-      required: true
-  - type: dropdown
     id: framework
     attributes:
       label: Framework
+      description: Which framework are you using fluidity-ts with?
       options:
         - React
+        - Vue
+        - Svelte
+        - Angular
+        - Solid
+        - Lit
+        - Vanilla
+    validations:
+      required: true
+  - type: dropdown
+    id: ssr-environment
+    attributes:
+      label: SSR environment
+      description: Which SSR or app environment are you using?
+      options:
         - Next.js
-        - Vue 3
-        - Nuxt 3
-        - Svelte 5
+        - Nuxt
         - SvelteKit
-        - Vanilla TypeScript
-        - Other
-    validations:
-      required: true
-  - type: textarea
-    id: description
-    attributes:
-      label: Description
-      description: A clear description of the bug
-    validations:
-      required: true
-  - type: textarea
-    id: reproduction
-    attributes:
-      label: Steps to reproduce
-      description: Minimal steps to reproduce the issue
-      value: |
-        1. 
-        2. 
-        3. 
-    validations:
-      required: true
-  - type: textarea
-    id: expected
-    attributes:
-      label: Expected behavior
-    validations:
-      required: true
-  - type: textarea
-    id: actual
-    attributes:
-      label: Actual behavior
+        - Remix
+        - Astro
+        - None
     validations:
       required: true
   - type: input
-    id: environment
+    id: browser
     attributes:
-      label: Environment
-      description: "Node version, browser, OS"
-      placeholder: "Node 20, Chrome 125, macOS 14"
+      label: Browser
+      description: Which browser and version are affected?
+      placeholder: "Chrome 136, Firefox 138, Safari 18"
+    validations:
+      required: true
+  - type: input
+    id: reproduction-link
+    attributes:
+      label: Reproduction link
+      description: Link to a minimal reproduction repository, StackBlitz, CodeSandbox, or similar.
+      placeholder: "https://..."
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What happened instead of what you expected?
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any extra context, screenshots, console output, or setup details that may help.

@@ -1,47 +1,49 @@
 name: ✨ Feature Request
-description: Suggest a new feature or improvement
+description: Suggest a new feature or improvement for fluidity-ts
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Got an idea? We'd love to hear it! You can also start a discussion in [GitHub Discussions](https://github.com/Fluidiety/fluidity-ts/discussions).
+        Thanks for the idea! If you're still exploring the problem space, you can also start a discussion in [GitHub Discussions](https://github.com/Fluidiety/fluidity-ts/discussions).
   - type: textarea
-    id: problem
+    id: problem-description
     attributes:
-      label: Problem
-      description: What problem does this solve?
+      label: Problem description
+      description: What problem, limitation, or workflow pain point are you trying to solve?
     validations:
       required: true
   - type: textarea
-    id: solution
+    id: proposed-solution
     attributes:
       label: Proposed solution
-      description: How would you like this to work?
+      description: Describe the API, behavior, or developer experience you would like to see.
+    validations:
+      required: true
+  - type: dropdown
+    id: framework-context
+    attributes:
+      label: Framework context
+      description: Which framework is most relevant to this request?
+      options:
+        - React
+        - Vue
+        - Svelte
+        - Angular
+        - Solid
+        - Lit
+        - Vanilla
+        - Multiple / framework-agnostic
     validations:
       required: true
   - type: textarea
-    id: alternatives
+    id: alternatives-considered
     attributes:
       label: Alternatives considered
-      description: Any workarounds or alternative approaches?
-  - type: dropdown
-    id: entry-point
-    attributes:
-      label: Affected entry point
-      options:
-        - core
-        - react
-        - vue
-        - svelte
-        - styles
-        - server
-        - testing
-        - tailwind
-        - new entry point
+      description: Describe any workarounds, competing approaches, or alternatives you have considered.
   - type: checkboxes
     id: contribution
     attributes:
       label: Contribution
       options:
-        - label: I'm willing to submit a PR for this feature
+        - label: I'm willing to help implement this feature

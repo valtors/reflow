@@ -5,4 +5,5 @@ export * from "./viewport-units.js";
 export * from "./safe-area.js";
 export * from "./print.js";
 export * from "./logical.js";
+export * from "./grid.js";
 export * from "./visually-hidden.js";

@@ -13,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationMap": true,
+    "experimentalDecorators": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": false,
     "resolveJsonModule": true

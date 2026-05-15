@@ -1,13 +1,11 @@
 import type { Readable } from "svelte/store";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  breakpoint,
-  colorScheme,
-  containerQuery,
-  mediaQuery,
-  preference,
-  viewport,
-} from "../src/svelte";
+import { breakpoint } from "../src/svelte/breakpoint.ts";
+import { colorScheme } from "../src/svelte/colorScheme.ts";
+import { containerQuery } from "../src/svelte/containerQuery.ts";
+import { mediaQuery } from "../src/svelte/mediaQuery.ts";
+import { preference } from "../src/svelte/preference.ts";
+import { viewport } from "../src/svelte/viewport.ts";
 import {
   type MatchMediaMockController,
   type ResizeObserverMockController,

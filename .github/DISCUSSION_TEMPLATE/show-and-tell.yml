@@ -1,0 +1,50 @@
+title: "Show and tell: "
+labels:
+  - showcase
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share what you've built with fluidity-ts. We'd love to see real-world examples, learn about your setup, and celebrate your work.
+  - type: input
+    id: project-name
+    attributes:
+      label: Project name
+      description: What is your project called?
+      placeholder: "My awesome app"
+    validations:
+      required: true
+  - type: input
+    id: project-link
+    attributes:
+      label: Project link
+      description: Link to your site, repository, demo, or social post.
+      placeholder: "https://..."
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      description: Which framework did you use with fluidity-ts?
+      options:
+        - React
+        - Vue
+        - Svelte
+        - Angular
+        - Solid
+        - Lit
+        - Vanilla
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what-you-built
+    attributes:
+      label: What did you build?
+      description: Tell us what your project does and where fluidity-ts fits in.
+    validations:
+      required: true
+  - type: textarea
+    id: favorite-part
+    attributes:
+      label: Favorite part
+      description: What worked especially well? Any tips, patterns, or lessons learned to share?

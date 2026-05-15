@@ -42,12 +42,16 @@ npm install fluidity-ts
 <p align="center">
   <sub>
     <a href="#the-problem">Problem</a> ·
+    <a href="#how-it-compares">Compare</a> ·
+    <a href="#framework-support">Frameworks</a> ·
     <a href="#quick-start">Quick Start</a> ·
+    <a href="#whats-included">What's Included</a> ·
     <a href="#why-fluidity-ts">Why fluidity-ts?</a> ·
-    <a href="#architecture">Architecture</a> ·
-    <a href="#recipes">Recipes</a> ·
+    <a href="#ecosystem">Ecosystem</a> ·
     <a href="#ssr-integration">SSR</a> ·
     <a href="#api-reference">API</a> ·
+    <a href="#used-by">Used By</a> ·
+    <a href="#sponsors">Sponsors</a> ·
     <a href="#contributing">Contributing</a>
   </sub>
 </p>
@@ -64,16 +68,46 @@ Building responsive UIs in 2026 means duct-taping 5+ packages together — a med
 
 ## How It Compares
 
-| Capability                               | react-responsive | react-use | usehooks-ts | react-device-detect | **fluidity-ts** |
-| :--------------------------------------- | :--------------: | :-------: | :---------: | :-----------------: | :-------------: |
-| SSR-safe (zero hydration warnings)       |        ❌        |    ⚠️     |     ❌      |         ❌          |      **✅**     |
-| Typed breakpoint inference               |        ❌        |    ❌     |     ❌      |         ❌          |      **✅**     |
-| Runtime `fluidClamp()` / fluid scale     |        ❌        |    ❌     |     ❌      |         ❌          |      **✅**     |
-| Container queries                        |        ❌        |    ❌     |     ❌      |         ❌          |      **✅**     |
-| `prefers-reduced-data` / `forced-colors` |        ❌        |    ❌     |     ❌      |         ❌          |      **✅**     |
-| Client Hints / SSR breakpoint resolver   |        ❌        |    ❌     |     ❌      |         ❌          |      **✅**     |
-| Framework-agnostic core                  |        ❌        |    ❌     |     ❌      |         ❌          |      **✅**     |
-| Actively maintained (2026)               |        ⚠️        |    ⚠️     |     ✅      |    ❌ _(abandoned)_  |      **✅**     |
+| Capability                               | react-responsive | react-use | usehooks-ts | use-media | @vueuse/core | react-device-detect | **fluidity-ts** |
+| :--------------------------------------- | :--------------: | :-------: | :---------: | :-------: | :----------: | :-----------------: | :-------------: |
+| SSR-safe (zero hydration warnings)       |        ❌        |    ⚠️     |     ❌      |    ⚠️     |      ⚠️      |         ❌          |      **✅**     |
+| Typed breakpoint inference               |        ❌        |    ❌     |     ❌      |    ❌     |      ⚠️      |         ❌          |      **✅**     |
+| Runtime `fluidClamp()` / fluid scale     |        ❌        |    ❌     |     ❌      |    ❌     |      ❌       |         ❌          |      **✅**     |
+| Container queries                        |        ❌        |    ❌     |     ❌      |    ❌     |      ❌       |         ❌          |      **✅**     |
+| `prefers-reduced-data` / `forced-colors` |        ❌        |    ❌     |     ❌      |    ❌     |      ⚠️      |         ❌          |      **✅**     |
+| Client Hints / SSR breakpoint resolver   |        ❌        |    ❌     |     ❌      |    ❌     |      ❌       |         ❌          |      **✅**     |
+| Framework-agnostic core                  |        ❌        |    ❌     |     ❌      |    ❌     |      ❌       |         ❌          |      **✅**     |
+| Actively maintained (2026)               |        ⚠️        |    ⚠️     |     ✅      |    ⚠️     |      ✅       |    ❌ _(abandoned)_  |      **✅**     |
+
+<p align="center"><sub>──────────── ✦ ────────────</sub></p>
+
+## Framework Support
+
+<table>
+<tr>
+<td align="center" width="25%"><strong>React</strong><br/><sub>First-class adapter</sub></td>
+<td align="center" width="25%"><strong>Vue</strong><br/><sub>Vue 3 composables</sub></td>
+<td align="center" width="25%"><strong>Svelte</strong><br/><sub>Svelte stores</sub></td>
+<td align="center" width="25%"><strong>Solid</strong><br/><sub>Framework-agnostic core</sub></td>
+</tr>
+<tr>
+<td align="center"><strong>Angular</strong><br/><sub>Framework-agnostic core</sub></td>
+<td align="center"><strong>Preact</strong><br/><sub>React-compatible adapter</sub></td>
+<td align="center"><strong>Qwik</strong><br/><sub>Framework-agnostic core</sub></td>
+<td align="center"><strong>Lit</strong><br/><sub>Framework-agnostic core</sub></td>
+</tr>
+<tr>
+<td align="center"><strong>Astro</strong><br/><sub>Islands + SSR helpers</sub></td>
+<td align="center"><strong>Next.js</strong><br/><sub>App / Pages Router SSR</sub></td>
+<td align="center"><strong>Nuxt</strong><br/><sub>Vue + server rendering</sub></td>
+<td align="center"><strong>SvelteKit</strong><br/><sub>Svelte + server rendering</sub></td>
+</tr>
+<tr>
+<td align="center" colspan="4"><strong>Remix</strong><br/><sub>Server rendering</sub></td>
+</tr>
+</table>
+
+<sub>React, Vue, and Svelte ship dedicated entry points today. Everything else plugs into the same framework-agnostic core, SSR utilities, or React-compatible adapter surface.</sub>
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 
@@ -193,6 +227,21 @@ Vanilla core works in Vue, Svelte, Solid, or plain JS. React adapter is opt-in v
 </td>
 </tr>
 </table>
+
+<p align="center"><sub>──────────── ✦ ────────────</sub></p>
+
+## What's Included
+
+One toolkit, split into focused modules you can adopt independently.
+
+| Module | Includes |
+| :--- | :--- |
+| **Core** | breakpoints, viewport, media queries, container queries, preferences, pointer, DPR, safe area |
+| **Styles** | fluid clamp, responsive grid, responsive stack |
+| **Motion** | spring physics, responsive transitions, reduce-motion |
+| **A11y** | touch targets, font sizing, line length, audit |
+| **Images** | srcset generation, art direction, optimal widths |
+| **Debug** | devtools overlay, perf marks, logging |
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 
@@ -463,6 +512,19 @@ observePreference("reducedMotion", (on) => {
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 
+## Ecosystem
+
+fluidity-ts is built to slot into the rest of your design-system toolchain.
+
+| Integration | What it gives you |
+| :--- | :--- |
+| **Panda CSS plugin** | Bring typed breakpoints and responsive primitives into recipe-driven styling workflows. |
+| **Vanilla Extract integration** | Use `responsiveStyle()` and fluid helpers inside `.css.ts` files without adding runtime coupling. |
+| **Tailwind plugin** | Mirror a single breakpoint source of truth into Tailwind `screens` with `fluidity-ts/tailwind`. |
+| **Storybook addon** | Inspect breakpoints, preferences, and viewport state while building and reviewing components. |
+
+<p align="center"><sub>──────────── ✦ ────────────</sub></p>
+
 ## SSR Integration
 
 <details open>
@@ -725,6 +787,33 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 | `tailwindPreset(system)` | `fn` | Tailwind preset that mirrors your breakpoints as `screens` |
 
 </details>
+
+<p align="center"><sub>──────────── ✦ ────────────</sub></p>
+
+## Used By
+
+Projects and design systems using fluidity-ts will be featured here soon. [**Add your project!**](https://github.com/Fluidiety/fluidity-ts/issues/new?title=Add%20my%20project%20to%20the%20Used%20By%20section&body=Project%20name%3A%0ALink%3A%0AHow%20you%20use%20fluidity-ts%3A)
+
+<p align="center"><sub>──────────── ✦ ────────────</sub></p>
+
+## Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Fluidiety/fluidity-ts&type=Date)](https://star-history.com/#Fluidiety/fluidity-ts&Date)
+
+</div>
+
+<p align="center"><sub>──────────── ✦ ────────────</sub></p>
+
+## Sponsors
+
+<div align="center">
+  <strong>Help fund SSR-safe responsive tooling for the TypeScript ecosystem.</strong>
+  <br/>
+  <br/>
+  <a href="https://github.com/sponsors/Fluidiety"><strong>Become a sponsor on GitHub Sponsors</strong></a>
+</div>
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 

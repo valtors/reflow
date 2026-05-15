@@ -77,6 +77,16 @@
         "default": "./dist/react/index.cjs"
       }
     },
+    "./preact": {
+      "import": {
+        "types": "./dist/preact/index.d.ts",
+        "default": "./dist/preact/index.js"
+      },
+      "require": {
+        "types": "./dist/preact/index.d.cts",
+        "default": "./dist/preact/index.cjs"
+      }
+    },
     "./styles": {
       "import": {
         "types": "./dist/styles/index.d.ts",
@@ -137,6 +147,46 @@
         "default": "./dist/svelte/index.cjs"
       }
     },
+    "./solid": {
+      "import": {
+        "types": "./dist/solid/index.d.ts",
+        "default": "./dist/solid/index.js"
+      },
+      "require": {
+        "types": "./dist/solid/index.d.cts",
+        "default": "./dist/solid/index.cjs"
+      }
+    },
+    "./angular": {
+      "import": {
+        "types": "./dist/angular/index.d.ts",
+        "default": "./dist/angular/index.js"
+      },
+      "require": {
+        "types": "./dist/angular/index.d.cts",
+        "default": "./dist/angular/index.cjs"
+      }
+    },
+    "./lit": {
+      "import": {
+        "types": "./dist/lit/index.d.ts",
+        "default": "./dist/lit/index.js"
+      },
+      "require": {
+        "types": "./dist/lit/index.d.cts",
+        "default": "./dist/lit/index.cjs"
+      }
+    },
+    "./qwik": {
+      "import": {
+        "types": "./dist/qwik/index.d.ts",
+        "default": "./dist/qwik/index.js"
+      },
+      "require": {
+        "types": "./dist/qwik/index.d.cts",
+        "default": "./dist/qwik/index.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -163,12 +213,37 @@
     "release": "changeset publish"
   },
   "peerDependencies": {
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0",
+    "lit": ">=3.0.0",
+    "preact": ">=10.0.0",
     "react": ">=17.0.0",
+    "rxjs": ">=7.8.0",
+    "solid-js": ">=1.8.0",
     "svelte": ">=4.0.0",
-    "vue": ">=3.3.0"
+    "vue": ">=3.3.0",
+    "@builder.io/qwik": ">=1.0.0"
   },
   "peerDependenciesMeta": {
+    "@angular/common": {
+      "optional": true
+    },
+    "@angular/core": {
+      "optional": true
+    },
+    "lit": {
+      "optional": true
+    },
+    "preact": {
+      "optional": true
+    },
     "react": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    },
+    "solid-js": {
       "optional": true
     },
     "vue": {
@@ -176,11 +251,17 @@
     },
     "svelte": {
       "optional": true
+    },
+    "@builder.io/qwik": {
+      "optional": true
     }
   },
   "devDependencies": {
+    "@angular/common": "^19.2.15",
+    "@angular/core": "^19.2.15",
     "@arethetypeswrong/cli": "^0.17.0",
     "@biomejs/biome": "^1.9.0",
+    "@builder.io/qwik": "1.17.2",
     "@changesets/cli": "^2.27.0",
     "@size-limit/preset-small-lib": "^11.1.0",
     "@testing-library/react": "^16.0.0",
@@ -188,10 +269,14 @@
     "@types/react-dom": "^18.3.0",
     "@vitest/coverage-v8": "^2.1.0",
     "happy-dom": "^15.0.0",
+    "lit": "^3.2.1",
+    "preact": "^10.26.5",
     "publint": "^0.2.10",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
+    "rxjs": "^7.8.2",
     "size-limit": "^11.1.0",
+    "solid-js": "^1.9.9",
     "svelte": "^5.55.5",
     "tsup": "^8.3.0",
     "typescript": "^5.6.0",

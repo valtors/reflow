@@ -7,4 +7,7 @@ coverage
 .idea
 # CI builds shouldn't try to compile the example
 examples/**/node_modules
-examples/**/dist
+examples/**/distpanda/
+storybook/
+type-fest/
+vanilla-extract/

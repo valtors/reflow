@@ -1,0 +1,155 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    font-family: Inter, system-ui, sans-serif;
+    background: #09111f;
+    color: #f8fafc;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top, rgba(59, 130, 246, 0.18), transparent 32%),
+      linear-gradient(180deg, #09111f 0%, #020617 100%);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .page-shell {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 4rem 0 5rem;
+  }
+
+  .hero {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1,
+  .island-card h2 {
+    margin: 0;
+  }
+
+  .hero p,
+  .island-card p {
+    margin: 0;
+    color: #cbd5e1;
+    line-height: 1.6;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.78rem;
+    color: #7dd3fc;
+  }
+
+  .summary-grid,
+  .island-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    margin: 1.5rem 0 0;
+  }
+
+  .summary-card,
+  .island-card {
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.78);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.35);
+  }
+
+  .summary-card {
+    padding: 1rem 1.1rem;
+  }
+
+  .summary-card strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 1.05rem;
+  }
+
+  .island-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .island-card {
+    padding: 1.25rem;
+  }
+
+  .island-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.9rem;
+  }
+
+  .badge {
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    background: rgba(125, 211, 252, 0.16);
+    color: #bae6fd;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .check-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+    color: #e2e8f0;
+    font-size: 0.95rem;
+  }
+
+  .footer-note {
+    margin-top: 1.25rem;
+    color: #94a3b8;
+    font-size: 0.95rem;
+  }
+</style>
