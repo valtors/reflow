@@ -24,6 +24,8 @@
   <a href="./LICENSE"><img alt="license" src="https://img.shields.io/npm/l/fluidity-ts?style=flat-square&color=0F172A"></a>
 </p>
 
+> 🌐 **[fluidity-ts.vercel.app](https://fluidity-ts.vercel.app)** — See the full interactive showcase
+
 <p>
   <a href="https://fluidiety.github.io/fluidity-ts-demo/"><strong>Live Demo</strong></a>
   &nbsp;·&nbsp;
