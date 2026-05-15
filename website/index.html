@@ -3,25 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fluidity-ts — The Responsive Toolkit Your Framework Deserves</title>
+    <title>fluidity-ts — Typed responsive APIs for modern UI stacks</title>
     <meta
       name="description"
-      content="fluidity-ts is the SSR-safe responsive toolkit for TypeScript teams who want typed breakpoints, fluid scaling, container queries, and framework-friendly APIs that make polished interfaces feel effortless." />
+      content="Typed breakpoints, fluid clamp utilities, container queries, and SSR-safe adapters across 8 frameworks — all with 0 runtime deps." />
     <meta name="theme-color" content="#0A0A0A" />
     <link rel="canonical" href="https://github.com/Fluidiety/fluidity-ts" />
 
-    <meta property="og:title" content="fluidity-ts — The Responsive Toolkit Your Framework Deserves" />
+    <meta property="og:title" content="fluidity-ts — Typed responsive APIs for modern UI stacks" />
     <meta
       property="og:description"
-      content="fluidity-ts is the SSR-safe responsive toolkit for TypeScript teams who want typed breakpoints, fluid scaling, container queries, and framework-friendly APIs that make polished interfaces feel effortless." />
+      content="Typed breakpoints, fluid clamp utilities, container queries, and SSR-safe adapters across 8 frameworks — all with 0 runtime deps." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://github.com/Fluidiety/fluidity-ts" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="fluidity-ts — The Responsive Toolkit Your Framework Deserves" />
+    <meta name="twitter:title" content="fluidity-ts — Typed responsive APIs for modern UI stacks" />
     <meta
       name="twitter:description"
-      content="fluidity-ts is the SSR-safe responsive toolkit for TypeScript teams who want typed breakpoints, fluid scaling, container queries, and framework-friendly APIs that make polished interfaces feel effortless." />
+      content="Typed breakpoints, fluid clamp utilities, container queries, and SSR-safe adapters across 8 frameworks — all with 0 runtime deps." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,7 +70,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     "name": "fluidity-ts",
-    "description": "The complete SSR-safe, zero-dependency responsive toolkit for TypeScript",
+    "description": "Typed responsive APIs for TypeScript: breakpoints, fluid clamp utilities, container queries, and SSR-safe framework adapters.",
     "url": "https://github.com/Fluidiety/fluidity-ts",
     "codeRepository": "https://github.com/Fluidiety/fluidity-ts",
     "programmingLanguage": "TypeScript",
@@ -103,6 +103,11 @@
           --shadow-orange: 0 18px 50px rgba(249, 115, 22, 0.2);
           --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
           --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+          --z-cursor-glow: 0;
+          --z-noise-overlay: 30;
+          --z-header: 50;
+          --z-mobile-menu: 60;
+          --z-scroll-progress: 70;
         }
 
         *,
@@ -174,17 +179,16 @@
         .cursor-glow {
           position: fixed;
           inset: 0;
-          z-index: 0;
+          z-index: var(--z-cursor-glow);
           pointer-events: none;
           background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgb(34 211 238 / 0.06), transparent 65%);
-          transition: background-position 0.12s linear;
-          will-change: transform, opacity;
+          will-change: opacity;
         }
 
         .noise-overlay {
           position: fixed;
           inset: 0;
-          z-index: 9999;
+          z-index: var(--z-noise-overlay);
           pointer-events: none;
           opacity: 0.025;
           mix-blend-mode: screen;
@@ -193,12 +197,13 @@
 
         .scroll-progress {
           position: fixed;
-          top: 0;
-          left: 0;
-          width: var(--scroll-progress, 0%);
+          inset: 0 0 auto 0;
+          width: 100%;
           height: 2px;
-          z-index: 9999;
+          z-index: var(--z-scroll-progress);
+          transform: scaleX(var(--scroll-progress-scale, 0));
           transform-origin: left center;
+          will-change: transform;
           background: linear-gradient(90deg, var(--teal), var(--cyan));
           box-shadow: 0 0 18px rgb(34 211 238 / 0.45);
         }
@@ -368,36 +373,6 @@
           text-transform: uppercase;
         }
 
-        .bp-line:nth-child(2) {
-          left: 14%;
-          height: 38%;
-          animation-delay: 0s;
-        }
-
-        .bp-line:nth-child(3) {
-          left: 32%;
-          height: 52%;
-          animation-delay: 0.6s;
-        }
-
-        .bp-line:nth-child(4) {
-          left: 50%;
-          height: 68%;
-          animation-delay: 1.2s;
-        }
-
-        .bp-line:nth-child(5) {
-          left: 68%;
-          height: 82%;
-          animation-delay: 1.8s;
-        }
-
-        .bp-line:nth-child(6) {
-          left: 86%;
-          height: 92%;
-          animation-delay: 2.4s;
-        }
-
         .bp-wave {
           position: absolute;
           left: -10%;
@@ -476,18 +451,25 @@
         }
 
         .faq-content {
-          max-height: 0;
-          overflow: hidden;
+          display: none;
+        }
+
+        .faq-content > * {
           opacity: 0;
+          transform: translateY(-0.35rem);
           transition:
-            max-height 0.45s var(--ease-premium),
             opacity 0.3s ease-out,
-            padding-top 0.3s ease-out;
+            transform 0.3s var(--ease-premium);
+          will-change: opacity, transform;
         }
 
         .faq-item.open .faq-content {
-          max-height: 220px;
+          display: block;
+        }
+
+        .faq-item.open .faq-content > * {
           opacity: 1;
+          transform: translateY(0);
         }
 
         .faq-item.open {
@@ -502,6 +484,10 @@
 
         .faq-icon {
           transition: transform 0.28s var(--ease-premium), color 0.28s ease-out;
+        }
+
+        .mobile-menu-link {
+          will-change: transform, color;
         }
 
         .tab-button.active {
@@ -645,6 +631,10 @@
         }
 
         @media (max-width: 768px) {
+          .cursor-glow {
+            display: none;
+          }
+
           .bp-wave {
             top: 48%;
             left: -16%;
@@ -667,25 +657,6 @@
             top: 18px;
             left: 14%;
             right: 14%;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          html {
-            scroll-behavior: auto;
-          }
-
-          .reveal,
-          .marquee-track,
-          .scanline,
-          .bp-line,
-          .bp-wave,
-          .float-orb,
-          .bar::after,
-          .gradient-border::before,
-          .shimmer-text {
-            animation: none !important;
-            transition: none !important;
           }
         }
 
@@ -761,6 +732,10 @@
             scroll-behavior: auto !important;
           }
 
+          .cursor-glow {
+            display: none;
+          }
+
           *,
           *::before,
           *::after {
@@ -790,8 +765,12 @@
     }
 
     .faq-content {
-      max-height: none !important;
+      display: block !important;
+    }
+
+    .faq-content > * {
       opacity: 1 !important;
+      transform: none !important;
     }
   </style>
 </noscript>
@@ -806,7 +785,7 @@
     <div class="noise-overlay"></div>
     <div class="scroll-progress"></div>
 
-    <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-xl">
+    <header class="sticky top-0 z-[var(--z-header)] border-b border-white/10 bg-black/70 backdrop-blur-xl">
       <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <a href="#top" class="group inline-flex items-center gap-3" aria-label="Back to top">
           <span class="flex h-11 w-11 items-center justify-center rounded-[1.5rem] border border-cyan/30 bg-gradient-to-br from-cyan/20 via-cyan/10 to-teal/20 text-xl font-semibold text-cyan shadow-[0_0_28px_rgba(34,211,238,0.35)] ring-1 ring-inset ring-white/10 transition duration-300 group-hover:scale-[1.02] group-hover:shadow-[0_0_36px_rgba(34,211,238,0.45)]">f</span>
@@ -820,7 +799,7 @@
           <a href="#features" class="text-sm font-medium text-mist transition hover:text-white">Features</a>
           <a href="#frameworks" class="text-sm font-medium text-mist transition hover:text-white">Frameworks</a>
           <a href="#benchmarks" class="text-sm font-medium text-mist transition hover:text-white">Benchmarks</a>
-          <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="text-sm font-medium text-mist transition hover:text-white">Docs</a>
+          <a href="https://github.com/Fluidiety/fluidity-ts#readme" target="_blank" rel="noreferrer" class="text-sm font-medium text-mist transition hover:text-white">Docs</a>
         </nav>
 
         <div class="flex items-center gap-3">
@@ -843,7 +822,7 @@
         </div>
       </div>
 
-      <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[60] flex min-h-screen items-center justify-center bg-black/80 px-6 opacity-0 backdrop-blur-2xl transition duration-300 md:hidden">
+      <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[var(--z-mobile-menu)] flex min-h-screen items-center justify-center bg-black/80 px-6 opacity-0 backdrop-blur-2xl transition duration-300 md:hidden">
         <button
           id="mobile-menu-close"
           type="button"
@@ -862,7 +841,7 @@
           <a href="#features" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Features</a>
           <a href="#frameworks" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Frameworks</a>
           <a href="#benchmarks" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Benchmarks</a>
-          <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Docs</a>
+          <a href="https://github.com/Fluidiety/fluidity-ts#readme" target="_blank" rel="noreferrer" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Docs</a>
           <a href="#get-started" data-magnetic class="mobile-menu-link mt-4 inline-flex rounded-full border border-flame/30 bg-flame px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_30px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fb923c]">Get Started</a>
         </div>
       </div>
@@ -884,8 +863,8 @@
                 </div>
 
                 <h1 class="max-w-5xl text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-7xl">
-                  <span class="block">The Responsive Toolkit</span>
-                  <span class="shimmer-text block bg-gradient-to-r from-white via-cyan to-teal bg-clip-text text-transparent">Your Framework Deserves</span>
+                  <span class="block">Typed responsive APIs</span>
+                  <span class="shimmer-text block bg-gradient-to-r from-white via-cyan to-teal bg-clip-text text-transparent">for modern UI stacks</span>
                 </h1>
 
                 <p id="typewriter-text" class="mt-6 max-w-2xl text-lg font-medium leading-8 text-mist sm:text-xl">
@@ -893,7 +872,7 @@
                 </p>
 
                 <p class="mt-4 max-w-2xl text-base leading-7 text-mist/90 sm:text-lg">
-                  Replace the duct-taped pile of media hooks, fluid type helpers, and hydration hacks with one premium toolkit for modern responsive systems.
+                  Replace the pile of media hooks, fluid type helpers, and hydration fixes with one typed toolkit for breakpoints, container queries, and fluid sizing.
                 </p>
 
                 <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-stretch">
@@ -919,7 +898,7 @@
                     data-magnetic
                     class="inline-flex items-center justify-center rounded-[1.5rem] border border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.28)] transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:bg-white/10"
                   >
-                    View on GitHub
+                    View repository
                   </a>
                 </div>
 
@@ -995,7 +974,7 @@
         <div class="reveal">
           <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Works with</p>
           <h2 class="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
-            One responsive brain. Every modern stack.
+            One responsive model. Plenty of ways to ship.
           </h2>
         </div>
 
@@ -1039,25 +1018,26 @@
 
           <div class="divider"></div>
 
-    <section class="reveal py-20">
+    <section class="reveal py-20" aria-labelledby="social-proof-heading">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p class="reveal text-center text-sm uppercase tracking-[0.35em] text-mist">Trusted by developers building with</p>
+        <h2 id="social-proof-heading" class="sr-only">Built for modern frontend teams</h2>
+        <p class="reveal text-center text-sm uppercase tracking-[0.35em] text-mist">Built for modern frontend teams</p>
 
         <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 text-center">
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Vercel</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Netlify</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Shopify</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Linear</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Supabase</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Stripe</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Figma</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">SSR apps</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Design systems</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Component libraries</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Dashboards</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Marketing sites</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Docs sites</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">E-commerce</span>
         </div>
 
         <div class="reveal mx-auto mt-10 max-w-2xl border-l-2 border-cyan/30 pl-6">
           <blockquote class="reveal text-left italic text-mist">
-            “Finally, one responsive API that works the same whether I'm in Next.js or Astro. The TypeScript inference alone sold our team.”
+            Adopt it one layer at a time — replace a media hook today, then keep the same breakpoint system as the product grows.
           </blockquote>
-          <p class="reveal mt-4 text-left text-sm text-mist/80">— Engineering Lead, Series B Startup</p>
+          <p class="reveal mt-4 text-left text-sm text-mist/80">One responsive model across apps, design systems, and content surfaces.</p>
         </div>
       </div>
     </section>
@@ -1068,7 +1048,7 @@
       <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[.9fr_1.1fr] lg:px-8">
         <div class="reveal max-w-2xl">
           <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">The problem</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">5 Packages. 22 KB. Zero Type Safety.</h2>
+          <h2 class="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">Responsive glue code adds up fast.</h2>
           <p class="mt-6 text-lg leading-8 text-mist">
             Most responsive stacks are still stitched together from unrelated hooks, brittle viewport listeners, and hand-rolled CSS helpers. You pay for the same signal multiple times, fight hydration bugs on first paint, and end up with responsive logic scattered across components, styles, and runtime guards.
           </p>
@@ -1081,7 +1061,7 @@
               You lose literal breakpoint inference, ship overlapping logic, and still end up guarding everything with <span class="font-['JetBrains_Mono'] text-cyan">typeof window</span>.
             </article>
             <article class="noise rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-5 text-white shadow-glow">
-              fluidity-ts unifies breakpoints, clamp generation, container queries, prefers-* APIs, and SSR-first rendering into one coherent toolkit.
+              fluidity-ts brings breakpoints, clamp utilities, container helpers, prefers-* APIs, and SSR-safe rendering into one coherent toolkit.
             </article>
           </div>
         </div>
@@ -1089,7 +1069,7 @@
         <div class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" data-tilt>
       <div class="border-b border-white/10 px-6 py-5">
         <h3 class="text-lg font-semibold text-white">Responsive stack comparison</h3>
-        <p class="mt-1 text-sm text-mist">What shipping responsive UI usually looks like vs what it should feel like.</p>
+        <p class="mt-1 text-sm text-mist">A fair look at common responsive trade-offs.</p>
       </div>
 
       <div class="overflow-x-auto">
@@ -1106,45 +1086,45 @@
           <tbody class="divide-y divide-white/10">
             <tr>
               <td class="px-6 py-4 text-white/90">SSR-safe first paint</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Zero mismatch</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client guesswork</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌ Client-only</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Patchwork</span></td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Server snapshot + hints</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Manual SSR setup</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client-derived</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client-derived</span></td>
             </tr>
             <tr>
               <td class="px-6 py-4 text-white/90">Typed breakpoints</td>
               <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Literal inference</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Not built in</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Not built in</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Not built in</span></td>
             </tr>
             <tr>
               <td class="px-6 py-4 text-white/90">Fluid typography helpers</td>
               <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ fluidClamp()</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
             </tr>
             <tr>
               <td class="px-6 py-4 text-white/90">Container query utilities</td>
               <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Built in</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
             </tr>
             <tr>
-              <td class="px-6 py-4 text-white/90">Runtime dependencies</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 0</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Extra stack</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Hook soup</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Kitchen sink</span></td>
+              <td class="px-6 py-4 text-white/90">Responsive scope</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ One toolkit</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Media queries</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ General hooks</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ Broad hook set</span></td>
             </tr>
             <tr>
               <td class="px-6 py-4 text-white/90">Framework coverage</td>
               <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 8 frameworks</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
-              <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ React only</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ React only</span></td>
+              <td class="px-4 py-4"><span class="text-mist">➖ React only</span></td>
             </tr>
           </tbody>
         </table>
@@ -1159,7 +1139,7 @@
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal max-w-3xl">
           <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Features</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Build Real Responsive UIs</h2>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Everything responsive. One typed API.</h2>
           <p class="mt-5 text-lg leading-8 text-mist">Everything your team needs in one coherent API for breakpoints, fluid scales, preferences, container logic, and SSR-safe rendering.</p>
         </div>
 
@@ -1265,10 +1245,11 @@
 
           <div class="divider"></div>
 
-    <section class="reveal relative overflow-hidden py-24">
+    <section class="reveal relative overflow-hidden py-24" aria-labelledby="stats-heading">
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.05),transparent_72%)]"></div>
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan/25 to-transparent"></div>
       <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 id="stats-heading" class="sr-only">fluidity-ts by the numbers</h2>
         <div class="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
           <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 0ms">
             <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
@@ -1327,7 +1308,7 @@
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal max-w-3xl">
           <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Framework support</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">One Library. Every Framework.</h2>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">One toolkit. Eight framework adapters.</h2>
           <p class="mt-5 text-lg leading-8 text-mist">From hooks and composables to signals, stores, and controllers, fluidity-ts feels native in every modern UI stack.</p>
         </div>
 
@@ -1349,9 +1330,9 @@
               <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Composable</span>
             </div>
             <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-    <span class="code-keyword">const</span> state = <span class="code-fn">reactive</span>({ desktop: bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>) })
-
-    <span class="code-keyword">return</span> { state }</code></pre>
+ 
+    bp.active.value
+    bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)</code></pre>
           </article>
 
           <article data-tilt class="reveal rounded-[2rem] border border-orange-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
@@ -1361,7 +1342,7 @@
             </div>
             <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">breakpoint</span>()
 
-    {#if $bp === <span class="code-string">'lg'</span>}
+    {#if $bp.active === <span class="code-string">'lg'</span>}
       <span class="code-value">&lt;Sidebar /&gt;</span>
     {/if}</code></pre>
           </article>
@@ -1373,7 +1354,7 @@
             </div>
             <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
 
-    &lt;<span class="code-type">Show</span> when={bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)()}&gt;
+    &lt;<span class="code-type">Show</span> when={bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)}&gt;
       <span class="code-value">&lt;Sidebar /&gt;</span>
     &lt;/<span class="code-type">Show</span>&gt;</code></pre>
           </article>
@@ -1385,8 +1366,7 @@
             </div>
             <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">readonly</span> bp = <span class="code-fn">breakpointSignal</span>()
     <span class="code-keyword">readonly</span> desktop = <span class="code-keyword">this</span>.bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
-
-    <span class="code-keyword">protected</span> sidebar = <span class="code-value">true</span></code></pre>
+    <span class="code-keyword">readonly</span> compact = <span class="code-keyword">this</span>.bp.<span class="code-fn">below</span>(<span class="code-string">'md'</span>)</code></pre>
           </article>
 
           <article data-tilt class="reveal rounded-[2rem] border border-amber-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 400ms">
@@ -1416,7 +1396,7 @@
         <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Code example</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Before: dependency soup. After: one cohesive API.</h2>
+            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Before: glued together. After: one cohesive API.</h2>
           </div>
           <p class="max-w-xl text-mist">The point is not just fewer bytes. It is fewer ideas to juggle.</p>
         </div>
@@ -1428,7 +1408,7 @@
                 <p class="text-xs uppercase tracking-[0.3em] text-red-300">Before</p>
                 <h3 class="mt-2 text-2xl font-bold">Three packages. Four mental models.</h3>
               </div>
-              <span class="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1 text-xs text-red-200">fragile</span>
+              <span class="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-red-200">Fragile</span>
             </div>
 
             <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { useMediaQuery } <span class="code-keyword">from</span> <span class="code-string">'react-responsive'</span></span><span class="code-line"><span class="code-keyword">import</span> { useWindowSize } <span class="code-keyword">from</span> <span class="code-string">'react-use'</span></span><span class="code-line"><span class="code-keyword">import</span> { useDebounce } <span class="code-keyword">from</span> <span class="code-string">'usehooks-ts'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> isDesktop = <span class="code-fn">useMediaQuery</span>({ minWidth: <span class="code-value">1024</span> })</span><span class="code-line"><span class="code-keyword">const</span> { width = <span class="code-value">0</span> } = <span class="code-fn">useWindowSize</span>()</span><span class="code-line"><span class="code-keyword">const</span> stableWidth = <span class="code-fn">useDebounce</span>(width, <span class="code-value">120</span>)</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> debounce = (fn, ms) =&gt; {</span><span class="code-line">  <span class="code-keyword">let</span> id</span><span class="code-line">  <span class="code-keyword">return</span> (...args) =&gt; {</span><span class="code-line">    clearTimeout(id)</span><span class="code-line">    id = setTimeout(() =&gt; <span class="code-fn">fn</span>(...args), ms)</span><span class="code-line">  }</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">if</span> (<span class="code-keyword">typeof</span> window === <span class="code-string">'undefined'</span>) <span class="code-keyword">return</span> <span class="code-value">null</span></span><span class="code-line"><span class="code-keyword">const</span> columns = stableWidth &gt; <span class="code-value">900</span> ? <span class="code-value">4</span> : isDesktop ? <span class="code-value">3</span> : <span class="code-value">1</span></span></code></pre>
@@ -1438,9 +1418,9 @@
             <div class="mb-5 flex items-center justify-between gap-4">
               <div>
                 <p class="text-xs uppercase tracking-[0.3em] text-cyan">After</p>
-                <h3 class="mt-2 text-2xl font-bold">fluidity-ts owns the whole problem.</h3>
+                <h3 class="mt-2 text-2xl font-bold">fluidity-ts handles the whole responsive layer.</h3>
               </div>
-              <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">clean</span>
+              <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan">Clean</span>
             </div>
 
             <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span></span><span class="code-line"><span class="code-keyword">import</span> { fluidClamp } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">function</span> <span class="code-fn">Dashboard</span>() {</span><span class="code-line">  <span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()</span><span class="code-line">  <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })</span><span class="code-line">  <span class="code-keyword">const</span> titleSize = <span class="code-fn">fluidClamp</span>({ minPx: <span class="code-value">18</span>, maxPx: <span class="code-value">28</span> })</span><span class="code-line"></span><span class="code-line">  <span class="code-keyword">return</span> &lt;Grid columns={columns} dense={bp.below(<span class="code-string">'lg'</span>)} style={{ fontSize: titleSize }} /&gt;</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">default</span> <span class="code-keyword">function</span> <span class="code-fn">App</span>() {</span><span class="code-line">  <span class="code-keyword">return</span> (</span><span class="code-line">    &lt;ResponsiveProvider serverWidth={<span class="code-value">1024</span>}&gt;</span><span class="code-line">      &lt;Dashboard /&gt;</span><span class="code-line">    &lt;/ResponsiveProvider&gt;</span><span class="code-line">  )</span><span class="code-line">}</span></code></pre>
@@ -1455,7 +1435,7 @@
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="reveal max-w-3xl" style="--delay: 0ms">
           <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Benchmarks</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">State Of The Art Performance</h2>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Small enough to stay out of the way.</h2>
           <p class="mt-5 text-lg leading-8 text-mist">A smaller bundle is only impressive if it still solves the real responsive workload. fluidity-ts stays lean while covering far more than viewport-only helpers.</p>
         </div>
 
@@ -1475,26 +1455,26 @@
                   <td class="px-6 py-5">
                     <div class="flex flex-wrap items-center gap-3">
                       <span class="font-semibold text-white">fluidity-ts</span>
-                      <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan">Winner</span>
+                      <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan">Core</span>
                     </div>
                   </td>
                   <td class="px-6 py-5 font-['JetBrains_Mono'] text-cyan">2.4 KB</td>
-                  <td class="px-6 py-5 text-mist">Core breakpoints, media, preferences, container queries</td>
+                  <td class="px-6 py-5 text-mist">Breakpoints, media, preferences, and container queries</td>
                 </tr>
                 <tr>
                   <td class="px-6 py-4 text-white">react-responsive</td>
                   <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">8.7 KB</td>
-                  <td class="px-6 py-4 text-mist">Viewport hooks only</td>
+                  <td class="px-6 py-4 text-mist">React-only media queries</td>
                 </tr>
                 <tr>
                   <td class="px-6 py-4 text-white">usehooks-ts</td>
                   <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">12.1 KB</td>
-                  <td class="px-6 py-4 text-mist">Multiple hooks to combine</td>
+                  <td class="px-6 py-4 text-mist">General hook collection</td>
                 </tr>
                 <tr>
                   <td class="px-6 py-4 text-white">react-use</td>
                   <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">19.4 KB</td>
-                  <td class="px-6 py-4 text-mist">Kitchen-sink utility grab bag</td>
+                  <td class="px-6 py-4 text-mist">Broad utility hook set</td>
                 </tr>
               </tbody>
             </table>
@@ -1561,12 +1541,13 @@
               <p class="mt-4 text-mist">Read viewport hints during server rendering, choose the right breakpoint before the first paint, and hydrate into the same layout without flicker.</p>
             </div>
             <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { headers } <span class="code-keyword">from</span> <span class="code-string">'next/headers'</span>
+    <span class="code-keyword">import</span> { ResponsiveProvider } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span>
     <span class="code-keyword">import</span> { resolveBreakpointFromHints } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/server'</span>
 
     <span class="code-keyword">const</span> requestHeaders = <span class="code-keyword">await</span> <span class="code-fn">headers</span>()
-    <span class="code-keyword">const</span> { width, breakpoint } = <span class="code-fn">resolveBreakpointFromHints</span>(requestHeaders)
+    <span class="code-keyword">const</span> result = <span class="code-fn">resolveBreakpointFromHints</span>(requestHeaders)
 
-    <span class="code-keyword">return</span> &lt;ResponsiveProvider serverWidth={width} initialBreakpoint={breakpoint}&gt;...&lt;/ResponsiveProvider&gt;</code></pre>
+    <span class="code-keyword">return</span> &lt;ResponsiveProvider serverWidth={result?.width}&gt;...&lt;/ResponsiveProvider&gt;</code></pre>
           </div>
 
           <div id="panel-design" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="design" role="tabpanel" aria-labelledby="tab-design" hidden>
@@ -1578,7 +1559,7 @@
 
     <span class="code-keyword">export</span> <span class="code-keyword">const</span> typeScale = <span class="code-fn">fluidScale</span>([
       <span class="code-string">'body'</span>, <span class="code-string">'title'</span>, <span class="code-string">'display'</span>
-    ], { minPx: <span class="code-value">16</span>, maxPx: <span class="code-value">72</span> })
+    ], { minPx: <span class="code-value">16</span>, ratio: <span class="code-value">1.2</span>, maxRatio: <span class="code-value">1.35</span> })
 
     <span class="code-keyword">export</span> <span class="code-keyword">const</span> stack = <span class="code-fn">responsiveStyle</span>(system, <span class="code-string">'gap'</span>, {
       xs: <span class="code-string">'1rem'</span>,
@@ -1593,12 +1574,12 @@
             </div>
             <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { containerQuery, defineContainer } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
 
-    <span class="code-keyword">export</span> <span class="code-keyword">const</span> cardRoot = {
-      ...<span class="code-fn">defineContainer</span>(<span class="code-string">'card'</span>),
-      ...<span class="code-fn">containerQuery</span>(<span class="code-string">'card'</span>, { minWidth: <span class="code-value">420</span> }, {
-        gridTemplateColumns: <span class="code-string">'1.4fr 1fr'</span>
-      })
-    }</code></pre>
+    <span class="code-keyword">export</span> <span class="code-keyword">const</span> cardCss = <span class="code-string">`
+      .card { ${defineContainer('card')} }
+      ${containerQuery({ name: 'card', minPx: 420 })} {
+        .card__body { grid-template-columns: 1.4fr 1fr; }
+      }
+    `</span></code></pre>
           </div>
 
           <div id="panel-dashboards" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="dashboards" role="tabpanel" aria-labelledby="tab-dashboards" hidden>
@@ -1608,7 +1589,7 @@
             </div>
             <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span>
 
-    <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })
+    <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> }) ?? <span class="code-value">1</span>
 
     &lt;DataGrid
       columns={columns}
@@ -1626,7 +1607,7 @@
       <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div class="reveal text-center">
           <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">FAQ</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Questions teams ask before they rip out the old stack.</h2>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Questions teams ask before they switch.</h2>
         </div>
 
         <div class="mt-12 space-y-4">
@@ -1636,7 +1617,7 @@
               <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
             </button>
             <div class="faq-content" id="faq-content-1" role="region" aria-labelledby="faq-button-1" aria-hidden="true">
-              <p class="pt-4 text-mist">Yes. fluidity-ts uses server snapshots and viewport hints so the first render matches hydration on the client.</p>
+              <p class="pt-4 text-mist">Yes. The SSR helpers let you seed the first render with a server width guess so hydration stays aligned.</p>
             </div>
           </div>
 
@@ -1666,7 +1647,7 @@
               <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
             </button>
             <div class="faq-content" id="faq-content-4" role="region" aria-labelledby="faq-button-4" aria-hidden="true">
-              <p class="pt-4 text-mist">That’s the point. Literal type inference stays preserved across adapters, helpers, and framework integrations.</p>
+              <p class="pt-4 text-mist">Yes. Breakpoint keys stay literal across the core system and framework adapters, so helpers like useBreakpoint(), responsiveStyle(), and useResponsiveValue() stay typed end to end.</p>
             </div>
           </div>
 
@@ -1676,7 +1657,7 @@
               <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
             </button>
             <div class="faq-content" id="faq-content-5" role="region" aria-labelledby="faq-button-5" aria-hidden="true">
-              <p class="pt-4 text-mist">Yes. fluidity-ts complements Tailwind — use the Tailwind plugin for responsive tokens, or run both independently.</p>
+              <p class="pt-4 text-mist">Yes. Use tailwindPreset() to keep Tailwind screens aligned with the same breakpoint system, or run fluidity-ts alongside Tailwind without coupling them.</p>
             </div>
           </div>
         </div>
@@ -1691,8 +1672,8 @@
           <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Get started</p>
-              <h2 class="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Start Building Responsive UIs Today</h2>
-              <p class="mt-5 max-w-2xl text-lg leading-8 text-mist">Ship the right layout on the first paint, keep the bundle tiny, and stop wiring five packages together to solve one problem.</p>
+              <h2 class="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Install it. Replace the first hook today.</h2>
+              <p class="mt-5 max-w-2xl text-lg leading-8 text-mist">Ship the right layout on the first paint, keep the bundle tiny, and stop wiring multiple packages together to solve one problem.</p>
               <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <button
                   type="button"
@@ -1711,16 +1692,16 @@
                   data-magnetic
                   class="inline-flex items-center justify-center rounded-[1.5rem] border border-flame/30 bg-flame px-5 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_16px_40px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-1 hover:bg-[#fb923c]"
                 >
-                  Open npm
+                  View on npm
                 </a>
               </div>
             </div>
             <div class="space-y-3 lg:pb-1">
               <a href="https://github.com/Fluidiety/fluidity-ts" target="_blank" rel="noreferrer" class="block transition duration-300 hover:-translate-y-1">
-                <img alt="GitHub stars" src="https://img.shields.io/github/stars/Fluidiety/fluidity-ts?style=for-the-badge&label=GitHub%20Stars&color=22D3EE" />
+                <img alt="GitHub stars badge" src="https://img.shields.io/github/stars/Fluidiety/fluidity-ts?style=for-the-badge&label=GITHUB%20STARS&color=22D3EE" />
               </a>
               <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="block transition duration-300 hover:-translate-y-1">
-                <img alt="npm downloads" src="https://img.shields.io/npm/dm/fluidity-ts?style=for-the-badge&label=npm%20downloads&color=F97316" />
+                <img alt="npm downloads badge" src="https://img.shields.io/npm/dm/fluidity-ts?style=for-the-badge&label=NPM%20DOWNLOADS&color=F97316" />
               </a>
             </div>
           </div>
@@ -1742,8 +1723,8 @@
               </span>
               <span class="font-semibold tracking-[0.02em]">fluidity-ts</span>
             </div>
-            <p class="mt-4">The complete responsive toolkit.</p>
-            <p class="mt-2">MIT Licensed · Made by Fluidiety</p>
+            <p class="mt-4">Typed responsive APIs for modern UI stacks.</p>
+            <p class="mt-2">MIT licensed · Made by Fluidiety</p>
           </div>
 
           <div class="flex flex-wrap gap-3 lg:justify-center">
@@ -1777,6 +1758,7 @@
         const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
         const typewriterTarget = document.querySelector('#typewriter-text');
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const supportsInteractivePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
         const openMobileMenu = () => {
           if (!mobileMenu || !hamburgerBtn) {
@@ -1815,6 +1797,38 @@
         const finishPerfLoading = () => {
           document.documentElement.classList.remove('is-loading');
           document.querySelector('.perf-loader')?.setAttribute('hidden', 'hidden');
+        };
+
+        const fallbackCopyText = async (text) => {
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          textArea.setAttribute('readonly', '');
+          textArea.style.position = 'fixed';
+          textArea.style.top = '0';
+          textArea.style.left = '0';
+          textArea.style.opacity = '0';
+          document.body.append(textArea);
+          textArea.focus();
+          textArea.select();
+
+          let copied = false;
+
+          try {
+            copied = document.execCommand('copy');
+          } finally {
+            textArea.remove();
+          }
+
+          return copied;
+        };
+
+        const copyTextToClipboard = async (text) => {
+          if (navigator.clipboard?.writeText && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+
+          return fallbackCopyText(text);
         };
 
         const revealElements = document.querySelectorAll('.reveal');
@@ -1910,16 +1924,12 @@
               return;
             }
 
-            try {
-              await navigator.clipboard.writeText(textToCopy);
-              label.textContent = 'Copied';
-              clearTimeout(resetTimer);
-              resetTimer = window.setTimeout(() => {
-                label.textContent = originalLabel;
-              }, 1800);
-            } catch (error) {
-              console.error('Copy failed:', error);
-            }
+            const copied = await copyTextToClipboard(textToCopy).catch(() => false);
+            label.textContent = copied ? 'Copied' : 'Copy failed';
+            clearTimeout(resetTimer);
+            resetTimer = window.setTimeout(() => {
+              label.textContent = originalLabel;
+            }, copied ? 1800 : 2200);
           });
         });
 
@@ -2012,54 +2022,77 @@
           });
         }
 
-        document.querySelectorAll('[data-magnetic]').forEach((element) => {
-          element.addEventListener('mousemove', (event) => {
-            const rect = element.getBoundingClientRect();
-            const offsetX = event.clientX - (rect.left + rect.width / 2);
-            const offsetY = event.clientY - (rect.top + rect.height / 2);
+        if (supportsInteractivePointer && !prefersReducedMotion) {
+          document.querySelectorAll('[data-magnetic]').forEach((element) => {
+            let rect;
+            const refreshRect = () => {
+              rect = element.getBoundingClientRect();
+            };
 
-            element.style.transition = 'transform 0.1s ease-out';
-            element.style.transform = `translate(${offsetX * 0.15}px, ${offsetY * 0.15}px)`;
+            element.addEventListener('mouseenter', refreshRect);
+            element.addEventListener('mousemove', (event) => {
+              if (!rect) {
+                refreshRect();
+              }
+
+              const offsetX = event.clientX - (rect.left + rect.width / 2);
+              const offsetY = event.clientY - (rect.top + rect.height / 2);
+
+              element.style.transition = 'transform 0.1s ease-out';
+              element.style.transform = `translate(${offsetX * 0.15}px, ${offsetY * 0.15}px)`;
+            });
+
+            element.addEventListener('mouseleave', () => {
+              rect = undefined;
+              element.style.transition = 'transform 0.3s ease';
+              element.style.transform = 'translate(0, 0)';
+            });
           });
 
-          element.addEventListener('mouseleave', () => {
-            element.style.transition = 'transform 0.3s ease';
-            element.style.transform = 'translate(0, 0)';
+          document.querySelectorAll('[data-tilt]').forEach((element) => {
+            let rect;
+            const refreshRect = () => {
+              rect = element.getBoundingClientRect();
+            };
+
+            element.addEventListener('mouseenter', refreshRect);
+            element.addEventListener('mousemove', (event) => {
+              if (!rect) {
+                refreshRect();
+              }
+
+              const relativeX = (event.clientX - rect.left) / rect.width;
+              const relativeY = (event.clientY - rect.top) / rect.height;
+              const rotateY = (relativeX - 0.5) * 12;
+              const rotateX = (0.5 - relativeY) * 12;
+
+              element.style.transition = 'transform 0.08s linear';
+              element.style.transform = `perspective(800px) rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg)`;
+            });
+
+            element.addEventListener('mouseleave', () => {
+              rect = undefined;
+              element.style.transition = 'transform 0.35s ease';
+              element.style.transform = 'none';
+            });
           });
-        });
 
-        document.querySelectorAll('[data-tilt]').forEach((element) => {
-          element.addEventListener('mousemove', (event) => {
-            const rect = element.getBoundingClientRect();
-            const relativeX = (event.clientX - rect.left) / rect.width;
-            const relativeY = (event.clientY - rect.top) / rect.height;
-            const rotateY = (relativeX - 0.5) * 12;
-            const rotateX = (0.5 - relativeY) * 12;
-
-            element.style.transition = 'transform 0.08s linear';
-            element.style.transform = `perspective(800px) rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg)`;
+          document.addEventListener('mousemove', (event) => {
+            body.style.setProperty('--mouse-x', `${event.clientX}px`);
+            body.style.setProperty('--mouse-y', `${event.clientY}px`);
           });
-
-          element.addEventListener('mouseleave', () => {
-            element.style.transition = 'transform 0.35s ease';
-            element.style.transform = 'none';
-          });
-        });
-
-        document.addEventListener('mousemove', (event) => {
-          body.style.setProperty('--mouse-x', `${event.clientX}px`);
-          body.style.setProperty('--mouse-y', `${event.clientY}px`);
-        });
+        }
 
         const updateScrollProgress = () => {
           if (!scrollProgress) {
             return;
           }
 
-          const scrollTop = window.scrollY;
-          const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-          scrollProgress.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+          const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+          const scrollableHeight = scrollHeight - clientHeight;
+          const progress = scrollableHeight > 0 ? scrollTop / scrollableHeight : 0;
+          const clampedProgress = Math.min(Math.max(progress, 0), 1);
+          scrollProgress.style.setProperty('--scroll-progress-scale', clampedProgress.toFixed(4));
         };
 
         window.addEventListener('scroll', updateScrollProgress, { passive: true });
