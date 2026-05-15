@@ -1,0 +1,85 @@
+<section id="benchmarks" class="py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal max-w-3xl" style="--delay: 0ms">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Benchmarks</p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">State Of The Art Performance</h2>
+      <p class="mt-5 text-lg leading-8 text-mist">A smaller bundle is only impressive if it still solves the real responsive workload. fluidity-ts stays lean while covering far more than viewport-only helpers.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
+      <div class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" style="--delay: 80ms">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-white/5 text-xs uppercase tracking-[0.25em] text-mist">
+            <tr>
+              <th class="px-6 py-4 font-semibold">Package</th>
+              <th class="px-6 py-4 font-semibold">Bundle min+gz</th>
+              <th class="px-6 py-4 font-semibold">Notes</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            <tr class="bg-gradient-to-r from-cyan/15 via-cyan/8 to-transparent">
+              <td class="px-6 py-5">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="font-semibold text-white">fluidity-ts</span>
+                  <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan">Winner</span>
+                </div>
+              </td>
+              <td class="px-6 py-5 font-['JetBrains_Mono'] text-cyan">2.4 KB</td>
+              <td class="px-6 py-5 text-mist">Core breakpoints, media, preferences, container queries</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white">react-responsive</td>
+              <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">8.7 KB</td>
+              <td class="px-6 py-4 text-mist">Viewport hooks only</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white">usehooks-ts</td>
+              <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">12.1 KB</td>
+              <td class="px-6 py-4 text-mist">Multiple hooks to combine</td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white">react-use</td>
+              <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">19.4 KB</td>
+              <td class="px-6 py-4 text-mist">Kitchen-sink utility grab bag</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
+        <div class="space-y-5">
+          <div class="reveal" style="--delay: 220ms">
+            <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+              <span class="text-white">fluidity-ts</span>
+              <span class="font-['JetBrains_Mono'] text-cyan">2.4 KB</span>
+            </div>
+            <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[18%] rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div></div>
+          </div>
+          <div class="reveal" style="--delay: 300ms">
+            <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+              <span class="text-white">react-responsive</span>
+              <span class="font-['JetBrains_Mono'] text-orange-200">8.7 KB</span>
+            </div>
+            <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[44%] rounded-full bg-gradient-to-r from-orange-400 to-orange-300"></div></div>
+          </div>
+          <div class="reveal" style="--delay: 380ms">
+            <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+              <span class="text-white">usehooks-ts</span>
+              <span class="font-['JetBrains_Mono'] text-orange-200">12.1 KB</span>
+            </div>
+            <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[61%] rounded-full bg-gradient-to-r from-orange-500 to-orange-300"></div></div>
+          </div>
+          <div class="reveal" style="--delay: 460ms">
+            <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+              <span class="text-white">react-use</span>
+              <span class="font-['JetBrains_Mono'] text-orange-200">19.4 KB</span>
+            </div>
+            <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[94%] rounded-full bg-gradient-to-r from-red-500 to-orange-300"></div></div>
+          </div>
+        </div>
+
+        <p class="reveal mt-6 text-sm leading-7 text-mist" style="--delay: 540ms">fluidity-ts keeps the core small enough to feel invisible while solving a much larger slice of the responsive problem.</p>
+      </div>
+    </div>
+  </div>
+</section>

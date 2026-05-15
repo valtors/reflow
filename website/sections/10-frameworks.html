@@ -1,0 +1,85 @@
+<section id="frameworks" class="py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Framework support</p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">One Library. Every Framework.</h2>
+      <p class="mt-5 text-lg leading-8 text-mist">From hooks and composables to signals, stores, and controllers, fluidity-ts feels native in every modern UI stack.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <article data-tilt class="reveal rounded-[2rem] border border-sky-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-2xl font-bold">React</h3>
+          <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">Hooks</span>
+        </div>
+        <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
+<span class="code-keyword">const</span> desktopNav = bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
+
+<span class="code-keyword">return</span> desktopNav ? <span class="code-value">&lt;Sidebar /&gt;</span> : <span class="code-value">null</span></code></pre>
+      </article>
+
+      <article data-tilt class="reveal rounded-[2rem] border border-emerald-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 80ms">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-2xl font-bold">Vue</h3>
+          <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Composable</span>
+        </div>
+        <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
+<span class="code-keyword">const</span> state = <span class="code-fn">reactive</span>({ desktop: bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>) })
+
+<span class="code-keyword">return</span> { state }</code></pre>
+      </article>
+
+      <article data-tilt class="reveal rounded-[2rem] border border-orange-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-2xl font-bold">Svelte</h3>
+          <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Store</span>
+        </div>
+        <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">breakpoint</span>()
+
+{#if $bp === <span class="code-string">'lg'</span>}
+  <span class="code-value">&lt;Sidebar /&gt;</span>
+{/if}</code></pre>
+      </article>
+
+      <article data-tilt class="reveal rounded-[2rem] border border-sky-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 240ms">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-2xl font-bold">Solid</h3>
+          <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-sky-300">Signals</span>
+        </div>
+        <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
+
+&lt;<span class="code-type">Show</span> when={bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)()}&gt;
+  <span class="code-value">&lt;Sidebar /&gt;</span>
+&lt;/<span class="code-type">Show</span>&gt;</code></pre>
+      </article>
+
+      <article data-tilt class="reveal rounded-[2rem] border border-red-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 320ms">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-2xl font-bold">Angular</h3>
+          <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-red-400">Signals</span>
+        </div>
+        <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">readonly</span> bp = <span class="code-fn">breakpointSignal</span>()
+<span class="code-keyword">readonly</span> desktop = <span class="code-keyword">this</span>.bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
+
+<span class="code-keyword">protected</span> sidebar = <span class="code-value">true</span></code></pre>
+      </article>
+
+      <article data-tilt class="reveal rounded-[2rem] border border-amber-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 400ms">
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-2xl font-bold">Lit</h3>
+          <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">Controller</span>
+        </div>
+        <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">private</span> bp = <span class="code-keyword">new</span> <span class="code-type">BreakpointController</span>(<span class="code-keyword">this</span>)
+
+<span class="code-fn">render</span>() {
+  <span class="code-keyword">return</span> <span class="code-fn">html</span>`&lt;app-shell ?desktop=${this.bp.above('lg')}&gt;&lt;/app-shell&gt;`
+}</code></pre>
+      </article>
+    </div>
+
+    <div class="reveal mt-8 flex flex-wrap gap-3 text-sm text-mist" style="--delay: 480ms">
+      <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Also ships: Preact</span>
+      <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Qwik</span>
+    </div>
+  </div>
+</section>

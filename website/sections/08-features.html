@@ -1,0 +1,107 @@
+<section id="features" class="py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Features</p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Build Real Responsive UIs</h2>
+      <p class="mt-5 text-lg leading-8 text-mist">Everything your team needs in one coherent API for breakpoints, fluid scales, preferences, container logic, and SSR-safe rendering.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+      <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
+        <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Typed Breakpoints</div>
+        <h3 class="text-2xl font-bold">Literal types, everywhere.</h3>
+        <p class="mt-3 text-mist">Autocompletion and safe layout decisions from <span class="text-white">xs</span> to <span class="text-white">2xl</span>, without fragile stringly-typed conditions.</p>
+        <div class="mt-5 rounded-2xl border border-cyan/20 bg-black/40 p-4">
+          <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="text-cyan">const</span> bp = <span class="text-white">useBreakpoint</span>()
+bp.active <span class="text-white">//</span> <span class="text-cyan">'md'</span>
+bp.above(<span class="text-cyan">'lg'</span>)
+bp.between(<span class="text-cyan">'sm'</span>, <span class="text-cyan">'xl'</span>)</code></pre>
+        </div>
+      </article>
+
+      <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
+        <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Fluid Typography</div>
+        <h3 class="text-2xl font-bold">Clamp without calculator tabs.</h3>
+        <p class="mt-3 text-mist">Build fluid scales for type and spacing with a single utility, then reuse the same responsive rhythm everywhere.</p>
+        <div class="mt-5 rounded-2xl border border-white/10 bg-black/40 p-4">
+          <div class="flex items-end gap-2">
+            <div class="flex-1 rounded-t-2xl bg-cyan/25 px-2 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan" style="height: 3.25rem">sm</div>
+            <div class="flex-1 rounded-t-2xl bg-cyan/40 px-2 py-5 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan" style="height: 4.25rem">md</div>
+            <div class="flex-1 rounded-t-2xl bg-cyan/60 px-2 py-7 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white" style="height: 5.25rem">lg</div>
+            <div class="flex-1 rounded-t-2xl bg-orange-400/70 px-2 py-9 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white" style="height: 6.25rem">xl</div>
+          </div>
+          <p class="mt-4 font-['JetBrains_Mono'] text-xs leading-6 text-cyan">fluidClamp({ minPx: 16, maxPx: 24, minVwPx: 360, maxVwPx: 1440 })</p>
+          <p class="font-['JetBrains_Mono'] text-xs leading-6 text-mist">→ clamp(1rem, 0.83rem + 0.74vw, 1.5rem)</p>
+        </div>
+      </article>
+
+      <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
+        <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Container Queries</div>
+        <h3 class="text-2xl font-bold">Responsive by component, not page.</h3>
+        <p class="mt-3 text-mist">Let cards, sidebars, and modules adapt to the space they actually get instead of whatever the viewport happens to be.</p>
+        <div class="mt-5 rounded-2xl border border-white/10 bg-black/40 p-4">
+          <div class="rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-3">
+            <div class="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan">
+              <span>@container card</span>
+              <span>42rem</span>
+            </div>
+            <div class="mt-3 grid grid-cols-[1.2fr_.8fr] gap-3">
+              <div class="rounded-2xl border border-cyan/20 bg-white/5 px-3 py-6 text-sm text-white">media block</div>
+              <div class="rounded-2xl border border-white/10 bg-black/50 px-3 py-6 text-center text-sm text-mist">details</div>
+            </div>
+          </div>
+          <div class="mt-3 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-mist">element-aware layout</div>
+        </div>
+      </article>
+
+      <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
+        <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Dark Mode &amp; Preferences</div>
+        <h3 class="text-2xl font-bold">Modern prefers-* APIs built in.</h3>
+        <p class="mt-3 text-mist">Read system color scheme, motion, contrast, and other user preferences through one typed media layer.</p>
+        <div class="mt-5 rounded-2xl border border-white/10 bg-black/40 p-4">
+          <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-color-scheme: dark)'</span>)
+<span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-reduced-motion: reduce)'</span>)
+<span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-contrast: more)'</span>)</code></pre>
+        </div>
+      </article>
+
+      <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
+        <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">SSR-Safe Hydration</div>
+        <h3 class="text-2xl font-bold">Render the right layout first.</h3>
+        <p class="mt-3 text-mist">Server snapshots and client-safe subscriptions help the first paint match the final responsive state without layout flashes.</p>
+        <div class="mt-5 rounded-2xl border border-cyan/20 bg-black/40 p-4">
+          <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.24em] text-mist">
+            <span>Hydration</span>
+            <span class="text-emerald-300">stable</span>
+          </div>
+          <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
+            <div class="h-full w-full rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div>
+          </div>
+          <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-mist">serverWidth <span class="mt-1 block font-['JetBrains_Mono'] text-white">1024px</span></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-mist">clientMatch <span class="mt-1 block font-['JetBrains_Mono'] text-cyan">true</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-orange-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
+        <div class="mb-5 inline-flex rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-orange-200">Zero Dependencies</div>
+        <h3 class="text-2xl font-bold">Under 3KB gzipped.</h3>
+        <p class="mt-3 text-mist">No runtime baggage, no CSS parser overhead, and no adapter lock-in—just the responsive primitives your UI actually needs.</p>
+        <div class="mt-5 rounded-2xl border border-orange-400/20 bg-black/40 p-4">
+          <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-mist">
+            <span>core bundle</span>
+            <span class="text-orange-200">2.4 KB gz</span>
+          </div>
+          <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
+            <div class="h-full w-[80%] rounded-full bg-gradient-to-r from-cyan via-teal to-orange-400"></div>
+          </div>
+          <div class="mt-4 flex items-center justify-between font-['JetBrains_Mono'] text-xs text-mist">
+            <span>0 KB</span>
+            <span class="text-orange-200">3 KB limit</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

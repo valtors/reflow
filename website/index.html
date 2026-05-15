@@ -6,18 +6,32 @@
     <title>fluidity-ts — The Responsive Toolkit Your Framework Deserves</title>
     <meta
       name="description"
-      content="fluidity-ts is the complete SSR-safe, zero-dependency responsive toolkit for TypeScript with typed breakpoints, fluid typography, container queries, and one API across 8 frameworks."
-    />
+      content="fluidity-ts is the SSR-safe responsive toolkit for TypeScript teams who want typed breakpoints, fluid scaling, container queries, and framework-friendly APIs that make polished interfaces feel effortless." />
     <meta name="theme-color" content="#0A0A0A" />
+    <link rel="canonical" href="https://github.com/Fluidiety/fluidity-ts" />
+
+    <meta property="og:title" content="fluidity-ts — The Responsive Toolkit Your Framework Deserves" />
+    <meta
+      property="og:description"
+      content="fluidity-ts is the SSR-safe responsive toolkit for TypeScript teams who want typed breakpoints, fluid scaling, container queries, and framework-friendly APIs that make polished interfaces feel effortless." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/Fluidiety/fluidity-ts" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="fluidity-ts — The Responsive Toolkit Your Framework Deserves" />
+    <meta
+      name="twitter:description"
+      content="fluidity-ts is the SSR-safe responsive toolkit for TypeScript teams who want typed breakpoints, fluid scaling, container queries, and framework-friendly APIs that make polished interfaces feel effortless." />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
+
     <script>
-      tailwind = window.tailwind || {};
-      tailwind.config = {
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
         theme: {
           extend: {
             colors: {
@@ -33,1089 +47,1713 @@
             },
             backgroundImage: {
               heroGlow:
-                'radial-gradient(circle at top, rgba(34,211,238,.24), transparent 35%), radial-gradient(circle at 80% 20%, rgba(249,115,22,.14), transparent 25%)',
+                'radial-gradient(circle at top, rgba(34, 211, 238, 0.24), transparent 35%), radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.14), transparent 25%)',
             },
           },
         },
       };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+  document.documentElement.classList.add('is-loading');
+</script>
+    <link
+  rel="preload"
+  href="/fonts/inter-latin.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link rel="dns-prefetch" href="//cdn.tailwindcss.com" />
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "fluidity-ts",
+    "description": "The complete SSR-safe, zero-dependency responsive toolkit for TypeScript",
+    "url": "https://github.com/Fluidiety/fluidity-ts",
+    "codeRepository": "https://github.com/Fluidiety/fluidity-ts",
+    "programmingLanguage": "TypeScript",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Organization", "name": "Fluidiety" }
+  }
+</script>
     <style>
-      :root {
-        color-scheme: dark;
-        --bg: #0a0a0a;
-        --panel: rgba(12, 15, 18, 0.82);
-        --panel-strong: rgba(9, 11, 14, 0.92);
-        --line: rgba(34, 211, 238, 0.18);
-        --line-strong: rgba(34, 211, 238, 0.45);
-        --text: #ffffff;
-        --muted: #9ca3af;
-        --teal: #0ea5a5;
-        --cyan: #22d3ee;
-        --orange: #f97316;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        font-family: 'Inter', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-      }
-
-      body::before,
-      body::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: -2;
-      }
-
-      body::before {
-        background:
-          linear-gradient(rgba(34, 211, 238, 0.065) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(34, 211, 238, 0.065) 1px, transparent 1px);
-        background-size: 56px 56px;
-        mask-image: radial-gradient(circle at center, black, transparent 92%);
-      }
-
-      body::after {
-        z-index: -1;
-        background:
-          radial-gradient(circle at 20% 0%, rgba(34, 211, 238, 0.14), transparent 24%),
-          radial-gradient(circle at 85% 15%, rgba(249, 115, 22, 0.13), transparent 20%),
-          radial-gradient(circle at 50% 100%, rgba(14, 165, 165, 0.08), transparent 30%),
-          radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-        background-size: auto, auto, auto, 24px 24px;
-      }
-
-      .noise {
-        position: relative;
-        isolation: isolate;
-      }
-
-      .noise::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%);
-        pointer-events: none;
-      }
-
-      .divider {
-        height: 1px;
-        width: min(100%, 76rem);
-        margin: 0 auto;
-        background: linear-gradient(90deg, transparent, rgba(14, 165, 165, 0.85), rgba(34, 211, 238, 0.85), transparent);
-        box-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
-      }
-
-      .reveal {
-        opacity: 0;
-        transform: translateY(28px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
-        transition-delay: var(--delay, 0ms);
-      }
-
-      .reveal.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .code-window {
-        position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(3, 7, 18, 0.96));
-      }
-
-      .code-window::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(34, 211, 238, 0.06), transparent 35%, rgba(249, 115, 22, 0.06));
-        pointer-events: none;
-      }
-
-      .code-line {
-        display: block;
-        white-space: pre-wrap;
-      }
-
-      .code-comment {
-        color: #64748b;
-      }
-
-      .code-keyword {
-        color: #c084fc;
-      }
-
-      .code-fn {
-        color: #22d3ee;
-      }
-
-      .code-string {
-        color: #fda4af;
-      }
-
-      .code-type {
-        color: #f97316;
-      }
-
-      .code-prop {
-        color: #93c5fd;
-      }
-
-      .code-value {
-        color: #86efac;
-      }
-
-      .marquee {
-        overflow: hidden;
-        position: relative;
-        mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-      }
-
-      .marquee-track {
-        display: flex;
-        width: max-content;
-        animation: marquee 26s linear infinite;
-      }
-
-      .marquee:hover .marquee-track {
-        animation-play-state: paused;
-      }
-
-      @keyframes marquee {
-        from {
-          transform: translateX(0);
+      @property --border-angle {
+          syntax: '<angle>';
+          inherits: false;
+          initial-value: 0turn;
         }
-        to {
+
+        :root {
+          color-scheme: dark;
+          --bg: #0a0a0a;
+          --panel: rgba(12, 15, 18, 0.82);
+          --line: rgba(34, 211, 238, 0.18);
+          --text: #f8fafc;
+          --muted: #9ca3af;
+          --teal: #0ea5a5;
+          --cyan: #22d3ee;
+          --orange: #f97316;
+          --mouse-x: 50%;
+          --mouse-y: 50%;
+          --panel-strong: rgba(8, 10, 14, 0.94);
+          --line-strong: rgba(34, 211, 238, 0.42);
+          --shadow-cyan: 0 0 0 1px rgba(34, 211, 238, 0.14), 0 24px 80px rgba(6, 182, 212, 0.16);
+          --shadow-orange: 0 18px 50px rgba(249, 115, 22, 0.2);
+          --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+          --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+
+        html,
+        body {
+          margin: 0;
+          min-height: 100%;
+          padding: 0;
+        }
+
+        html {
+          scroll-behavior: smooth;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+          position: relative;
+          font-family: 'Inter', sans-serif;
+          background:
+            radial-gradient(circle at top, rgba(34, 211, 238, 0.04), transparent 28%),
+            linear-gradient(180deg, #050607 0%, var(--bg) 35%, #060708 100%);
+          color: var(--text);
+          overflow-x: hidden;
+          scroll-behavior: smooth;
+        }
+
+        ::selection {
+          background: rgb(34 211 238 / 30%);
+          color: var(--text);
+        }
+
+        body::before,
+        body::after {
+          content: '';
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        body::before {
+          z-index: -2;
+          background:
+            linear-gradient(rgb(34 211 238 / 0.065) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(34 211 238 / 0.065) 1px, transparent 1px);
+          background-size: 56px 56px;
+          mask-image: radial-gradient(circle at center, black 34%, rgb(0 0 0 / 0.78) 58%, transparent 100%);
+          -webkit-mask-image: radial-gradient(circle at center, black 34%, rgb(0 0 0 / 0.78) 58%, transparent 100%);
+        }
+
+        body::after {
+          z-index: -1;
+          background:
+            radial-gradient(circle at 14% 10%, rgb(34 211 238 / 0.16), transparent 0 28%),
+            radial-gradient(circle at 84% 12%, rgb(249 115 22 / 0.15), transparent 0 22%),
+            radial-gradient(circle at 52% 100%, rgb(14 165 165 / 0.12), transparent 0 30%),
+            radial-gradient(circle at 50% 52%, rgb(34 211 238 / 0.04), transparent 0 36%),
+            radial-gradient(rgb(255 255 255 / 0.055) 1px, transparent 1px);
+          background-size: auto, auto, auto, auto, 24px 24px;
+          background-position: center, center, center, center, 0 0;
+        }
+
+        .cursor-glow {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgb(34 211 238 / 0.06), transparent 65%);
+          transition: background-position 0.12s linear;
+          will-change: transform, opacity;
+        }
+
+        .noise-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          pointer-events: none;
+          opacity: 0.025;
+          mix-blend-mode: screen;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        }
+
+        .scroll-progress {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: var(--scroll-progress, 0%);
+          height: 2px;
+          z-index: 9999;
+          transform-origin: left center;
+          background: linear-gradient(90deg, var(--teal), var(--cyan));
+          box-shadow: 0 0 18px rgb(34 211 238 / 0.45);
+        }
+
+        .noise {
+          position: relative;
+          isolation: isolate;
+        }
+
+        .noise::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          pointer-events: none;
+          background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02) 18%, transparent 42%);
+        }
+
+        .divider {
+          width: min(100%, 76rem);
+          height: 1px;
+          margin-inline: auto;
+          background: linear-gradient(90deg, transparent, rgb(14 165 165 / 0.9), rgb(34 211 238 / 0.92), transparent);
+          box-shadow: 0 0 24px rgb(34 211 238 / 0.26), 0 0 80px rgb(14 165 165 / 0.12);
+        }
+
+        .reveal {
+          opacity: 0;
+          transform: translateY(28px) scale(0.97);
+          transition:
+            opacity 0.85s var(--ease-premium),
+            transform 0.85s var(--ease-premium);
+          transition-delay: var(--delay, 0ms);
+          will-change: opacity, transform;
+        }
+
+        .reveal.is-visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+
+        .code-window {
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgb(255 255 255 / 0.08);
+          border-radius: 2rem;
+          background:
+            linear-gradient(180deg, rgb(15 23 42 / 0.88), rgb(3 7 18 / 0.96)),
+            linear-gradient(135deg, rgb(34 211 238 / 0.08), transparent 42%, rgb(249 115 22 / 0.08));
+          box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05), var(--shadow-cyan);
+          backdrop-filter: blur(20px);
+        }
+
+        .code-window::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: linear-gradient(135deg, rgb(34 211 238 / 0.08), transparent 34%, rgb(249 115 22 / 0.08));
+        }
+
+        .code-line {
+          display: block;
+          white-space: pre-wrap;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.95rem;
+          line-height: 1.8;
+          color: #dbeafe;
+        }
+
+        .code-comment {
+          color: #64748b;
+        }
+
+        .code-keyword {
+          color: #c084fc;
+        }
+
+        .code-fn {
+          color: #22d3ee;
+        }
+
+        .code-string {
+          color: #f9a8d4;
+        }
+
+        .code-type {
+          color: #fb923c;
+        }
+
+        .code-prop {
+          color: #93c5fd;
+        }
+
+        .code-value {
+          color: #86efac;
+        }
+
+        .marquee {
+          position: relative;
+          overflow: hidden;
+          mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+          -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+        }
+
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          will-change: transform;
+          animation: marquee 26s linear infinite;
+        }
+
+        .marquee:hover .marquee-track {
+          animation-play-state: paused;
+        }
+
+        .hero-grid {
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgb(34 211 238 / 0.18);
+          background:
+            radial-gradient(circle at top, rgb(34 211 238 / 0.2), transparent 36%),
+            radial-gradient(circle at 82% 18%, rgb(249 115 22 / 0.12), transparent 24%),
+            linear-gradient(180deg, rgb(5 8 12 / 0.95), rgb(10 10 10 / 0.98));
+          box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), var(--shadow-cyan);
+        }
+
+        .hero-grid::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(rgb(34 211 238 / 0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(34 211 238 / 0.08) 1px, transparent 1px);
+          background-size: 52px 52px;
+          opacity: 0.5;
+        }
+
+        .scanline {
+          position: absolute;
+          inset: auto 0 18%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgb(34 211 238 / 0.94), transparent);
+          box-shadow: 0 0 20px rgb(34 211 238 / 0.4), 0 0 50px rgb(14 165 165 / 0.18);
+          animation: sweep 6.4s var(--ease-soft) infinite;
+        }
+
+        .bp-line {
+          position: absolute;
+          bottom: 18%;
+          width: 2px;
+          background: linear-gradient(180deg, rgb(34 211 238 / 0.16), rgb(34 211 238 / 0.95), rgb(34 211 238 / 0.16));
+          box-shadow: 0 0 18px rgb(34 211 238 / 0.22);
+          transform-origin: bottom center;
+          animation: pulseLine 5.6s var(--ease-soft) infinite;
+        }
+
+        .bp-line span {
+          position: absolute;
+          top: -1.8rem;
+          left: 50%;
           transform: translateX(-50%);
+          font: 700 0.65rem 'JetBrains Mono', monospace;
+          color: #67e8f9;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
-      }
 
-      .hero-grid {
-        position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(34, 211, 238, 0.2);
-        background:
-          radial-gradient(circle at top, rgba(34, 211, 238, 0.18), transparent 38%),
-          linear-gradient(180deg, rgba(5, 8, 12, 0.92), rgba(10, 10, 10, 0.96));
-      }
-
-      .hero-grid::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
-        background-size: 52px 52px;
-        opacity: 0.5;
-      }
-
-      .scanline {
-        position: absolute;
-        inset: auto 0 18%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.9), transparent);
-        box-shadow: 0 0 20px rgba(34, 211, 238, 0.45);
-        animation: sweep 6s ease-in-out infinite;
-      }
-
-      @keyframes sweep {
-        0%,
-        100% {
-          transform: translateY(-120px);
-          opacity: 0.35;
+        .bp-line:nth-child(2) {
+          left: 14%;
+          height: 38%;
+          animation-delay: 0s;
         }
-        50% {
-          transform: translateY(120px);
-          opacity: 1;
+
+        .bp-line:nth-child(3) {
+          left: 32%;
+          height: 52%;
+          animation-delay: 0.6s;
         }
-      }
 
-      .bp-line {
-        position: absolute;
-        bottom: 18%;
-        width: 2px;
-        background: linear-gradient(180deg, rgba(34, 211, 238, 0.2), rgba(34, 211, 238, 0.95), rgba(34, 211, 238, 0.2));
-        box-shadow: 0 0 18px rgba(34, 211, 238, 0.22);
-        animation: pulseLine 5s ease-in-out infinite;
-      }
-
-      .bp-line span {
-        position: absolute;
-        top: -1.8rem;
-        left: 50%;
-        transform: translateX(-50%);
-        font: 700 0.65rem 'JetBrains Mono', monospace;
-        color: #67e8f9;
-        letter-spacing: 0.08em;
-      }
-
-      .bp-line:nth-child(2) { left: 14%; height: 38%; animation-delay: 0s; }
-      .bp-line:nth-child(3) { left: 32%; height: 52%; animation-delay: 0.6s; }
-      .bp-line:nth-child(4) { left: 50%; height: 68%; animation-delay: 1.2s; }
-      .bp-line:nth-child(5) { left: 68%; height: 82%; animation-delay: 1.8s; }
-      .bp-line:nth-child(6) { left: 86%; height: 92%; animation-delay: 2.4s; }
-
-      @keyframes pulseLine {
-        0%,
-        100% {
-          transform: scaleY(0.94);
-          opacity: 0.65;
+        .bp-line:nth-child(4) {
+          left: 50%;
+          height: 68%;
+          animation-delay: 1.2s;
         }
-        50% {
-          transform: scaleY(1.05);
-          opacity: 1;
+
+        .bp-line:nth-child(5) {
+          left: 68%;
+          height: 82%;
+          animation-delay: 1.8s;
         }
-      }
 
-      .bp-wave {
-        position: absolute;
-        left: -10%;
-        right: -10%;
-        top: 42%;
-        height: 120px;
-        border-top: 3px solid rgba(34, 211, 238, 0.9);
-        border-radius: 50%;
-        filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.25));
-        animation: floatWave 10s ease-in-out infinite;
-      }
-
-      .bp-wave::after,
-      .bp-wave::before {
-        content: '';
-        position: absolute;
-        inset: auto 0;
-        height: 120px;
-        border-top: 3px solid rgba(14, 165, 165, 0.85);
-        border-radius: 50%;
-      }
-
-      .bp-wave::before {
-        top: -28px;
-        left: 12%;
-        right: 12%;
-      }
-
-      .bp-wave::after {
-        top: 26px;
-        left: 18%;
-        right: 18%;
-        border-color: rgba(249, 115, 22, 0.72);
-      }
-
-      @keyframes floatWave {
-        0%,
-        100% {
-          transform: translateX(-2%) translateY(0px);
+        .bp-line:nth-child(6) {
+          left: 86%;
+          height: 92%;
+          animation-delay: 2.4s;
         }
-        50% {
-          transform: translateX(2%) translateY(-10px);
-        }
-      }
 
-      .float-orb {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: radial-gradient(circle, #67e8f9, #0ea5a5);
-        box-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
-        animation: orbit 8s ease-in-out infinite;
-      }
-
-      .float-orb.one { top: 26%; left: 18%; }
-      .float-orb.two { top: 48%; right: 21%; animation-delay: 1.8s; }
-      .float-orb.three { bottom: 20%; left: 42%; animation-delay: 3.4s; }
-
-      @keyframes orbit {
-        0%,
-        100% {
-          transform: translate3d(0, 0, 0) scale(0.8);
-          opacity: 0.45;
-        }
-        50% {
-          transform: translate3d(0, -18px, 0) scale(1.2);
-          opacity: 1;
-        }
-      }
-
-      .bar {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .bar::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-        transform: translateX(-100%);
-        animation: shine 4s ease infinite;
-      }
-
-      @keyframes shine {
-        to {
-          transform: translateX(100%);
-        }
-      }
-
-      .faq-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.35s ease;
-      }
-
-      .faq-item.open .faq-content {
-        max-height: 220px;
-      }
-
-      .faq-item.open .faq-icon {
-        transform: rotate(45deg);
-        color: #22d3ee;
-      }
-
-      .faq-icon {
-        transition: transform 0.25s ease, color 0.25s ease;
-      }
-
-      .tab-button.active {
-        color: #fff;
-        border-color: rgba(34, 211, 238, 0.55);
-        background: linear-gradient(180deg, rgba(34, 211, 238, 0.16), rgba(14, 165, 165, 0.08));
-        box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08), 0 12px 30px rgba(14, 165, 165, 0.14);
-      }
-
-      .tab-panel {
-        display: none;
-      }
-
-      .tab-panel.active {
-        display: grid;
-      }
-
-      .counter {
-        font-variant-numeric: tabular-nums;
-      }
-
-      @media (max-width: 768px) {
         .bp-wave {
-          top: 48%;
-          height: 92px;
+          position: absolute;
+          left: -10%;
+          right: -10%;
+          top: 42%;
+          height: 120px;
+          border-top: 3px solid rgb(34 211 238 / 0.9);
+          border-radius: 50%;
+          filter: drop-shadow(0 0 18px rgb(34 211 238 / 0.25));
+          animation: floatWave 10s var(--ease-soft) infinite;
         }
 
         .bp-wave::before,
         .bp-wave::after {
-          height: 92px;
+          content: '';
+          position: absolute;
+          inset: auto 0;
+          height: 120px;
+          border-top: 3px solid rgb(14 165 165 / 0.82);
+          border-radius: 50%;
         }
+
+        .bp-wave::before {
+          top: -28px;
+          left: 12%;
+          right: 12%;
+        }
+
+        .bp-wave::after {
+          top: 26px;
+          left: 18%;
+          right: 18%;
+          border-top-color: rgb(249 115 22 / 0.72);
+        }
+
+        .float-orb {
+          position: absolute;
+          width: 10px;
+          aspect-ratio: 1;
+          border-radius: 999px;
+          background: radial-gradient(circle, #67e8f9, #0ea5a5 68%, transparent 100%);
+          box-shadow: 0 0 18px rgb(34 211 238 / 0.45), 0 0 32px rgb(14 165 165 / 0.2);
+          animation: orbit 8s var(--ease-soft) infinite;
+        }
+
+        .float-orb.one {
+          top: 26%;
+          left: 18%;
+        }
+
+        .float-orb.two {
+          top: 48%;
+          right: 21%;
+          animation-delay: 1.8s;
+        }
+
+        .float-orb.three {
+          bottom: 20%;
+          left: 42%;
+          animation-delay: 3.4s;
+        }
+
+        .bar {
+          position: relative;
+          overflow: hidden;
+          border-radius: inherit;
+        }
+
+        .bar::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.18), transparent);
+          transform: translateX(-100%);
+          animation: shine 4.4s var(--ease-soft) infinite;
+        }
+
+        .faq-content {
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          transition:
+            max-height 0.45s var(--ease-premium),
+            opacity 0.3s ease-out,
+            padding-top 0.3s ease-out;
+        }
+
+        .faq-item.open .faq-content {
+          max-height: 220px;
+          opacity: 1;
+        }
+
+        .faq-item.open {
+          border-color: rgb(34 211 238 / 0.28);
+          box-shadow: var(--shadow-cyan);
+        }
+
+        .faq-item.open .faq-icon {
+          transform: rotate(45deg);
+          color: var(--cyan);
+        }
+
+        .faq-icon {
+          transition: transform 0.28s var(--ease-premium), color 0.28s ease-out;
+        }
+
+        .tab-button.active {
+          color: #fff;
+          border-color: rgb(34 211 238 / 0.55);
+          background: linear-gradient(180deg, rgb(34 211 238 / 0.16), rgb(14 165 165 / 0.08));
+          box-shadow: 0 0 0 1px rgb(34 211 238 / 0.08), 0 12px 30px rgb(14 165 165 / 0.14);
+        }
+
+        .tab-panel {
+          display: none;
+        }
+
+        .tab-panel.active {
+          display: grid;
+        }
+
+        .counter {
+          font-variant-numeric: tabular-nums;
+        }
+
+        .gradient-border {
+          position: relative;
+          isolation: isolate;
+        }
+
+        .gradient-border::before {
+          content: '';
+          position: absolute;
+          inset: -1px;
+          z-index: -1;
+          border-radius: inherit;
+          background: conic-gradient(from var(--border-angle), rgb(34 211 238 / 0.08), rgb(34 211 238 / 0.7), rgb(249 115 22 / 0.56), rgb(14 165 165 / 0.82), rgb(34 211 238 / 0.08));
+          animation: borderRotate 7s linear infinite;
+          -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          padding: 1px;
+        }
+
+        .shimmer-text {
+          color: transparent;
+          background-image: linear-gradient(90deg, rgb(255 255 255 / 0.52) 0%, #fff 22%, rgb(34 211 238 / 0.95) 50%, #fff 78%, rgb(255 255 255 / 0.52) 100%);
+          background-size: 200% 100%;
+          background-position: -200% 0;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: shimmer 4.6s var(--ease-soft) infinite;
+        }
+
+        @keyframes shimmer {
+          from {
+            background-position: -200% 0;
+          }
+
+          to {
+            background-position: 200% 0;
+          }
+        }
+
+        @keyframes borderRotate {
+          from {
+            --border-angle: 0turn;
+          }
+
+          to {
+            --border-angle: 1turn;
+          }
+        }
+
+        @keyframes marquee {
+          from {
+            transform: translateX(0);
+          }
+
+          to {
+            transform: translateX(-50%);
+          }
+        }
+
+        @keyframes sweep {
+          0%,
+          100% {
+            transform: translateY(-120px);
+            opacity: 0.3;
+          }
+
+          50% {
+            transform: translateY(120px);
+            opacity: 1;
+          }
+        }
+
+        @keyframes pulseLine {
+          0%,
+          100% {
+            transform: scaleY(0.94);
+            opacity: 0.64;
+          }
+
+          50% {
+            transform: scaleY(1.05);
+            opacity: 1;
+          }
+        }
+
+        @keyframes floatWave {
+          0%,
+          100% {
+            transform: translateX(-2%) translateY(0);
+          }
+
+          50% {
+            transform: translateX(2%) translateY(-10px);
+          }
+        }
+
+        @keyframes orbit {
+          0%,
+          100% {
+            transform: translate3d(0, 0, 0) scale(0.8);
+            opacity: 0.45;
+          }
+
+          50% {
+            transform: translate3d(0, -18px, 0) scale(1.2);
+            opacity: 1;
+          }
+        }
+
+        @keyframes shine {
+          from {
+            transform: translateX(-100%);
+          }
+
+          to {
+            transform: translateX(100%);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .bp-wave {
+            top: 48%;
+            left: -16%;
+            right: -16%;
+            height: 92px;
+          }
+
+          .bp-wave::before,
+          .bp-wave::after {
+            height: 92px;
+          }
+
+          .bp-wave::before {
+            top: -20px;
+            left: 10%;
+            right: 10%;
+          }
+
+          .bp-wave::after {
+            top: 18px;
+            left: 14%;
+            right: 14%;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          html {
+            scroll-behavior: auto;
+          }
+
+          .reveal,
+          .marquee-track,
+          .scanline,
+          .bp-line,
+          .bp-wave,
+          .float-orb,
+          .bar::after,
+          .gradient-border::before,
+          .shimmer-text {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
+
+      .skip-link {
+          position: absolute;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1000;
+          padding: 0.75rem 1rem;
+        border: 1px solid rgb(34 211 238 / 0.28);
+        border-radius: 9999px;
+        background: rgb(8 10 14 / 0.96);
+        color: #f8fafc;
+        font-weight: 700;
+        text-decoration: none;
+        transform: translateY(-140%);
+        transition: transform 0.2s ease;
+        box-shadow: var(--shadow-cyan);
       }
+
+        .skip-link:focus {
+          transform: translateY(0);
+          outline: 3px solid #22d3ee;
+          outline-offset: 2px;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        [role='tab']:focus-visible {
+          outline: 3px solid rgb(34 211 238 / 0.9);
+          outline-offset: 3px;
+        }
+
+        .perf-loader {
+          position: fixed;
+          inset: 0;
+          z-index: 999;
+          display: grid;
+          place-items: center;
+          gap: 0.875rem;
+          background: rgba(10, 10, 10, 0.92);
+          color: #ffffff;
+          transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .perf-loader__spinner {
+          width: 2.75rem;
+          height: 2.75rem;
+          border: 3px solid rgba(255, 255, 255, 0.2);
+          border-top-color: #22d3ee;
+          border-radius: 9999px;
+          animation: perf-spin 0.8s linear infinite;
+        }
+
+        .perf-loader[hidden] {
+          display: none;
+        }
+
+        html:not(.is-loading) .perf-loader {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+
+        @keyframes perf-spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          html {
+            scroll-behavior: auto !important;
+          }
+
+          *,
+          *::before,
+          *::after {
+            animation: none !important;
+            transition: none !important;
+          }
+        }
     </style>
+    <noscript>
+  <style>
+    .reveal,
+    .reveal.is-visible,
+    [data-counter],
+    .marquee-track,
+    .scanline,
+    .bp-line,
+    .bp-wave,
+    .perf-loader {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+      visibility: visible !important;
+    }
+
+    .tab-panel {
+      display: grid !important;
+    }
+
+    .faq-content {
+      max-height: none !important;
+      opacity: 1 !important;
+    }
+  </style>
+</noscript>
   </head>
   <body class="bg-ink text-white selection:bg-cyan/30 selection:text-white">
+    <a class="skip-link" href="#top">Skip to content</a>
+<div class="perf-loader" role="status" aria-live="polite" aria-label="Page loading">
+  <span class="perf-loader__spinner" aria-hidden="true"></span>
+  <span>Loading fluidity-ts…</span>
+</div>
+    <div class="cursor-glow"></div>
+    <div class="noise-overlay"></div>
+    <div class="scroll-progress"></div>
+
     <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-xl">
-      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <a href="#top" class="flex items-center gap-3 text-lg font-semibold tracking-tight">
-          <span class="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-cyan/20 bg-white/5 shadow-glow">
-            <span class="absolute inset-x-1 top-4 h-px rounded-full bg-gradient-to-r from-transparent via-cyan to-transparent"></span>
-            <span class="text-base font-black text-white">f</span>
-            <span class="absolute bottom-2 left-2 right-2 h-2 rounded-full border-t-2 border-teal"></span>
+      <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <a href="#top" class="group inline-flex items-center gap-3" aria-label="Back to top">
+          <span class="flex h-11 w-11 items-center justify-center rounded-[1.5rem] border border-cyan/30 bg-gradient-to-br from-cyan/20 via-cyan/10 to-teal/20 text-xl font-semibold text-cyan shadow-[0_0_28px_rgba(34,211,238,0.35)] ring-1 ring-inset ring-white/10 transition duration-300 group-hover:scale-[1.02] group-hover:shadow-[0_0_36px_rgba(34,211,238,0.45)]">f</span>
+          <span class="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">
+            fluidity<span class="text-cyan">-ts</span>
           </span>
-          <span>fluidity<span class="text-cyan">-ts</span></span>
         </a>
-        <nav class="hidden items-center gap-6 text-sm text-mist md:flex">
-          <a href="#why" class="transition hover:text-white">Why</a>
-          <a href="#features" class="transition hover:text-white">Features</a>
-          <a href="#frameworks" class="transition hover:text-white">Frameworks</a>
-          <a href="#benchmarks" class="transition hover:text-white">Benchmarks</a>
-          <a href="https://github.com/Fluidiety/fluidity-ts#readme" target="_blank" rel="noreferrer" class="transition hover:text-white">Docs</a>
+
+        <nav aria-label="Primary navigation" class="hidden items-center gap-8 md:flex">
+          <a href="#why" class="text-sm font-medium text-mist transition hover:text-white">Why</a>
+          <a href="#features" class="text-sm font-medium text-mist transition hover:text-white">Features</a>
+          <a href="#frameworks" class="text-sm font-medium text-mist transition hover:text-white">Frameworks</a>
+          <a href="#benchmarks" class="text-sm font-medium text-mist transition hover:text-white">Benchmarks</a>
+          <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="text-sm font-medium text-mist transition hover:text-white">Docs</a>
         </nav>
-        <a
-          href="#cta"
-          class="rounded-full border border-orange-400/30 bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-flame transition hover:-translate-y-0.5 hover:bg-orange-400"
+
+        <div class="flex items-center gap-3">
+          <a href="#get-started" data-magnetic class="hidden rounded-full border border-flame/30 bg-flame px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_30px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fb923c] md:inline-flex">Get Started</a>
+          <button
+            id="hamburger-btn"
+            type="button"
+            aria-label="Open menu"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan/40 hover:bg-white/10 md:hidden"
+          >
+            <span class="sr-only">Open navigation</span>
+            <span class="flex flex-col gap-1.5">
+              <span class="block h-0.5 w-5 rounded-full bg-white"></span>
+              <span class="block h-0.5 w-5 rounded-full bg-white"></span>
+              <span class="block h-0.5 w-5 rounded-full bg-white"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[60] flex min-h-screen items-center justify-center bg-black/80 px-6 opacity-0 backdrop-blur-2xl transition duration-300 md:hidden">
+        <button
+          id="mobile-menu-close"
+          type="button"
+          aria-label="Close menu"
+          class="absolute right-6 top-6 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan/40 hover:bg-white/10"
         >
-          Get Started
-        </a>
+          <span class="sr-only">Close navigation</span>
+          <span class="relative block h-5 w-5">
+            <span class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-white"></span>
+            <span class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-white"></span>
+          </span>
+        </button>
+
+        <div class="flex flex-col items-center gap-6 text-center">
+          <a href="#why" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Why</a>
+          <a href="#features" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Features</a>
+          <a href="#frameworks" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Frameworks</a>
+          <a href="#benchmarks" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Benchmarks</a>
+          <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Docs</a>
+          <a href="#get-started" data-magnetic class="mobile-menu-link mt-4 inline-flex rounded-full border border-flame/30 bg-flame px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_30px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fb923c]">Get Started</a>
+        </div>
       </div>
     </header>
 
-    <main id="top">
-      <section class="relative overflow-hidden bg-heroGlow">
-        <div class="mx-auto grid max-w-7xl gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.08fr_.92fr] lg:px-8 lg:py-28">
-          <div class="reveal flex flex-col justify-center" style="--delay: 80ms">
-            <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.3em] text-cyan">
-              <span class="h-2 w-2 rounded-full bg-cyan shadow-[0_0_18px_rgba(34,211,238,.7)]"></span>
-              SSR-safe. Typed. Framework-agnostic.
-            </div>
-            <h1 class="max-w-4xl text-5xl font-black leading-none tracking-tight sm:text-6xl lg:text-7xl">
-              The Responsive Toolkit
-              <span class="bg-gradient-to-r from-white via-cyan to-teal bg-clip-text text-transparent">Your Framework Deserves</span>
-            </h1>
-            <p class="mt-6 max-w-2xl text-lg leading-8 text-mist sm:text-xl">
-              SSR-safe. Zero deps. 8 frameworks. One API.
-            </p>
-            <p class="mt-4 max-w-2xl text-base leading-7 text-mist/90">
-              Replace the duct-taped pile of media hooks, fluid type helpers, and hydration hacks with one premium toolkit for modern responsive systems.
-            </p>
-            <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-              <button
-                type="button"
-                data-copy="npm install fluidity-ts"
-                class="noise group inline-flex items-center justify-between gap-4 rounded-2xl border border-cyan/20 bg-white/5 px-5 py-4 text-left shadow-glow transition hover:-translate-y-1 hover:border-cyan/40"
-              >
-                <span>
-                  <span class="block text-xs uppercase tracking-[0.3em] text-mist">Install</span>
-                  <span class="mt-1 block font-['JetBrains_Mono'] text-sm text-cyan sm:text-base">npm install fluidity-ts</span>
-                </span>
-                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white transition group-hover:border-cyan/30 group-hover:text-cyan">Copy</span>
-              </button>
-              <a
-                href="https://github.com/Fluidiety/fluidity-ts"
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold text-white transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/10"
-              >
-                View on GitHub
-              </a>
-            </div>
-            <div class="mt-10 flex flex-wrap items-center gap-4 text-sm text-mist">
-              <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Type-safe breakpoints</div>
-              <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Zero hydration mismatch</div>
-              <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Container queries + fluid clamp</div>
-            </div>
-          </div>
+        <main id="top" tabindex="-1">
 
-          <div class="reveal" style="--delay: 180ms">
-            <div class="hero-grid noise relative min-h-[420px] rounded-[2rem] p-5 shadow-glow sm:p-7">
-              <div class="absolute inset-x-5 top-5 flex flex-wrap gap-3 text-[11px] font-medium uppercase tracking-[0.25em] text-mist sm:inset-x-7 sm:top-7">
-                <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2">320px xs</div>
-                <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2">640px sm</div>
-                <div class="rounded-full border border-cyan/30 bg-cyan/10 px-3 py-2 text-cyan">768px md</div>
-                <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2">1024px lg</div>
-                <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2">1440px xl</div>
-              </div>
-              <div class="absolute inset-x-5 top-24 rounded-3xl border border-white/10 bg-black/40 px-4 py-3 font-['JetBrains_Mono'] text-xs text-mist sm:inset-x-7">
-                <div class="flex items-center justify-between gap-3">
-                  <span class="text-cyan">useBreakpoint()</span>
-                  <span>active: <span class="text-white">"md"</span></span>
+          <section class="reveal is-visible relative overflow-hidden bg-heroGlow">
+
+            <div class="mx-auto grid max-w-7xl gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.08fr_.92fr] lg:px-8 lg:py-28">
+
+              <div class="reveal flex flex-col justify-center" style="--delay: 80ms">
+                <div class="mb-6 inline-flex w-fit items-center gap-3 rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-cyan shadow-[0_0_0_1px_rgba(34,211,238,0.12)] backdrop-blur-sm">
+                  <span class="relative flex h-2.5 w-2.5">
+                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan/70"></span>
+                    <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan shadow-[0_0_18px_rgba(34,211,238,0.8)]"></span>
+                  </span>
+                  <span>SSR-safe. Typed. Framework-agnostic.</span>
                 </div>
-              </div>
-              <div class="bp-line"><span>xs</span></div>
-              <div class="bp-line"><span>sm</span></div>
-              <div class="bp-line"><span>md</span></div>
-              <div class="bp-line"><span>lg</span></div>
-              <div class="bp-line"><span>xl</span></div>
-              <div class="bp-wave"></div>
-              <div class="scanline"></div>
-              <div class="float-orb one"></div>
-              <div class="float-orb two"></div>
-              <div class="float-orb three"></div>
-              <div class="absolute inset-x-5 bottom-6 grid gap-4 sm:inset-x-7 sm:grid-cols-3">
-                <div class="rounded-2xl border border-white/10 bg-black/45 p-4 backdrop-blur-sm">
-                  <div class="text-xs uppercase tracking-[0.3em] text-mist">Viewport</div>
-                  <div class="mt-2 text-2xl font-bold text-white">768 × 1024</div>
-                </div>
-                <div class="rounded-2xl border border-cyan/20 bg-cyan/10 p-4 backdrop-blur-sm">
-                  <div class="text-xs uppercase tracking-[0.3em] text-cyan/80">Hydration</div>
-                  <div class="mt-2 text-2xl font-bold text-white">0 warnings</div>
-                </div>
-                <div class="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-4 backdrop-blur-sm">
-                  <div class="text-xs uppercase tracking-[0.3em] text-orange-200">Bundle</div>
-                  <div class="mt-2 text-2xl font-bold text-white">&lt; 3KB gz</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <div class="divider"></div>
+                <h1 class="max-w-5xl text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-7xl">
+                  <span class="block">The Responsive Toolkit</span>
+                  <span class="shimmer-text block bg-gradient-to-r from-white via-cyan to-teal bg-clip-text text-transparent">Your Framework Deserves</span>
+                </h1>
 
-      <section class="py-10">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal mb-6 flex items-center justify-between gap-4">
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Works with</p>
-              <h2 class="mt-2 text-2xl font-bold">One responsive brain. Every modern stack.</h2>
-            </div>
-          </div>
-          <div class="marquee reveal rounded-[2rem] border border-white/10 bg-white/5 py-5 shadow-glow">
-            <div class="marquee-track gap-4 px-4">
-              <div class="flex gap-4">
-                <span class="rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-300">React</span>
-                <span class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-300">Vue</span>
-                <span class="rounded-full border border-orange-300/20 bg-orange-300/10 px-4 py-2 text-sm font-semibold text-orange-200">Svelte</span>
-                <span class="rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-2 text-sm font-semibold text-sky-200">Solid</span>
-                <span class="rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-300">Angular</span>
-                <span class="rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-sm font-semibold text-violet-300">Preact</span>
-                <span class="rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-sm font-semibold text-indigo-300">Qwik</span>
-                <span class="rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-200">Lit</span>
-                <span class="rounded-full border border-slate-300/20 bg-slate-300/10 px-4 py-2 text-sm font-semibold text-slate-200">Next.js</span>
-                <span class="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-sm font-semibold text-emerald-200">Nuxt</span>
-                <span class="rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-sm font-semibold text-fuchsia-300">Astro</span>
-                <span class="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-200">Remix</span>
-                <span class="rounded-full border border-orange-200/20 bg-orange-200/10 px-4 py-2 text-sm font-semibold text-orange-100">SvelteKit</span>
-              </div>
-              <div class="flex gap-4" aria-hidden="true">
-                <span class="rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-300">React</span>
-                <span class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-300">Vue</span>
-                <span class="rounded-full border border-orange-300/20 bg-orange-300/10 px-4 py-2 text-sm font-semibold text-orange-200">Svelte</span>
-                <span class="rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-2 text-sm font-semibold text-sky-200">Solid</span>
-                <span class="rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-300">Angular</span>
-                <span class="rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-sm font-semibold text-violet-300">Preact</span>
-                <span class="rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-sm font-semibold text-indigo-300">Qwik</span>
-                <span class="rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-200">Lit</span>
-                <span class="rounded-full border border-slate-300/20 bg-slate-300/10 px-4 py-2 text-sm font-semibold text-slate-200">Next.js</span>
-                <span class="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-sm font-semibold text-emerald-200">Nuxt</span>
-                <span class="rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-sm font-semibold text-fuchsia-300">Astro</span>
-                <span class="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-200">Remix</span>
-                <span class="rounded-full border border-orange-200/20 bg-orange-200/10 px-4 py-2 text-sm font-semibold text-orange-100">SvelteKit</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+                <p id="typewriter-text" class="mt-6 max-w-2xl text-lg font-medium leading-8 text-mist sm:text-xl">
+                  SSR-safe. Zero deps. 8 frameworks. One API.
+                </p>
 
-      <div class="divider"></div>
+                <p class="mt-4 max-w-2xl text-base leading-7 text-mist/90 sm:text-lg">
+                  Replace the duct-taped pile of media hooks, fluid type helpers, and hydration hacks with one premium toolkit for modern responsive systems.
+                </p>
 
-      <section id="why" class="py-20">
-        <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[.9fr_1.1fr] lg:px-8">
-          <div class="reveal">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">The problem</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">5 Packages. 22 KB. Zero Type Safety.</h2>
-            <p class="mt-6 text-lg leading-8 text-mist">
-              Most responsive stacks are still assembled from a bag of unrelated hooks, brittle viewport listeners, and hand-rolled CSS helpers. That means duplicate subscriptions, hydration bugs, and responsive logic scattered across your app.
-            </p>
-            <div class="mt-8 space-y-4 text-mist">
-              <div class="rounded-2xl border border-white/10 bg-white/5 p-5">One package handles media queries. Another does viewport width. A third pretends to do fluid typography. None agree on SSR.</div>
-              <div class="rounded-2xl border border-white/10 bg-white/5 p-5">You lose literal breakpoint inference, ship overlapping logic, and still end up guarding everything with <span class="font-['JetBrains_Mono'] text-cyan">typeof window</span>.</div>
-              <div class="rounded-2xl border border-cyan/20 bg-cyan/10 p-5 text-white">fluidity-ts unifies breakpoints, clamp generation, container queries, prefers-* APIs, and SSR-first rendering into one coherent toolkit.</div>
-            </div>
-          </div>
-
-          <div class="reveal">
-            <div class="noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow">
-              <div class="border-b border-white/10 px-6 py-5">
-                <h3 class="text-lg font-semibold">Responsive stack comparison</h3>
-                <p class="mt-1 text-sm text-mist">What shipping responsive UI usually looks like vs what it should feel like.</p>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="min-w-full text-left text-sm">
-                  <thead class="bg-white/5 text-xs uppercase tracking-[0.25em] text-mist">
-                    <tr>
-                      <th class="px-6 py-4">Capability</th>
-                      <th class="px-4 py-4">fluidity-ts</th>
-                      <th class="px-4 py-4">react-responsive</th>
-                      <th class="px-4 py-4">usehooks-ts</th>
-                      <th class="px-4 py-4">react-use</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-white/10">
-                    <tr>
-                      <td class="px-6 py-4 text-white">SSR-safe first paint</td>
-                      <td class="px-4 py-4 text-emerald-300">✅ Zero mismatch</td>
-                      <td class="px-4 py-4 text-orange-200">⚠️ Client guesswork</td>
-                      <td class="px-4 py-4 text-red-300">❌ Client-only</td>
-                      <td class="px-4 py-4 text-orange-200">⚠️ Patchwork</td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 text-white">Typed breakpoints</td>
-                      <td class="px-4 py-4 text-emerald-300">✅ Literal inference</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 text-white">Fluid typography helpers</td>
-                      <td class="px-4 py-4 text-emerald-300">✅ fluidClamp()</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 text-white">Container query utilities</td>
-                      <td class="px-4 py-4 text-emerald-300">✅ Built in</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                      <td class="px-4 py-4 text-red-300">❌</td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 text-white">Runtime dependencies</td>
-                      <td class="px-4 py-4 text-emerald-300">✅ 0</td>
-                      <td class="px-4 py-4 text-orange-200">⚠️ Extra stack</td>
-                      <td class="px-4 py-4 text-orange-200">⚠️ Hook soup</td>
-                      <td class="px-4 py-4 text-orange-200">⚠️ Kitchen sink</td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 text-white">Framework coverage</td>
-                      <td class="px-4 py-4 text-emerald-300">✅ 8 frameworks</td>
-                      <td class="px-4 py-4 text-red-300">❌ React only</td>
-                      <td class="px-4 py-4 text-red-300">❌ React only</td>
-                      <td class="px-4 py-4 text-red-300">❌ React only</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section id="features" class="py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal max-w-3xl">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Features</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Build Real Responsive UIs</h2>
-            <p class="mt-5 text-lg leading-8 text-mist">Everything your design system needs, delivered in one coherent API surface instead of a bag of hacks.</p>
-          </div>
-
-          <div class="mt-12 grid gap-6 lg:grid-cols-3">
-            <article class="reveal noise rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow">
-              <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Typed Breakpoints</div>
-              <h3 class="text-2xl font-bold">Literal types, everywhere.</h3>
-              <p class="mt-3 text-mist">Autocompletion and safe responsive logic from <span class="text-white">xs</span> to <span class="text-white">2xl</span> without stringly typed breakpoints.</p>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/40 p-4 font-['JetBrains_Mono'] text-sm text-slate-200"><code>const bp = useBreakpoint()
-bp.above(<span class="text-cyan">'lg'</span>)
-bp.between(<span class="text-cyan">'sm'</span>, <span class="text-cyan">'xl'</span>)</code></pre>
-            </article>
-
-            <article class="reveal noise rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
-              <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Fluid Typography</div>
-              <h3 class="text-2xl font-bold">Clamp without calculator tabs.</h3>
-              <p class="mt-3 text-mist">Generate fluid scales at runtime and keep spacing, type, and rhythm synchronized across breakpoints.</p>
-              <div class="mt-5 rounded-2xl border border-white/10 bg-black/40 p-4">
-                <div class="flex items-end gap-2">
-                  <div class="h-8 w-10 rounded-t-lg bg-cyan/30"></div>
-                  <div class="h-12 w-10 rounded-t-lg bg-cyan/50"></div>
-                  <div class="h-16 w-10 rounded-t-lg bg-cyan/70"></div>
-                  <div class="h-20 w-10 rounded-t-lg bg-orange-400/70"></div>
-                </div>
-                <p class="mt-3 font-['JetBrains_Mono'] text-sm text-cyan">clamp(1rem, 0.82rem + 0.62vw, 1.375rem)</p>
-              </div>
-            </article>
-
-            <article class="reveal noise rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
-              <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Container Queries</div>
-              <h3 class="text-2xl font-bold">Responsive by component, not page.</h3>
-              <p class="mt-3 text-mist">Scale cards, panels, and modules based on available space instead of global viewport assumptions.</p>
-              <div class="mt-5 grid grid-cols-[1.2fr_.8fr] gap-3">
-                <div class="rounded-2xl border border-cyan/20 bg-cyan/10 p-4 text-sm text-white">@container card (min-width: 28rem)</div>
-                <div class="rounded-2xl border border-white/10 bg-black/40 p-4 text-right text-sm text-mist">element-aware</div>
-              </div>
-            </article>
-
-            <article class="reveal noise rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
-              <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Dark Mode &amp; Preferences</div>
-              <h3 class="text-2xl font-bold">Modern prefers-* APIs built in.</h3>
-              <p class="mt-3 text-mist">Respect reduced motion, forced colors, contrast, data saver, and color scheme with typed helpers.</p>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/40 p-4 font-['JetBrains_Mono'] text-sm text-slate-200"><code>watchMedia(<span class="text-cyan">'(prefers-color-scheme: dark)'</span>)
-watchMedia(<span class="text-cyan">'(prefers-reduced-motion: reduce)'</span>)</code></pre>
-            </article>
-
-            <article class="reveal noise rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
-              <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">SSR-Safe Hydration</div>
-              <h3 class="text-2xl font-bold">Render the right layout first.</h3>
-              <p class="mt-3 text-mist">Server snapshots, client hints, and React-safe subscriptions keep your first paint stable and warning-free.</p>
-              <div class="mt-5 rounded-2xl border border-white/10 bg-black/40 p-4 text-sm text-mist">
-                <div class="flex items-center justify-between"><span>serverWidth</span><span class="font-['JetBrains_Mono'] text-white">1024</span></div>
-                <div class="mt-3 h-2 rounded-full bg-white/10"><div class="h-2 w-full rounded-full bg-gradient-to-r from-teal to-cyan"></div></div>
-                <div class="mt-3 text-emerald-300">Hydration status: stable</div>
-              </div>
-            </article>
-
-            <article class="reveal noise rounded-[2rem] border border-orange-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
-              <div class="mb-5 inline-flex rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-orange-200">Zero Dependencies</div>
-              <h3 class="text-2xl font-bold">Under 3KB gzipped.</h3>
-              <p class="mt-3 text-mist">No reactive runtime baggage. No CSS parser baggage. No hydration shims. Just responsive primitives that stay out of your way.</p>
-              <div class="mt-5 flex items-center gap-3">
-                <div class="bar h-3 flex-1 rounded-full bg-gradient-to-r from-teal via-cyan to-orange-400"></div>
-                <span class="font-['JetBrains_Mono'] text-sm text-white">2.4 KB</span>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section class="py-20">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            <div class="noise rounded-[2rem] border border-cyan/20 bg-white/5 p-8 text-center shadow-glow">
-              <div class="counter text-5xl font-black text-white" data-counter="8" data-suffix="">0</div>
-              <div class="mt-3 text-sm uppercase tracking-[0.3em] text-mist">Frameworks</div>
-            </div>
-            <div class="noise rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-glow">
-              <div class="counter text-5xl font-black text-white" data-counter="3" data-prefix="&lt; " data-suffix="KB">0</div>
-              <div class="mt-3 text-sm uppercase tracking-[0.3em] text-mist">gzipped</div>
-            </div>
-            <div class="noise rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-glow">
-              <div class="counter text-5xl font-black text-white" data-counter="156">0</div>
-              <div class="mt-3 text-sm uppercase tracking-[0.3em] text-mist">Tests passing</div>
-            </div>
-            <div class="noise rounded-[2rem] border border-orange-400/20 bg-white/5 p-8 text-center shadow-glow">
-              <div class="counter text-5xl font-black text-white" data-counter="0">0</div>
-              <div class="mt-3 text-sm uppercase tracking-[0.3em] text-mist">Runtime deps</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section id="frameworks" class="py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal max-w-3xl">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Framework support</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">One Library. Every Framework.</h2>
-            <p class="mt-5 text-lg leading-8 text-mist">Dedicated adapters where it matters, framework-agnostic primitives everywhere else.</p>
-          </div>
-
-          <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <article class="reveal rounded-[2rem] border border-sky-400/20 bg-white/5 p-6 shadow-glow">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">React</h3><span class="text-sky-300">Hooks</span></div>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-<span class="code-keyword">if</span> (bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)) renderSidebar()</code></pre>
-            </article>
-            <article class="reveal rounded-[2rem] border border-emerald-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 80ms">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">Vue</h3><span class="text-emerald-300">Composable</span></div>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-<span class="code-keyword">if</span> (bp.<span class="code-fn">above</span>(<span class="code-string">'desktop'</span>)) showNav.value = <span class="code-value">true</span></code></pre>
-            </article>
-            <article class="reveal rounded-[2rem] border border-orange-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">Svelte</h3><span class="text-orange-200">Store</span></div>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm"><code><span class="code-keyword">const</span> bp = <span class="code-fn">breakpoint</span>()
-{#if $bp === <span class="code-string">'desktop'</span>}<span class="code-value">...</span>{/if}</code></pre>
-            </article>
-            <article class="reveal rounded-[2rem] border border-sky-300/20 bg-white/5 p-6 shadow-glow">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">Solid</h3><span class="text-sky-200">Signals</span></div>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-&lt;Show when={bp.<span class="code-fn">only</span>(<span class="code-string">'md'</span>)()} /&gt;</code></pre>
-            </article>
-            <article class="reveal rounded-[2rem] border border-red-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 80ms">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">Angular</h3><span class="text-red-300">Signals</span></div>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm"><code><span class="code-keyword">const</span> bp = <span class="code-fn">breakpointSignal</span>()
-<span class="code-keyword">const</span> desktop = bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)</code></pre>
-            </article>
-            <article class="reveal rounded-[2rem] border border-amber-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-bold">Lit</h3><span class="text-amber-200">Controller</span></div>
-              <pre class="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm"><code><span class="code-keyword">private</span> bp = <span class="code-keyword">new</span> <span class="code-type">BreakpointController</span>(<span class="code-keyword">this</span>)
-<span class="code-keyword">return</span> html<span class="code-string">`...`</span></code></pre>
-            </article>
-          </div>
-          <div class="reveal mt-8 flex flex-wrap gap-3 text-sm text-mist">
-            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Also ships: Preact</span>
-            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Qwik</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section class="py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Code example</p>
-              <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Before: dependency soup. After: one cohesive API.</h2>
-            </div>
-            <p class="max-w-xl text-mist">The point is not just fewer bytes. It is fewer ideas to juggle.</p>
-          </div>
-
-          <div class="mt-10 grid gap-6 xl:grid-cols-2">
-            <div class="reveal code-window rounded-[2rem] p-6">
-              <div class="mb-5 flex items-center justify-between">
-                <div>
-                  <p class="text-xs uppercase tracking-[0.3em] text-red-300">Before</p>
-                  <h3 class="mt-2 text-2xl font-bold">Three packages. Four mental models.</h3>
-                </div>
-                <span class="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1 text-xs text-red-200">fragile</span>
-              </div>
-              <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { useMediaQuery } <span class="code-keyword">from</span> <span class="code-string">'react-responsive'</span></span><span class="code-line"><span class="code-keyword">import</span> { useWindowSize } <span class="code-keyword">from</span> <span class="code-string">'react-use'</span></span><span class="code-line"><span class="code-keyword">import</span> { useDebounce } <span class="code-keyword">from</span> <span class="code-string">'usehooks-ts'</span></span><span class="code-line"><span class="code-keyword">import</span> { clampBuilder } <span class="code-keyword">from</span> <span class="code-string">'@/utils/type-scale'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> isDesktop = <span class="code-fn">useMediaQuery</span>({ minWidth: <span class="code-value">1024</span> })</span><span class="code-line"><span class="code-keyword">const</span> { width = <span class="code-value">0</span> } = <span class="code-fn">useWindowSize</span>()</span><span class="code-line"><span class="code-keyword">const</span> debouncedWidth = <span class="code-fn">useDebounce</span>(width, <span class="code-value">120</span>)</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> cardColumns = debouncedWidth &gt; <span class="code-value">768</span> ? <span class="code-value">3</span> : <span class="code-value">1</span></span><span class="code-line"><span class="code-keyword">const</span> fontSize = <span class="code-fn">clampBuilder</span>(<span class="code-value">16</span>, <span class="code-value">22</span>, <span class="code-value">360</span>, <span class="code-value">1280</span>)</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">if</span> (<span class="code-keyword">typeof</span> window === <span class="code-string">'undefined'</span>) {</span><span class="code-line">  <span class="code-keyword">return</span> <span class="code-value">null</span></span><span class="code-line">}</span></code></pre>
-            </div>
-
-            <div class="reveal code-window rounded-[2rem] border-cyan/20 p-6 shadow-glow" style="--delay: 120ms">
-              <div class="mb-5 flex items-center justify-between">
-                <div>
-                  <p class="text-xs uppercase tracking-[0.3em] text-cyan">After</p>
-                  <h3 class="mt-2 text-2xl font-bold">fluidity-ts owns the whole problem.</h3>
-                </div>
-                <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">clean</span>
-              </div>
-              <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span></span><span class="code-line"><span class="code-keyword">import</span> { fluidClamp } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">function</span> <span class="code-fn">Dashboard</span>() {</span><span class="code-line">  <span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()</span><span class="code-line">  <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })</span><span class="code-line">  <span class="code-keyword">const</span> fontSize = <span class="code-fn">fluidClamp</span>({ minPx: <span class="code-value">16</span>, maxPx: <span class="code-value">22</span> })</span><span class="code-line"></span><span class="code-line">  <span class="code-keyword">return</span> (</span><span class="code-line">    &lt;main style={{ fontSize }} data-bp={bp.active}&gt;</span><span class="code-line">      &lt;Grid columns={columns} compact={bp.below(<span class="code-string">'lg'</span>)} /&gt;</span><span class="code-line">    &lt;/main&gt;</span><span class="code-line">  )</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">default</span> () =&gt; (</span><span class="code-line">  &lt;ResponsiveProvider serverWidth={<span class="code-value">1024</span>}&gt;</span><span class="code-line">    &lt;Dashboard /&gt;</span><span class="code-line">  &lt;/ResponsiveProvider&gt;</span><span class="code-line">)</span></code></pre>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section id="benchmarks" class="py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal max-w-3xl">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Benchmarks</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">State Of The Art Performance</h2>
-            <p class="mt-5 text-lg leading-8 text-mist">Small core. Zero runtime dependencies. Premium DX without premium bundle tax.</p>
-          </div>
-
-          <div class="mt-12 grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
-            <div class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow">
-              <table class="min-w-full text-left text-sm">
-                <thead class="bg-white/5 text-xs uppercase tracking-[0.25em] text-mist">
-                  <tr>
-                    <th class="px-6 py-4">Package</th>
-                    <th class="px-6 py-4">Bundle (min+gz)</th>
-                    <th class="px-6 py-4">Notes</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-white/10">
-                  <tr>
-                    <td class="px-6 py-4 font-semibold text-white">fluidity-ts</td>
-                    <td class="px-6 py-4 text-cyan">2.4 KB</td>
-                    <td class="px-6 py-4 text-mist">Core breakpoints, media, preferences, container queries</td>
-                  </tr>
-                  <tr>
-                    <td class="px-6 py-4 text-white">react-responsive</td>
-                    <td class="px-6 py-4 text-orange-200">8.7 KB</td>
-                    <td class="px-6 py-4 text-mist">Viewport hooks only</td>
-                  </tr>
-                  <tr>
-                    <td class="px-6 py-4 text-white">usehooks-ts</td>
-                    <td class="px-6 py-4 text-orange-200">12.1 KB</td>
-                    <td class="px-6 py-4 text-mist">Multiple hooks to combine</td>
-                  </tr>
-                  <tr>
-                    <td class="px-6 py-4 text-white">react-use</td>
-                    <td class="px-6 py-4 text-orange-200">19.4 KB</td>
-                    <td class="px-6 py-4 text-mist">Kitchen-sink utility grab bag</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="reveal rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 120ms">
-              <div class="space-y-5">
-                <div>
-                  <div class="mb-2 flex items-center justify-between text-sm"><span class="text-white">fluidity-ts</span><span class="font-['JetBrains_Mono'] text-cyan">2.4 KB</span></div>
-                  <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[18%] rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div></div>
-                </div>
-                <div>
-                  <div class="mb-2 flex items-center justify-between text-sm"><span class="text-white">react-responsive</span><span class="font-['JetBrains_Mono'] text-orange-200">8.7 KB</span></div>
-                  <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[44%] rounded-full bg-gradient-to-r from-orange-400 to-orange-300"></div></div>
-                </div>
-                <div>
-                  <div class="mb-2 flex items-center justify-between text-sm"><span class="text-white">usehooks-ts</span><span class="font-['JetBrains_Mono'] text-orange-200">12.1 KB</span></div>
-                  <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[61%] rounded-full bg-gradient-to-r from-orange-500 to-orange-300"></div></div>
-                </div>
-                <div>
-                  <div class="mb-2 flex items-center justify-between text-sm"><span class="text-white">react-use</span><span class="font-['JetBrains_Mono'] text-orange-200">19.4 KB</span></div>
-                  <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[94%] rounded-full bg-gradient-to-r from-red-500 to-orange-300"></div></div>
-                </div>
-              </div>
-              <p class="mt-6 text-sm text-mist">fluidity-ts keeps the core small enough to feel invisible while solving a much larger slice of the responsive problem.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section class="py-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal max-w-3xl">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Use cases</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Built for the places responsive code gets hardest.</h2>
-          </div>
-
-          <div class="mt-10">
-            <div class="reveal flex flex-wrap gap-3">
-              <button class="tab-button active rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="ssr">SSR Apps</button>
-              <button class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="design">Design Systems</button>
-              <button class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="libraries">Component Libraries</button>
-              <button class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="dashboards">Dashboards</button>
-            </div>
-
-            <div class="mt-8">
-              <div class="tab-panel active reveal gap-6 rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="ssr">
-                <div>
-                  <h3 class="text-2xl font-bold">SSR Apps</h3>
-                  <p class="mt-4 text-mist">Resolve the best-fit breakpoint on the server, hydrate into the same layout, and stop shipping layout flicker to users.</p>
-                </div>
-                <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { headers } <span class="code-keyword">from</span> <span class="code-string">'next/headers'</span>
-<span class="code-keyword">import</span> { resolveBreakpointFromHints } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/server'</span>
-
-<span class="code-keyword">const</span> { width } = <span class="code-fn">resolveBreakpointFromHints</span>(<span class="code-keyword">await</span> <span class="code-fn">headers</span>())
-<span class="code-keyword">return</span> &lt;ResponsiveProvider serverWidth={width}&gt;...&lt;/ResponsiveProvider&gt;</code></pre>
-              </div>
-
-              <div class="tab-panel gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="design">
-                <div>
-                  <h3 class="text-2xl font-bold">Design Systems</h3>
-                  <p class="mt-4 text-mist">Create a single source of truth for tokens, breakpoints, fluid scales, and accessible motion preferences.</p>
-                </div>
-                <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { fluidScale, responsiveStyle } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
-
-<span class="code-keyword">export</span> <span class="code-keyword">const</span> type = <span class="code-fn">fluidScale</span>([
-  <span class="code-string">'body'</span>, <span class="code-string">'title'</span>, <span class="code-string">'display'</span>
-], { minPx: <span class="code-value">16</span>, maxPx: <span class="code-value">72</span> })
-
-<span class="code-keyword">export</span> <span class="code-keyword">const</span> stack = <span class="code-fn">responsiveStyle</span>(system, <span class="code-string">'gap'</span>, { xs: <span class="code-string">'1rem'</span>, lg: <span class="code-string">'2rem'</span> })</code></pre>
-              </div>
-
-              <div class="tab-panel gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="libraries">
-                <div>
-                  <h3 class="text-2xl font-bold">Component Libraries</h3>
-                  <p class="mt-4 text-mist">Ship primitives that adapt to their containers and remain type-safe across React, Vue, Svelte, and Lit wrappers.</p>
-                </div>
-                <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { containerQuery, defineContainer } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
-
-<span class="code-keyword">export</span> <span class="code-keyword">const</span> cardRoot = {
-  ...<span class="code-fn">defineContainer</span>(<span class="code-string">'card'</span>),
-  ...<span class="code-fn">containerQuery</span>(<span class="code-string">'card'</span>, { minWidth: <span class="code-value">420</span> }, {
-    gridTemplateColumns: <span class="code-string">'1.4fr 1fr'</span>
-  })
-}</code></pre>
-              </div>
-
-              <div class="tab-panel gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="dashboards">
-                <div>
-                  <h3 class="text-2xl font-bold">Dashboards</h3>
-                  <p class="mt-4 text-mist">Let data-heavy interfaces collapse, reorder, and simplify by breakpoint without hand-maintaining resize listeners.</p>
-                </div>
-                <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })
-<span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-
-&lt;DataGrid
-  dense={bp.<span class="code-fn">below</span>(<span class="code-string">'md'</span>)}
-  columns={columns}
-  showSidebar={bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)}
-/&gt;</code></pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section class="py-20">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">FAQ</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Questions teams ask before they rip out the old stack.</h2>
-          </div>
-
-          <div class="mt-12 space-y-4">
-            <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow">
-              <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
-                <span class="text-lg font-semibold text-white">Is fluidity-ts actually SSR-safe?</span>
-                <span class="faq-icon text-2xl text-mist">+</span>
-              </button>
-              <div class="faq-content">
-                <p class="pt-4 text-mist">Yes. The library is designed around server snapshots and server-provided viewport hints so your first render matches what hydrates on the client.</p>
-              </div>
-            </div>
-            <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 80ms">
-              <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
-                <span class="text-lg font-semibold text-white">Will bundlers tree-shake what I do not use?</span>
-                <span class="faq-icon text-2xl text-mist">+</span>
-              </button>
-              <div class="faq-content">
-                <p class="pt-4 text-mist">Yes. The package exposes focused entry points and marks side effects as false, so bundlers can keep the footprint lean.</p>
-              </div>
-            </div>
-            <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 160ms">
-              <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
-                <span class="text-lg font-semibold text-white">How hard is migration from existing responsive hooks?</span>
-                <span class="faq-icon text-2xl text-mist">+</span>
-              </button>
-              <div class="faq-content">
-                <p class="pt-4 text-mist">Usually straightforward. Replace media-query hooks first, then consolidate clamp helpers, container logic, and SSR breakpoint handling into the same API surface.</p>
-              </div>
-            </div>
-            <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 240ms">
-              <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
-                <span class="text-lg font-semibold text-white">Do I get full TypeScript support across frameworks?</span>
-                <span class="faq-icon text-2xl text-mist">+</span>
-              </button>
-              <div class="faq-content">
-                <p class="pt-4 text-mist">That is the point. Breakpoint keys, helpers, utilities, and adapters are designed to preserve types instead of erasing them at the edges.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="divider"></div>
-
-      <section id="cta" class="py-24">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div class="reveal noise overflow-hidden rounded-[2.5rem] border border-cyan/20 bg-gradient-to-br from-cyan/10 via-white/5 to-orange-500/10 p-8 shadow-glow sm:p-10 lg:p-14">
-            <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Get started</p>
-                <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Start Building Responsive UIs Today</h2>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-mist">Ship the right layout on the first paint, keep the bundle tiny, and stop wiring five packages together to solve one problem.</p>
-                <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-stretch">
                   <button
                     type="button"
                     data-copy="npm install fluidity-ts"
-                    class="inline-flex items-center justify-between gap-4 rounded-2xl border border-cyan/20 bg-black/50 px-5 py-4 text-left shadow-glow transition hover:-translate-y-1"
+                    data-magnetic
+                    class="group noise inline-flex items-center justify-between gap-4 rounded-[1.5rem] border border-cyan/20 bg-white/5 px-5 py-4 text-left shadow-glow transition duration-300 hover:-translate-y-1 hover:border-cyan/40 hover:bg-white/10"
+                    aria-label="Copy npm install command"
                   >
-                    <span class="font-['JetBrains_Mono'] text-cyan">npm install fluidity-ts</span>
-                    <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white">Copy</span>
+                    <span class="min-w-0">
+                      <span class="block text-[11px] font-semibold uppercase tracking-[0.32em] text-mist">Install</span>
+                      <span class="mt-1 block font-['JetBrains_Mono'] text-sm text-cyan sm:text-base">npm install fluidity-ts</span>
+                    </span>
+                    <span data-copy-label class="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition group-hover:border-cyan/30 group-hover:text-cyan">Copy</span>
                   </button>
-                  <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-orange-400/30 bg-orange-500 px-5 py-4 text-sm font-semibold text-white transition hover:-translate-y-1 hover:bg-orange-400">Open npm</a>
+
+                  <a
+                    href="https://github.com/Fluidiety/fluidity-ts"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="View the fluidity-ts GitHub repository in a new tab"
+                    data-magnetic
+                    class="inline-flex items-center justify-center rounded-[1.5rem] border border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.28)] transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:bg-white/10"
+                  >
+                    View on GitHub
+                  </a>
+                </div>
+
+                <div class="mt-10 flex flex-wrap items-center gap-3 text-sm text-mist">
+                  <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">Type-safe breakpoints</span>
+                  <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">Zero hydration mismatch</span>
+                  <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">Container queries + fluid clamp</span>
                 </div>
               </div>
-              <div class="space-y-3">
-                <img alt="GitHub stars" src="https://img.shields.io/github/stars/Fluidiety/fluidity-ts?style=for-the-badge&label=GitHub%20Stars&color=22D3EE" />
-                <img alt="npm downloads" src="https://img.shields.io/npm/dm/fluidity-ts?style=for-the-badge&label=npm%20downloads&color=F97316" />
+
+              <div class="reveal" style="--delay: 180ms">
+                <div class="hero-grid noise relative min-h-[420px] overflow-hidden rounded-[2rem] border border-cyan/20 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.2),_rgba(8,12,24,0.92)_38%,_rgba(2,6,23,0.98)_100%)] p-5 shadow-glow sm:p-7">
+                  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,_rgba(34,211,238,0.14),_transparent_42%)]"></div>
+                  <div class="absolute inset-x-5 top-5 z-10 flex flex-wrap gap-3 text-[11px] font-medium uppercase tracking-[0.25em] text-mist sm:inset-x-7 sm:top-7">
+                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">320px xs</div>
+                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">640px sm</div>
+                    <div class="rounded-full border border-cyan/30 bg-cyan/10 px-3 py-2 text-cyan shadow-[0_0_24px_rgba(34,211,238,0.18)] backdrop-blur-sm">768px md</div>
+                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">1024px lg</div>
+                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">1440px xl</div>
+                  </div>
+
+                  <div class="absolute inset-x-5 top-24 z-10 rounded-[1.5rem] border border-white/10 bg-black/45 px-4 py-3 font-['JetBrains_Mono'] text-xs text-mist shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md sm:inset-x-7">
+                    <div class="flex items-center justify-between gap-3">
+                      <span class="text-cyan">useBreakpoint()</span>
+                      <span>active: <span class="text-white">&quot;md&quot;</span></span>
+                    </div>
+                    <div class="mt-3 h-px w-full bg-gradient-to-r from-transparent via-cyan/40 to-transparent"></div>
+                    <div class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-[10px] uppercase tracking-[0.28em] text-mist/80">
+                      <span>status</span>
+                      <span class="text-cyan">synced</span>
+                      <span>match</span>
+                      <span class="text-white">768px ≤ viewport &lt; 1024px</span>
+                    </div>
+                  </div>
+
+                  <div class="bp-line" style="left: 14%; height: 38%; animation-delay: 0s"><span>xs</span></div>
+                  <div class="bp-line" style="left: 32%; height: 52%; animation-delay: 0.6s"><span>sm</span></div>
+                  <div class="bp-line" style="left: 50%; height: 68%; animation-delay: 1.2s"><span>md</span></div>
+                  <div class="bp-line" style="left: 68%; height: 82%; animation-delay: 1.8s"><span>lg</span></div>
+                  <div class="bp-line" style="left: 86%; height: 92%; animation-delay: 2.4s"><span>xl</span></div>
+
+                  <div class="bp-wave"></div>
+                  <div class="scanline"></div>
+                  <div class="float-orb one"></div>
+                  <div class="float-orb two"></div>
+                  <div class="float-orb three"></div>
+
+                  <div class="absolute inset-x-5 bottom-6 z-10 grid gap-4 sm:inset-x-7 sm:grid-cols-3">
+                    <div class="rounded-[1.5rem] border border-white/10 bg-black/45 p-4 backdrop-blur-sm">
+                      <div class="text-xs uppercase tracking-[0.3em] text-mist">Viewport</div>
+                      <div class="mt-2 text-2xl font-bold text-white">768 × 1024</div>
+                    </div>
+                    <div class="rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-4 backdrop-blur-sm">
+                      <div class="text-xs uppercase tracking-[0.3em] text-cyan">Hydration</div>
+                      <div class="mt-2 text-2xl font-bold text-white">0 warnings</div>
+                    </div>
+                    <div class="rounded-[1.5rem] border border-flame/20 bg-flame/10 p-4 backdrop-blur-sm">
+                      <div class="text-xs uppercase tracking-[0.3em] text-flame">Bundle</div>
+                      <div class="mt-2 text-2xl font-bold text-white">&lt; 3KB gz</div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+            </div>
+
+          </section>
+
+          <div class="divider"></div>
+
+    <section class="reveal py-20">
+      <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:px-6 lg:px-8">
+        <div class="reveal">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Works with</p>
+          <h2 class="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
+            One responsive brain. Every modern stack.
+          </h2>
+        </div>
+
+        <div class="marquee reveal rounded-[2rem] border border-white/10 bg-white/5 p-4 shadow-glow sm:p-5">
+          <div class="marquee-track items-center gap-3">
+            <div class="flex min-w-max shrink-0 items-center gap-3 pr-3">
+              <span class="whitespace-nowrap rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-400">React</span>
+              <span class="whitespace-nowrap rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-400">Vue</span>
+              <span class="whitespace-nowrap rounded-full border border-orange-300/20 bg-orange-300/10 px-4 py-2 text-sm font-semibold text-orange-300">Svelte</span>
+              <span class="whitespace-nowrap rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-2 text-sm font-semibold text-sky-300">Solid</span>
+              <span class="whitespace-nowrap rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-400">Angular</span>
+              <span class="whitespace-nowrap rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-sm font-semibold text-violet-400">Preact</span>
+              <span class="whitespace-nowrap rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-sm font-semibold text-indigo-400">Qwik</span>
+              <span class="whitespace-nowrap rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-300">Lit</span>
+              <span class="whitespace-nowrap rounded-full border border-slate-300/20 bg-slate-300/10 px-4 py-2 text-sm font-semibold text-slate-300">Next.js</span>
+              <span class="whitespace-nowrap rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-sm font-semibold text-emerald-300">Nuxt</span>
+              <span class="whitespace-nowrap rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-sm font-semibold text-fuchsia-400">Astro</span>
+              <span class="whitespace-nowrap rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-300">Remix</span>
+              <span class="whitespace-nowrap rounded-full border border-orange-200/20 bg-orange-200/10 px-4 py-2 text-sm font-semibold text-orange-200">SvelteKit</span>
+            </div>
+
+            <div aria-hidden="true" class="flex min-w-max shrink-0 items-center gap-3 pr-3">
+              <span class="whitespace-nowrap rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-400">React</span>
+              <span class="whitespace-nowrap rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-400">Vue</span>
+              <span class="whitespace-nowrap rounded-full border border-orange-300/20 bg-orange-300/10 px-4 py-2 text-sm font-semibold text-orange-300">Svelte</span>
+              <span class="whitespace-nowrap rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-2 text-sm font-semibold text-sky-300">Solid</span>
+              <span class="whitespace-nowrap rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-400">Angular</span>
+              <span class="whitespace-nowrap rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-sm font-semibold text-violet-400">Preact</span>
+              <span class="whitespace-nowrap rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-sm font-semibold text-indigo-400">Qwik</span>
+              <span class="whitespace-nowrap rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-300">Lit</span>
+              <span class="whitespace-nowrap rounded-full border border-slate-300/20 bg-slate-300/10 px-4 py-2 text-sm font-semibold text-slate-300">Next.js</span>
+              <span class="whitespace-nowrap rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-sm font-semibold text-emerald-300">Nuxt</span>
+              <span class="whitespace-nowrap rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-sm font-semibold text-fuchsia-400">Astro</span>
+              <span class="whitespace-nowrap rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-300">Remix</span>
+              <span class="whitespace-nowrap rounded-full border border-orange-200/20 bg-orange-200/10 px-4 py-2 text-sm font-semibold text-orange-200">SvelteKit</span>
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <footer class="border-t border-white/10 py-10">
-      <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 text-sm text-mist sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="divider"></div>
+
+    <section class="reveal py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p class="reveal text-center text-sm uppercase tracking-[0.35em] text-mist">Trusted by developers building with</p>
+
+        <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 text-center">
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Vercel</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Netlify</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Shopify</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Linear</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Supabase</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Stripe</span>
+          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Figma</span>
+        </div>
+
+        <div class="reveal mx-auto mt-10 max-w-2xl border-l-2 border-cyan/30 pl-6">
+          <blockquote class="reveal text-left italic text-mist">
+            “Finally, one responsive API that works the same whether I'm in Next.js or Astro. The TypeScript inference alone sold our team.”
+          </blockquote>
+          <p class="reveal mt-4 text-left text-sm text-mist/80">— Engineering Lead, Series B Startup</p>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section id="why" class="reveal py-20">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[.9fr_1.1fr] lg:px-8">
+        <div class="reveal max-w-2xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">The problem</p>
+          <h2 class="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">5 Packages. 22 KB. Zero Type Safety.</h2>
+          <p class="mt-6 text-lg leading-8 text-mist">
+            Most responsive stacks are still stitched together from unrelated hooks, brittle viewport listeners, and hand-rolled CSS helpers. You pay for the same signal multiple times, fight hydration bugs on first paint, and end up with responsive logic scattered across components, styles, and runtime guards.
+          </p>
+
+          <div class="mt-8 space-y-4 text-base leading-7 text-mist">
+            <article class="noise rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow">
+              One package handles media queries. Another does viewport width. A third pretends to do fluid typography. None agree on SSR.
+            </article>
+            <article class="noise rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow">
+              You lose literal breakpoint inference, ship overlapping logic, and still end up guarding everything with <span class="font-['JetBrains_Mono'] text-cyan">typeof window</span>.
+            </article>
+            <article class="noise rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-5 text-white shadow-glow">
+              fluidity-ts unifies breakpoints, clamp generation, container queries, prefers-* APIs, and SSR-first rendering into one coherent toolkit.
+            </article>
+          </div>
+        </div>
+
+        <div class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" data-tilt>
+      <div class="border-b border-white/10 px-6 py-5">
+        <h3 class="text-lg font-semibold text-white">Responsive stack comparison</h3>
+        <p class="mt-1 text-sm text-mist">What shipping responsive UI usually looks like vs what it should feel like.</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-[56rem] w-full text-left text-sm">
+          <thead class="bg-white/5 text-xs uppercase tracking-[0.24em] text-mist">
+            <tr>
+              <th class="px-6 py-4 font-semibold">Capability</th>
+              <th class="border-x border-cyan/20 bg-cyan/10 px-4 py-4 font-semibold text-white">fluidity-ts</th>
+              <th class="px-4 py-4 font-semibold">react-responsive</th>
+              <th class="px-4 py-4 font-semibold">usehooks-ts</th>
+              <th class="px-4 py-4 font-semibold">react-use</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            <tr>
+              <td class="px-6 py-4 text-white/90">SSR-safe first paint</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Zero mismatch</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client guesswork</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌ Client-only</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Patchwork</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white/90">Typed breakpoints</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Literal inference</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white/90">Fluid typography helpers</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ fluidClamp()</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white/90">Container query utilities</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Built in</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white/90">Runtime dependencies</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 0</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Extra stack</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Hook soup</span></td>
+              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Kitchen sink</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 text-white/90">Framework coverage</td>
+              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 8 frameworks</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+              <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section id="features" class="reveal py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Features</p>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Build Real Responsive UIs</h2>
+          <p class="mt-5 text-lg leading-8 text-mist">Everything your team needs in one coherent API for breakpoints, fluid scales, preferences, container logic, and SSR-safe rendering.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-3">
+          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
+            <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Typed Breakpoints</div>
+            <h3 class="text-2xl font-bold">Literal types, everywhere.</h3>
+            <p class="mt-3 text-mist">Autocompletion and safe layout decisions from <span class="text-white">xs</span> to <span class="text-white">2xl</span>, without fragile stringly-typed conditions.</p>
+            <div class="mt-5 rounded-[1.5rem] border border-cyan/20 bg-black/40 p-4">
+              <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="text-cyan">const</span> bp = <span class="text-white">useBreakpoint</span>()
+    bp.active <span class="text-white">//</span> <span class="text-cyan">'md'</span>
+    bp.above(<span class="text-cyan">'lg'</span>)
+    bp.between(<span class="text-cyan">'sm'</span>, <span class="text-cyan">'xl'</span>)</code></pre>
+            </div>
+          </article>
+
+          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
+            <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Fluid Typography</div>
+            <h3 class="text-2xl font-bold">Clamp without calculator tabs.</h3>
+            <p class="mt-3 text-mist">Build fluid scales for type and spacing with a single utility, then reuse the same responsive rhythm everywhere.</p>
+            <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-black/40 p-4">
+              <div class="flex items-end gap-2">
+                <div class="flex-1 rounded-t-2xl bg-cyan/25 px-2 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan" style="height: 3.25rem">sm</div>
+                <div class="flex-1 rounded-t-2xl bg-cyan/40 px-2 py-5 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan" style="height: 4.25rem">md</div>
+                <div class="flex-1 rounded-t-2xl bg-cyan/60 px-2 py-7 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white" style="height: 5.25rem">lg</div>
+                <div class="flex-1 rounded-t-2xl bg-orange-400/70 px-2 py-9 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white" style="height: 6.25rem">xl</div>
+              </div>
+              <p class="mt-4 font-['JetBrains_Mono'] text-xs leading-6 text-cyan">fluidClamp({ minPx: 16, maxPx: 24, minVwPx: 360, maxVwPx: 1440 })</p>
+              <p class="font-['JetBrains_Mono'] text-xs leading-6 text-mist">→ clamp(1rem, 0.83rem + 0.74vw, 1.5rem)</p>
+            </div>
+          </article>
+
+          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
+            <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Container Queries</div>
+            <h3 class="text-2xl font-bold">Responsive by component, not page.</h3>
+            <p class="mt-3 text-mist">Let cards, sidebars, and modules adapt to the space they actually get instead of whatever the viewport happens to be.</p>
+            <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-black/40 p-4">
+              <div class="rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-3">
+                <div class="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan">
+                  <span>@container card</span>
+                  <span>42rem</span>
+                </div>
+                <div class="mt-3 grid grid-cols-[1.2fr_.8fr] gap-3">
+                  <div class="rounded-[1.5rem] border border-cyan/20 bg-white/5 px-3 py-6 text-sm text-white">media block</div>
+                  <div class="rounded-[1.5rem] border border-white/10 bg-black/50 px-3 py-6 text-center text-sm text-mist">details</div>
+                </div>
+              </div>
+              <div class="mt-3 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-mist">element-aware layout</div>
+            </div>
+          </article>
+
+          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
+            <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Dark Mode &amp; Preferences</div>
+            <h3 class="text-2xl font-bold">Modern prefers-* APIs built in.</h3>
+            <p class="mt-3 text-mist">Read system color scheme, motion, contrast, and other user preferences through one typed media layer.</p>
+            <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-black/40 p-4">
+              <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-color-scheme: dark)'</span>)
+    <span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-reduced-motion: reduce)'</span>)
+    <span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-contrast: more)'</span>)</code></pre>
+            </div>
+          </article>
+
+          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
+            <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">SSR-Safe Hydration</div>
+            <h3 class="text-2xl font-bold">Render the right layout first.</h3>
+            <p class="mt-3 text-mist">Server snapshots and client-safe subscriptions help the first paint match the final responsive state without layout flashes.</p>
+            <div class="mt-5 rounded-[1.5rem] border border-cyan/20 bg-black/40 p-4">
+              <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.24em] text-mist">
+                <span>Hydration</span>
+                <span class="text-emerald-300">stable</span>
+              </div>
+              <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
+                <div class="h-full w-full rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div>
+              </div>
+              <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/5 px-3 py-3 text-mist">serverWidth <span class="mt-1 block font-['JetBrains_Mono'] text-white">1024px</span></div>
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/5 px-3 py-3 text-mist">clientMatch <span class="mt-1 block font-['JetBrains_Mono'] text-cyan">true</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-flame/20 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
+            <div class="mb-5 inline-flex rounded-full border border-flame/20 bg-flame/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-flame">Zero Dependencies</div>
+            <h3 class="text-2xl font-bold">Under 3KB gzipped.</h3>
+            <p class="mt-3 text-mist">No runtime baggage, no CSS parser overhead, and no adapter lock-in—just the responsive primitives your UI actually needs.</p>
+            <div class="mt-5 rounded-[1.5rem] border border-flame/20 bg-black/40 p-4">
+              <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-mist">
+                <span>core bundle</span>
+                <span class="text-flame">2.4 KB gz</span>
+              </div>
+              <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
+                <div class="h-full w-[80%] rounded-full bg-gradient-to-r from-cyan via-teal to-flame"></div>
+              </div>
+              <div class="mt-4 flex items-center justify-between font-['JetBrains_Mono'] text-xs text-mist">
+                <span>0 KB</span>
+                <span class="text-flame">3 KB limit</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section class="reveal relative overflow-hidden py-24">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.05),transparent_72%)]"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan/25 to-transparent"></div>
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
+          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 0ms">
+            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
+            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
+            <div class="relative flex min-h-[11rem] items-center justify-center">
+              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
+              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
+              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
+              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="8" data-prefix="" data-suffix="">0</div>
+            </div>
+            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">Frameworks</div>
+          </article>
+
+          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 80ms">
+            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
+            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
+            <div class="relative flex min-h-[11rem] items-center justify-center">
+              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
+              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
+              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
+              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="3" data-prefix="&lt; " data-suffix="KB">0</div>
+            </div>
+            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">gzipped</div>
+          </article>
+
+          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 160ms">
+            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
+            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
+            <div class="relative flex min-h-[11rem] items-center justify-center">
+              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
+              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
+              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
+              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="156" data-prefix="" data-suffix="">0</div>
+            </div>
+            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">Tests passing</div>
+          </article>
+
+          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 240ms">
+            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
+            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
+            <div class="relative flex min-h-[11rem] items-center justify-center">
+              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
+              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
+              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
+              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="0" data-prefix="" data-suffix="">0</div>
+            </div>
+            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">Runtime deps</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section id="frameworks" class="reveal py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Framework support</p>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">One Library. Every Framework.</h2>
+          <p class="mt-5 text-lg leading-8 text-mist">From hooks and composables to signals, stores, and controllers, fluidity-ts feels native in every modern UI stack.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <article data-tilt class="reveal rounded-[2rem] border border-sky-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl font-bold">React</h3>
+              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">Hooks</span>
+            </div>
+            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
+    <span class="code-keyword">const</span> desktopNav = bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
+
+    <span class="code-keyword">return</span> desktopNav ? <span class="code-value">&lt;Sidebar /&gt;</span> : <span class="code-value">null</span></code></pre>
+          </article>
+
+          <article data-tilt class="reveal rounded-[2rem] border border-emerald-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 80ms">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl font-bold">Vue</h3>
+              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Composable</span>
+            </div>
+            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
+    <span class="code-keyword">const</span> state = <span class="code-fn">reactive</span>({ desktop: bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>) })
+
+    <span class="code-keyword">return</span> { state }</code></pre>
+          </article>
+
+          <article data-tilt class="reveal rounded-[2rem] border border-orange-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl font-bold">Svelte</h3>
+              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Store</span>
+            </div>
+            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">breakpoint</span>()
+
+    {#if $bp === <span class="code-string">'lg'</span>}
+      <span class="code-value">&lt;Sidebar /&gt;</span>
+    {/if}</code></pre>
+          </article>
+
+          <article data-tilt class="reveal rounded-[2rem] border border-sky-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 240ms">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl font-bold">Solid</h3>
+              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-sky-300">Signals</span>
+            </div>
+            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
+
+    &lt;<span class="code-type">Show</span> when={bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)()}&gt;
+      <span class="code-value">&lt;Sidebar /&gt;</span>
+    &lt;/<span class="code-type">Show</span>&gt;</code></pre>
+          </article>
+
+          <article data-tilt class="reveal rounded-[2rem] border border-red-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 320ms">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl font-bold">Angular</h3>
+              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-red-400">Signals</span>
+            </div>
+            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">readonly</span> bp = <span class="code-fn">breakpointSignal</span>()
+    <span class="code-keyword">readonly</span> desktop = <span class="code-keyword">this</span>.bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
+
+    <span class="code-keyword">protected</span> sidebar = <span class="code-value">true</span></code></pre>
+          </article>
+
+          <article data-tilt class="reveal rounded-[2rem] border border-amber-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 400ms">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl font-bold">Lit</h3>
+              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">Controller</span>
+            </div>
+            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">private</span> bp = <span class="code-keyword">new</span> <span class="code-type">BreakpointController</span>(<span class="code-keyword">this</span>)
+
+    <span class="code-fn">render</span>() {
+      <span class="code-keyword">return</span> <span class="code-fn">html</span>`&lt;app-shell ?desktop=${this.bp.above('lg')}&gt;&lt;/app-shell&gt;`
+    }</code></pre>
+          </article>
+        </div>
+
+        <div class="reveal mt-8 flex flex-wrap gap-3 text-sm text-mist" style="--delay: 480ms">
+          <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Also ships: Preact</span>
+          <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Qwik</span>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section class="reveal py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div class="flex items-center gap-3 text-lg font-semibold text-white">
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Code example</p>
+            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Before: dependency soup. After: one cohesive API.</h2>
+          </div>
+          <p class="max-w-xl text-mist">The point is not just fewer bytes. It is fewer ideas to juggle.</p>
+        </div>
+
+        <div class="mt-10 grid gap-6 xl:grid-cols-2">
+          <div class="reveal code-window rounded-[2rem] p-6" style="--delay: 0ms">
+            <div class="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-red-300">Before</p>
+                <h3 class="mt-2 text-2xl font-bold">Three packages. Four mental models.</h3>
+              </div>
+              <span class="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1 text-xs text-red-200">fragile</span>
+            </div>
+
+            <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { useMediaQuery } <span class="code-keyword">from</span> <span class="code-string">'react-responsive'</span></span><span class="code-line"><span class="code-keyword">import</span> { useWindowSize } <span class="code-keyword">from</span> <span class="code-string">'react-use'</span></span><span class="code-line"><span class="code-keyword">import</span> { useDebounce } <span class="code-keyword">from</span> <span class="code-string">'usehooks-ts'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> isDesktop = <span class="code-fn">useMediaQuery</span>({ minWidth: <span class="code-value">1024</span> })</span><span class="code-line"><span class="code-keyword">const</span> { width = <span class="code-value">0</span> } = <span class="code-fn">useWindowSize</span>()</span><span class="code-line"><span class="code-keyword">const</span> stableWidth = <span class="code-fn">useDebounce</span>(width, <span class="code-value">120</span>)</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> debounce = (fn, ms) =&gt; {</span><span class="code-line">  <span class="code-keyword">let</span> id</span><span class="code-line">  <span class="code-keyword">return</span> (...args) =&gt; {</span><span class="code-line">    clearTimeout(id)</span><span class="code-line">    id = setTimeout(() =&gt; <span class="code-fn">fn</span>(...args), ms)</span><span class="code-line">  }</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">if</span> (<span class="code-keyword">typeof</span> window === <span class="code-string">'undefined'</span>) <span class="code-keyword">return</span> <span class="code-value">null</span></span><span class="code-line"><span class="code-keyword">const</span> columns = stableWidth &gt; <span class="code-value">900</span> ? <span class="code-value">4</span> : isDesktop ? <span class="code-value">3</span> : <span class="code-value">1</span></span></code></pre>
+          </div>
+
+          <div class="reveal code-window rounded-[2rem] border-cyan/20 p-6 shadow-glow" style="--delay: 160ms">
+            <div class="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-cyan">After</p>
+                <h3 class="mt-2 text-2xl font-bold">fluidity-ts owns the whole problem.</h3>
+              </div>
+              <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">clean</span>
+            </div>
+
+            <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span></span><span class="code-line"><span class="code-keyword">import</span> { fluidClamp } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">function</span> <span class="code-fn">Dashboard</span>() {</span><span class="code-line">  <span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()</span><span class="code-line">  <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })</span><span class="code-line">  <span class="code-keyword">const</span> titleSize = <span class="code-fn">fluidClamp</span>({ minPx: <span class="code-value">18</span>, maxPx: <span class="code-value">28</span> })</span><span class="code-line"></span><span class="code-line">  <span class="code-keyword">return</span> &lt;Grid columns={columns} dense={bp.below(<span class="code-string">'lg'</span>)} style={{ fontSize: titleSize }} /&gt;</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">default</span> <span class="code-keyword">function</span> <span class="code-fn">App</span>() {</span><span class="code-line">  <span class="code-keyword">return</span> (</span><span class="code-line">    &lt;ResponsiveProvider serverWidth={<span class="code-value">1024</span>}&gt;</span><span class="code-line">      &lt;Dashboard /&gt;</span><span class="code-line">    &lt;/ResponsiveProvider&gt;</span><span class="code-line">  )</span><span class="code-line">}</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section id="benchmarks" class="reveal py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal max-w-3xl" style="--delay: 0ms">
+          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Benchmarks</p>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">State Of The Art Performance</h2>
+          <p class="mt-5 text-lg leading-8 text-mist">A smaller bundle is only impressive if it still solves the real responsive workload. fluidity-ts stays lean while covering far more than viewport-only helpers.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
+          <div data-tilt class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" style="--delay: 80ms">
+            <table class="min-w-full text-left text-sm">
+              <caption class="sr-only">Bundle size comparison between fluidity-ts and alternative responsive packages</caption>
+              <thead class="bg-white/5 text-xs uppercase tracking-[0.25em] text-mist">
+                <tr>
+                  <th class="px-6 py-4 font-semibold">Package</th>
+                  <th class="px-6 py-4 font-semibold">Bundle min+gz</th>
+                  <th class="px-6 py-4 font-semibold">Notes</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/10">
+                <tr class="bg-gradient-to-r from-cyan/15 via-cyan/8 to-transparent">
+                  <td class="px-6 py-5">
+                    <div class="flex flex-wrap items-center gap-3">
+                      <span class="font-semibold text-white">fluidity-ts</span>
+                      <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan">Winner</span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5 font-['JetBrains_Mono'] text-cyan">2.4 KB</td>
+                  <td class="px-6 py-5 text-mist">Core breakpoints, media, preferences, container queries</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 text-white">react-responsive</td>
+                  <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">8.7 KB</td>
+                  <td class="px-6 py-4 text-mist">Viewport hooks only</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 text-white">usehooks-ts</td>
+                  <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">12.1 KB</td>
+                  <td class="px-6 py-4 text-mist">Multiple hooks to combine</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 text-white">react-use</td>
+                  <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">19.4 KB</td>
+                  <td class="px-6 py-4 text-mist">Kitchen-sink utility grab bag</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="reveal rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
+            <div class="space-y-5">
+              <div class="reveal" style="--delay: 240ms">
+                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+                  <span class="text-white">fluidity-ts</span>
+                  <span class="font-['JetBrains_Mono'] text-cyan">2.4 KB</span>
+                </div>
+                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[18%] rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div></div>
+              </div>
+              <div class="reveal" style="--delay: 320ms">
+                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+                  <span class="text-white">react-responsive</span>
+                  <span class="font-['JetBrains_Mono'] text-orange-200">8.7 KB</span>
+                </div>
+                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[44%] rounded-full bg-gradient-to-r from-orange-400 to-orange-300"></div></div>
+              </div>
+              <div class="reveal" style="--delay: 400ms">
+                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+                  <span class="text-white">usehooks-ts</span>
+                  <span class="font-['JetBrains_Mono'] text-orange-200">12.1 KB</span>
+                </div>
+                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[61%] rounded-full bg-gradient-to-r from-orange-500 to-orange-300"></div></div>
+              </div>
+              <div class="reveal" style="--delay: 480ms">
+                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+                  <span class="text-white">react-use</span>
+                  <span class="font-['JetBrains_Mono'] text-orange-200">19.4 KB</span>
+                </div>
+                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[94%] rounded-full bg-gradient-to-r from-red-500 to-orange-300"></div></div>
+              </div>
+            </div>
+
+            <p class="reveal mt-6 text-sm leading-7 text-mist" style="--delay: 560ms">fluidity-ts keeps the core small enough to feel invisible while solving a much larger slice of the responsive problem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section class="reveal py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Use cases</p>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Built for the places responsive code gets hardest.</h2>
+        </div>
+
+        <div class="reveal mt-10 flex flex-wrap gap-3" role="tablist" aria-label="Use case tabs">
+          <button id="tab-ssr" class="tab-button active rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="ssr" role="tab" aria-selected="true" aria-controls="panel-ssr" tabindex="0" type="button">SSR Apps</button>
+          <button id="tab-design" class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="design" role="tab" aria-selected="false" aria-controls="panel-design" tabindex="-1" type="button">Design Systems</button>
+          <button id="tab-libraries" class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="libraries" role="tab" aria-selected="false" aria-controls="panel-libraries" tabindex="-1" type="button">Component Libraries</button>
+          <button id="tab-dashboards" class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="dashboards" role="tab" aria-selected="false" aria-controls="panel-dashboards" tabindex="-1" type="button">Dashboards</button>
+        </div>
+
+        <div class="mt-8">
+          <div id="panel-ssr" class="tab-panel active reveal grid gap-6 rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="ssr" role="tabpanel" aria-labelledby="tab-ssr">
+            <div>
+              <h3 class="text-2xl font-bold">SSR Apps</h3>
+              <p class="mt-4 text-mist">Read viewport hints during server rendering, choose the right breakpoint before the first paint, and hydrate into the same layout without flicker.</p>
+            </div>
+            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { headers } <span class="code-keyword">from</span> <span class="code-string">'next/headers'</span>
+    <span class="code-keyword">import</span> { resolveBreakpointFromHints } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/server'</span>
+
+    <span class="code-keyword">const</span> requestHeaders = <span class="code-keyword">await</span> <span class="code-fn">headers</span>()
+    <span class="code-keyword">const</span> { width, breakpoint } = <span class="code-fn">resolveBreakpointFromHints</span>(requestHeaders)
+
+    <span class="code-keyword">return</span> &lt;ResponsiveProvider serverWidth={width} initialBreakpoint={breakpoint}&gt;...&lt;/ResponsiveProvider&gt;</code></pre>
+          </div>
+
+          <div id="panel-design" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="design" role="tabpanel" aria-labelledby="tab-design" hidden>
+            <div>
+              <h3 class="text-2xl font-bold">Design Systems</h3>
+              <p class="mt-4 text-mist">Keep tokens, spacing, and type scales in sync with one responsive source of truth instead of hand-tuning clamp values across every component.</p>
+            </div>
+            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { fluidScale, responsiveStyle } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
+
+    <span class="code-keyword">export</span> <span class="code-keyword">const</span> typeScale = <span class="code-fn">fluidScale</span>([
+      <span class="code-string">'body'</span>, <span class="code-string">'title'</span>, <span class="code-string">'display'</span>
+    ], { minPx: <span class="code-value">16</span>, maxPx: <span class="code-value">72</span> })
+
+    <span class="code-keyword">export</span> <span class="code-keyword">const</span> stack = <span class="code-fn">responsiveStyle</span>(system, <span class="code-string">'gap'</span>, {
+      xs: <span class="code-string">'1rem'</span>,
+      lg: <span class="code-string">'2rem'</span>
+    })</code></pre>
+          </div>
+
+          <div id="panel-libraries" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="libraries" role="tabpanel" aria-labelledby="tab-libraries" hidden>
+            <div>
+              <h3 class="text-2xl font-bold">Component Libraries</h3>
+              <p class="mt-4 text-mist">Build container-aware primitives that adapt to their own footprint, so cards, navs, and shells stay resilient wherever product teams compose them.</p>
+            </div>
+            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { containerQuery, defineContainer } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
+
+    <span class="code-keyword">export</span> <span class="code-keyword">const</span> cardRoot = {
+      ...<span class="code-fn">defineContainer</span>(<span class="code-string">'card'</span>),
+      ...<span class="code-fn">containerQuery</span>(<span class="code-string">'card'</span>, { minWidth: <span class="code-value">420</span> }, {
+        gridTemplateColumns: <span class="code-string">'1.4fr 1fr'</span>
+      })
+    }</code></pre>
+          </div>
+
+          <div id="panel-dashboards" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="dashboards" role="tabpanel" aria-labelledby="tab-dashboards" hidden>
+            <div>
+              <h3 class="text-2xl font-bold">Dashboards</h3>
+              <p class="mt-4 text-mist">Tune dense, data-heavy interfaces by breakpoint so tables, filters, and side panels simplify automatically without another layer of resize plumbing.</p>
+            </div>
+            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span>
+
+    <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })
+
+    &lt;DataGrid
+      columns={columns}
+      density={columns === <span class="code-value">1</span> ? <span class="code-string">'compact'</span> : <span class="code-string">'comfortable'</span>}
+      showSidebar={columns &gt;= <span class="code-value">4</span>}
+    /&gt;</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section class="reveal py-20">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal text-center">
+          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">FAQ</p>
+          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Questions teams ask before they rip out the old stack.</h2>
+        </div>
+
+        <div class="mt-12 space-y-4">
+          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 0ms">
+            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-1" id="faq-button-1">
+              <span class="text-lg font-semibold text-white">Is fluidity-ts actually SSR-safe?</span>
+              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-content-1" role="region" aria-labelledby="faq-button-1" aria-hidden="true">
+              <p class="pt-4 text-mist">Yes. fluidity-ts uses server snapshots and viewport hints so the first render matches hydration on the client.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 80ms">
+            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-2" id="faq-button-2">
+              <span class="text-lg font-semibold text-white">Will bundlers tree-shake what I do not use?</span>
+              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-content-2" role="region" aria-labelledby="faq-button-2" aria-hidden="true">
+              <p class="pt-4 text-mist">Yes. The package ships focused entry points and declares <code class="text-white">sideEffects: false</code> so unused code can be shaken out.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 160ms">
+            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-3" id="faq-button-3">
+              <span class="text-lg font-semibold text-white">How hard is migration from existing responsive hooks?</span>
+              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-content-3" role="region" aria-labelledby="faq-button-3" aria-hidden="true">
+              <p class="pt-4 text-mist">Usually straightforward. Replace your media-query hooks first, then consolidate the rest of your responsive logic behind one API.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 240ms">
+            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-4" id="faq-button-4">
+              <span class="text-lg font-semibold text-white">Do I get full TypeScript support across frameworks?</span>
+              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-content-4" role="region" aria-labelledby="faq-button-4" aria-hidden="true">
+              <p class="pt-4 text-mist">That’s the point. Literal type inference stays preserved across adapters, helpers, and framework integrations.</p>
+            </div>
+          </div>
+
+          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 320ms">
+            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-5" id="faq-button-5">
+              <span class="text-lg font-semibold text-white">Can I use this with Tailwind CSS?</span>
+              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-content" id="faq-content-5" role="region" aria-labelledby="faq-button-5" aria-hidden="true">
+              <p class="pt-4 text-mist">Yes. fluidity-ts complements Tailwind — use the Tailwind plugin for responsive tokens, or run both independently.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+          <div class="divider"></div>
+
+    <section id="get-started" class="reveal py-24">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal noise overflow-hidden rounded-[2rem] border border-cyan/20 bg-gradient-to-br from-cyan/10 via-white/5 to-flame/10 p-8 shadow-glow sm:p-10 lg:p-14">
+          <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Get started</p>
+              <h2 class="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Start Building Responsive UIs Today</h2>
+              <p class="mt-5 max-w-2xl text-lg leading-8 text-mist">Ship the right layout on the first paint, keep the bundle tiny, and stop wiring five packages together to solve one problem.</p>
+              <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <button
+                  type="button"
+                  data-copy="npm install fluidity-ts"
+                   aria-label="Copy npm install command"
+                  data-magnetic
+                  class="group inline-flex items-center justify-between gap-4 rounded-[1.5rem] border border-cyan/20 bg-black/50 px-5 py-4 text-left shadow-glow transition duration-300 hover:-translate-y-1 hover:border-cyan/40"
+                >
+                  <span class="font-['JetBrains_Mono'] text-sm text-cyan sm:text-base">npm install fluidity-ts</span>
+                  <span data-copy-label class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition group-hover:border-cyan/30 group-hover:text-cyan">Copy</span>
+                </button>
+                <a
+                  href="https://www.npmjs.com/package/fluidity-ts"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-magnetic
+                  class="inline-flex items-center justify-center rounded-[1.5rem] border border-flame/30 bg-flame px-5 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_16px_40px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-1 hover:bg-[#fb923c]"
+                >
+                  Open npm
+                </a>
+              </div>
+            </div>
+            <div class="space-y-3 lg:pb-1">
+              <a href="https://github.com/Fluidiety/fluidity-ts" target="_blank" rel="noreferrer" class="block transition duration-300 hover:-translate-y-1">
+                <img alt="GitHub stars" src="https://img.shields.io/github/stars/Fluidiety/fluidity-ts?style=for-the-badge&label=GitHub%20Stars&color=22D3EE" />
+              </a>
+              <a href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer" class="block transition duration-300 hover:-translate-y-1">
+                <img alt="npm downloads" src="https://img.shields.io/npm/dm/fluidity-ts?style=for-the-badge&label=npm%20downloads&color=F97316" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        </main>
+
+    <footer class="border-t border-white/10 py-12">
+      <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 text-sm text-mist sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-xl">
+            <div class="flex items-center gap-3">
               <span class="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-cyan/20 bg-white/5 shadow-glow">
                 <span class="absolute inset-x-1 top-4 h-px rounded-full bg-gradient-to-r from-transparent via-cyan to-transparent"></span>
                 <span class="text-base font-black text-white">f</span>
                 <span class="absolute bottom-2 left-2 right-2 h-2 rounded-full border-t-2 border-teal"></span>
               </span>
-              fluidity-ts
+              <span class="font-semibold tracking-[0.02em]">fluidity-ts</span>
             </div>
-            <p class="mt-4 max-w-xl text-mist">The complete responsive toolkit.</p>
-            <p class="mt-2 text-mist">MIT Licensed · Made by Fluidiety</p>
+            <p class="mt-4">The complete responsive toolkit.</p>
+            <p class="mt-2">MIT Licensed · Made by Fluidiety</p>
           </div>
-          <div class="flex flex-wrap gap-3">
+
+          <div class="flex flex-wrap gap-3 lg:justify-center">
             <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/Fluidiety/fluidity-ts#readme" target="_blank" rel="noreferrer">Docs</a>
             <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/Fluidiety/fluidity-ts" target="_blank" rel="noreferrer">GitHub</a>
             <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://www.npmjs.com/package/fluidity-ts" target="_blank" rel="noreferrer">npm</a>
-            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/Fluidiety/fluidity-ts/discussions" target="_blank" rel="noreferrer">Discord</a>
-            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/Fluidiety" target="_blank" rel="noreferrer">Twitter</a>
+            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/Fluidiety/fluidity-ts/discussions" target="_blank" rel="noreferrer">Discussions</a>
           </div>
         </div>
+
         <div class="flex flex-wrap gap-3 text-xs uppercase tracking-[0.3em]">
           <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">React</span>
           <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Vue</span>
@@ -1130,94 +1768,381 @@ watchMedia(<span class="text-cyan">'(prefers-reduced-motion: reduce)'</span>)</c
     </footer>
 
     <script>
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              revealObserver.unobserve(entry.target);
+      document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        const scrollProgress = document.querySelector('.scroll-progress');
+        const mobileMenu = document.querySelector('#mobile-menu');
+        const hamburgerBtn = document.querySelector('#hamburger-btn');
+        const mobileMenuCloseBtn = document.querySelector('#mobile-menu-close');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+        const typewriterTarget = document.querySelector('#typewriter-text');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const openMobileMenu = () => {
+          if (!mobileMenu || !hamburgerBtn) {
+            return;
+          }
+
+          mobileMenu.classList.remove('pointer-events-none', 'opacity-0');
+          mobileMenu.classList.add('pointer-events-auto', 'opacity-100');
+          mobileMenu.setAttribute('aria-hidden', 'false');
+          hamburgerBtn.setAttribute('aria-expanded', 'true');
+          hamburgerBtn.setAttribute('aria-label', 'Close menu');
+          mobileMenuCloseBtn?.focus();
+        };
+
+        const closeMobileMenu = () => {
+          if (!mobileMenu || !hamburgerBtn) {
+            return;
+          }
+
+          mobileMenu.classList.add('pointer-events-none', 'opacity-0');
+          mobileMenu.classList.remove('pointer-events-auto', 'opacity-100');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          hamburgerBtn.setAttribute('aria-label', 'Open menu');
+        };
+
+        const toggleMobileMenu = () => {
+          if (hamburgerBtn?.getAttribute('aria-expanded') === 'true') {
+            closeMobileMenu();
+            return;
+          }
+
+          openMobileMenu();
+        };
+
+        const finishPerfLoading = () => {
+          document.documentElement.classList.remove('is-loading');
+          document.querySelector('.perf-loader')?.setAttribute('hidden', 'hidden');
+        };
+
+        const revealElements = document.querySelectorAll('.reveal');
+        if (revealElements.length) {
+          const revealObserver = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                  return;
+                }
+
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.16 }
+          );
+
+          revealElements.forEach((element) => revealObserver.observe(element));
+        }
+
+        const counterElements = document.querySelectorAll('[data-counter]');
+        if (counterElements.length) {
+          const easeOutCubic = (progress) => 1 - Math.pow(1 - progress, 3);
+
+          const animateCounter = (element) => {
+            if (element.dataset.counted === 'true') {
+              return;
             }
-          });
-        },
-        { threshold: 0.16 }
-      );
 
-      document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+            const targetValue = Number(element.dataset.counter);
+            if (!Number.isFinite(targetValue)) {
+              return;
+            }
 
-      const counters = document.querySelectorAll('[data-counter]');
-      const counterObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting || entry.target.dataset.done) return;
+            const prefix = element.dataset.prefix ?? '';
+            const suffix = element.dataset.suffix ?? '';
+            const decimals = Number.isInteger(targetValue)
+              ? 0
+              : (String(element.dataset.counter).split('.')[1] || '').length;
+            const startTime = performance.now();
+            element.dataset.counted = 'true';
 
-            entry.target.dataset.done = 'true';
-            const total = Number(entry.target.dataset.counter || 0);
-            const prefix = entry.target.dataset.prefix || '';
-            const suffix = entry.target.dataset.suffix || '';
-            const duration = 1400;
-            const start = performance.now();
+            const updateValue = (currentValue) => {
+              const formattedValue = decimals
+                ? currentValue.toFixed(decimals)
+                : Math.round(currentValue).toString();
+              element.textContent = `${prefix}${formattedValue}${suffix}`;
+            };
 
             const tick = (now) => {
-              const progress = Math.min((now - start) / duration, 1);
-              const eased = 1 - Math.pow(1 - progress, 3);
-              const value = Math.round(total * eased);
-              entry.target.innerHTML = `${prefix}${value}${suffix}`;
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / 1400, 1);
+              const easedProgress = easeOutCubic(progress);
+              const currentValue = targetValue * easedProgress;
+
+              updateValue(progress === 1 ? targetValue : currentValue);
+
               if (progress < 1) {
                 requestAnimationFrame(tick);
               }
             };
 
+            updateValue(0);
             requestAnimationFrame(tick);
-            counterObserver.unobserve(entry.target);
+          };
+
+          const counterObserver = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                  return;
+                }
+
+                animateCounter(entry.target);
+                observer.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.45 }
+          );
+
+          counterElements.forEach((element) => counterObserver.observe(element));
+        }
+
+        document.querySelectorAll('[data-copy]').forEach((button) => {
+          let resetTimer;
+          const label = button.querySelector('[data-copy-label]') || button.lastElementChild || button;
+          const originalLabel = (label.textContent || '').trim() || 'Copy';
+
+          button.addEventListener('click', async () => {
+            const textToCopy = button.dataset.copy ?? '';
+            if (!textToCopy) {
+              return;
+            }
+
+            try {
+              await navigator.clipboard.writeText(textToCopy);
+              label.textContent = 'Copied';
+              clearTimeout(resetTimer);
+              resetTimer = window.setTimeout(() => {
+                label.textContent = originalLabel;
+              }, 1800);
+            } catch (error) {
+              console.error('Copy failed:', error);
+            }
           });
-        },
-        { threshold: 0.45 }
-      );
-
-      counters.forEach((counter) => counterObserver.observe(counter));
-
-      document.querySelectorAll('[data-copy]').forEach((button) => {
-        button.addEventListener('click', async () => {
-          const text = button.getAttribute('data-copy') || '';
-          const label = button.querySelector('span:last-child');
-          try {
-            await navigator.clipboard.writeText(text);
-            if (label) label.textContent = 'Copied';
-            button.classList.add('border-cyan/40');
-            setTimeout(() => {
-              if (label) label.textContent = 'Copy';
-              button.classList.remove('border-cyan/40');
-            }, 1800);
-          } catch {
-            if (label) label.textContent = 'Press Ctrl+C';
-            setTimeout(() => {
-              if (label) label.textContent = 'Copy';
-            }, 1800);
-          }
         });
-      });
 
-      document.querySelectorAll('.tab-button').forEach((button) => {
-        button.addEventListener('click', () => {
-          const tab = button.dataset.tab;
-          document.querySelectorAll('.tab-button').forEach((item) => item.classList.remove('active'));
-          document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.remove('active', 'is-visible'));
-          button.classList.add('active');
-          const activePanel = document.querySelector(`[data-panel="${tab}"]`);
-          if (activePanel) {
-            activePanel.classList.add('active', 'is-visible');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel[data-panel]');
+        if (tabButtons.length && tabPanels.length) {
+          const setActiveTab = (targetPanel) => {
+            tabButtons.forEach((item) => {
+              const isActive = item.dataset.tab === targetPanel;
+              item.classList.toggle('active', isActive);
+              item.setAttribute('aria-selected', String(isActive));
+              item.setAttribute('tabindex', isActive ? '0' : '-1');
+            });
+
+            tabPanels.forEach((panel) => {
+              const isActive = panel.dataset.panel === targetPanel;
+              panel.classList.toggle('active', isActive);
+              panel.classList.toggle('is-visible', isActive);
+              panel.toggleAttribute('hidden', !isActive);
+            });
+          };
+
+          const initialTab = document.querySelector('.tab-button.active')?.dataset.tab || tabButtons[0]?.dataset.tab;
+          if (initialTab) {
+            setActiveTab(initialTab);
           }
-        });
-      });
 
-      document.querySelectorAll('.faq-item').forEach((item) => {
-        const button = item.querySelector('button');
-        button?.addEventListener('click', () => {
-          const open = item.classList.contains('open');
-          document.querySelectorAll('.faq-item').forEach((faq) => faq.classList.remove('open'));
-          if (!open) item.classList.add('open');
+          tabButtons.forEach((button, index) => {
+            button.addEventListener('keydown', (event) => {
+              if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+                return;
+              }
+
+              event.preventDefault();
+              const nextIndex =
+                event.key === 'ArrowRight'
+                  ? (index + 1) % tabButtons.length
+                  : (index - 1 + tabButtons.length) % tabButtons.length;
+              const nextButton = tabButtons[nextIndex];
+              const nextPanel = nextButton?.dataset.tab;
+              if (!nextButton || !nextPanel) {
+                return;
+              }
+
+              setActiveTab(nextPanel);
+              nextButton.focus();
+            });
+          });
+
+          tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+              const targetPanel = button.dataset.tab;
+              if (!targetPanel) {
+                return;
+              }
+
+              setActiveTab(targetPanel);
+            });
+          });
+        }
+
+        const faqButtons = document.querySelectorAll('.faq-item button');
+        if (faqButtons.length) {
+          document.querySelectorAll('.faq-item .faq-content').forEach((content) => {
+            content.setAttribute('aria-hidden', 'true');
+          });
+
+          faqButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+              const faqItem = button.closest('.faq-item');
+              if (!faqItem) {
+                return;
+              }
+
+              const isOpen = faqItem.classList.contains('open');
+              document.querySelectorAll('.faq-item').forEach((item) => {
+                item.classList.remove('open');
+                const itemButton = item.querySelector('button');
+                const itemContent = item.querySelector('.faq-content');
+                itemButton?.setAttribute('aria-expanded', 'false');
+                itemContent?.setAttribute('aria-hidden', 'true');
+              });
+
+              if (!isOpen) {
+                faqItem.classList.add('open');
+                button.setAttribute('aria-expanded', 'true');
+                faqItem.querySelector('.faq-content')?.setAttribute('aria-hidden', 'false');
+              }
+            });
+          });
+        }
+
+        document.querySelectorAll('[data-magnetic]').forEach((element) => {
+          element.addEventListener('mousemove', (event) => {
+            const rect = element.getBoundingClientRect();
+            const offsetX = event.clientX - (rect.left + rect.width / 2);
+            const offsetY = event.clientY - (rect.top + rect.height / 2);
+
+            element.style.transition = 'transform 0.1s ease-out';
+            element.style.transform = `translate(${offsetX * 0.15}px, ${offsetY * 0.15}px)`;
+          });
+
+          element.addEventListener('mouseleave', () => {
+            element.style.transition = 'transform 0.3s ease';
+            element.style.transform = 'translate(0, 0)';
+          });
+        });
+
+        document.querySelectorAll('[data-tilt]').forEach((element) => {
+          element.addEventListener('mousemove', (event) => {
+            const rect = element.getBoundingClientRect();
+            const relativeX = (event.clientX - rect.left) / rect.width;
+            const relativeY = (event.clientY - rect.top) / rect.height;
+            const rotateY = (relativeX - 0.5) * 12;
+            const rotateX = (0.5 - relativeY) * 12;
+
+            element.style.transition = 'transform 0.08s linear';
+            element.style.transform = `perspective(800px) rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg)`;
+          });
+
+          element.addEventListener('mouseleave', () => {
+            element.style.transition = 'transform 0.35s ease';
+            element.style.transform = 'none';
+          });
+        });
+
+        document.addEventListener('mousemove', (event) => {
+          body.style.setProperty('--mouse-x', `${event.clientX}px`);
+          body.style.setProperty('--mouse-y', `${event.clientY}px`);
+        });
+
+        const updateScrollProgress = () => {
+          if (!scrollProgress) {
+            return;
+          }
+
+          const scrollTop = window.scrollY;
+          const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+          scrollProgress.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+        };
+
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        updateScrollProgress();
+
+        if (typewriterTarget && !prefersReducedMotion) {
+          const fullText = typewriterTarget.textContent || '';
+          typewriterTarget.textContent = '';
+
+          window.setTimeout(() => {
+            let index = 0;
+            const typeInterval = window.setInterval(() => {
+              typewriterTarget.textContent += fullText.charAt(index);
+              index += 1;
+
+              if (index >= fullText.length) {
+                clearInterval(typeInterval);
+              }
+            }, 50);
+          }, 800);
+        }
+
+        if (mobileMenu && hamburgerBtn) {
+          hamburgerBtn.addEventListener('click', toggleMobileMenu);
+          mobileMenuCloseBtn?.addEventListener('click', closeMobileMenu);
+          mobileMenuLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+              closeMobileMenu();
+            });
+          });
+
+          closeMobileMenu();
+
+          mobileMenu.addEventListener('click', (event) => {
+            if (event.target === mobileMenu) {
+              closeMobileMenu();
+            }
+          });
+
+          document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+              closeMobileMenu();
+            }
+          });
+        }
+
+        if (document.readyState === 'complete') {
+          finishPerfLoading();
+        } else {
+          window.addEventListener('load', finishPerfLoading, { once: true });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener('click', (event) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href === '#') {
+              return;
+            }
+
+            const target = document.querySelector(href);
+            if (!target) {
+              return;
+            }
+
+            event.preventDefault();
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY - 80;
+
+            window.scrollTo({
+              top: targetPosition,
+              behavior: prefersReducedMotion ? 'auto' : 'smooth'
+            });
+
+            if (target instanceof HTMLElement) {
+              if (!target.hasAttribute('tabindex')) {
+                target.setAttribute('tabindex', '-1');
+              }
+              target.focus({ preventScroll: true });
+            }
+          });
         });
       });
     </script>
   </body>
 </html>
+
+

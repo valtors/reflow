@@ -1,0 +1,60 @@
+<section class="py-20">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">FAQ</p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Questions teams ask before they rip out the old stack.</h2>
+    </div>
+
+    <div class="mt-12 space-y-4">
+      <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 0ms">
+        <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
+          <span class="text-lg font-semibold text-white">Is fluidity-ts actually SSR-safe?</span>
+          <span class="faq-icon text-2xl text-mist">+</span>
+        </button>
+        <div class="faq-content">
+          <p class="pt-4 text-mist">Yes. fluidity-ts uses server snapshots and viewport hints so the first render matches hydration on the client.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 80ms">
+        <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
+          <span class="text-lg font-semibold text-white">Will bundlers tree-shake what I do not use?</span>
+          <span class="faq-icon text-2xl text-mist">+</span>
+        </button>
+        <div class="faq-content">
+          <p class="pt-4 text-mist">Yes. The package ships focused entry points and declares <code class="text-white">sideEffects: false</code> so unused code can be shaken out.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 160ms">
+        <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
+          <span class="text-lg font-semibold text-white">How hard is migration from existing responsive hooks?</span>
+          <span class="faq-icon text-2xl text-mist">+</span>
+        </button>
+        <div class="faq-content">
+          <p class="pt-4 text-mist">Usually straightforward. Replace your media-query hooks first, then consolidate the rest of your responsive logic behind one API.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 240ms">
+        <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
+          <span class="text-lg font-semibold text-white">Do I get full TypeScript support across frameworks?</span>
+          <span class="faq-icon text-2xl text-mist">+</span>
+        </button>
+        <div class="faq-content">
+          <p class="pt-4 text-mist">That’s the point. Literal type inference stays preserved across adapters, helpers, and framework integrations.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 320ms">
+        <button class="flex w-full items-center justify-between gap-4 text-left" type="button">
+          <span class="text-lg font-semibold text-white">Can I use this with Tailwind CSS?</span>
+          <span class="faq-icon text-2xl text-mist">+</span>
+        </button>
+        <div class="faq-content">
+          <p class="pt-4 text-mist">Yes. fluidity-ts complements Tailwind — use the Tailwind plugin for responsive tokens, or run both independently.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

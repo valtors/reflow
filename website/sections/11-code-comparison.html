@@ -1,0 +1,37 @@
+<section class="py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Code example</p>
+        <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Before: dependency soup. After: one cohesive API.</h2>
+      </div>
+      <p class="max-w-xl text-mist">The point is not just fewer bytes. It is fewer ideas to juggle.</p>
+    </div>
+
+    <div class="mt-10 grid gap-6 xl:grid-cols-2">
+      <div class="reveal code-window rounded-[2rem] p-6" style="--delay: 0ms">
+        <div class="mb-5 flex items-center justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-red-300">Before</p>
+            <h3 class="mt-2 text-2xl font-bold">Three packages. Four mental models.</h3>
+          </div>
+          <span class="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1 text-xs text-red-200">fragile</span>
+        </div>
+
+        <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { useMediaQuery } <span class="code-keyword">from</span> <span class="code-string">'react-responsive'</span></span><span class="code-line"><span class="code-keyword">import</span> { useWindowSize } <span class="code-keyword">from</span> <span class="code-string">'react-use'</span></span><span class="code-line"><span class="code-keyword">import</span> { useDebounce } <span class="code-keyword">from</span> <span class="code-string">'usehooks-ts'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> isDesktop = <span class="code-fn">useMediaQuery</span>({ minWidth: <span class="code-value">1024</span> })</span><span class="code-line"><span class="code-keyword">const</span> { width = <span class="code-value">0</span> } = <span class="code-fn">useWindowSize</span>()</span><span class="code-line"><span class="code-keyword">const</span> stableWidth = <span class="code-fn">useDebounce</span>(width, <span class="code-value">120</span>)</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> debounce = (fn, ms) =&gt; {</span><span class="code-line">  <span class="code-keyword">let</span> id</span><span class="code-line">  <span class="code-keyword">return</span> (...args) =&gt; {</span><span class="code-line">    clearTimeout(id)</span><span class="code-line">    id = setTimeout(() =&gt; <span class="code-fn">fn</span>(...args), ms)</span><span class="code-line">  }</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">if</span> (<span class="code-keyword">typeof</span> window === <span class="code-string">'undefined'</span>) <span class="code-keyword">return</span> <span class="code-value">null</span></span><span class="code-line"><span class="code-keyword">const</span> columns = stableWidth &gt; <span class="code-value">900</span> ? <span class="code-value">4</span> : isDesktop ? <span class="code-value">3</span> : <span class="code-value">1</span></span></code></pre>
+      </div>
+
+      <div class="reveal code-window rounded-[2rem] border-cyan/20 p-6 shadow-glow" style="--delay: 140ms">
+        <div class="mb-5 flex items-center justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-cyan">After</p>
+            <h3 class="mt-2 text-2xl font-bold">fluidity-ts owns the whole problem.</h3>
+          </div>
+          <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">clean</span>
+        </div>
+
+        <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span></span><span class="code-line"><span class="code-keyword">import</span> { fluidClamp } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">function</span> <span class="code-fn">Dashboard</span>() {</span><span class="code-line">  <span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()</span><span class="code-line">  <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })</span><span class="code-line">  <span class="code-keyword">const</span> titleSize = <span class="code-fn">fluidClamp</span>({ minPx: <span class="code-value">18</span>, maxPx: <span class="code-value">28</span> })</span><span class="code-line"></span><span class="code-line">  <span class="code-keyword">return</span> &lt;Grid columns={columns} dense={bp.below(<span class="code-string">'lg'</span>)} style={{ fontSize: titleSize }} /&gt;</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">default</span> <span class="code-keyword">function</span> <span class="code-fn">App</span>() {</span><span class="code-line">  <span class="code-keyword">return</span> (</span><span class="code-line">    &lt;ResponsiveProvider serverWidth={<span class="code-value">1024</span>}&gt;</span><span class="code-line">      &lt;Dashboard /&gt;</span><span class="code-line">    &lt;/ResponsiveProvider&gt;</span><span class="code-line">  )</span><span class="code-line">}</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>

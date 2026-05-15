@@ -1,0 +1,64 @@
+<div class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" data-tilt>
+  <div class="border-b border-white/10 px-6 py-5">
+    <h3 class="text-lg font-semibold text-white">Responsive stack comparison</h3>
+    <p class="mt-1 text-sm text-mist">What shipping responsive UI usually looks like vs what it should feel like.</p>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-[56rem] w-full text-left text-sm">
+      <thead class="bg-white/5 text-xs uppercase tracking-[0.24em] text-mist">
+        <tr>
+          <th class="px-6 py-4 font-semibold">Capability</th>
+          <th class="border-x border-cyan/20 bg-cyan/10 px-4 py-4 font-semibold text-white">fluidity-ts</th>
+          <th class="px-4 py-4 font-semibold">react-responsive</th>
+          <th class="px-4 py-4 font-semibold">usehooks-ts</th>
+          <th class="px-4 py-4 font-semibold">react-use</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-white/10">
+        <tr>
+          <td class="px-6 py-4 text-white/90">SSR-safe first paint</td>
+          <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Zero mismatch</span></td>
+          <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client guesswork</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌ Client-only</span></td>
+          <td class="px-4 py-4"><span class="text-orange-200">⚠️ Patchwork</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-white/90">Typed breakpoints</td>
+          <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Literal inference</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-white/90">Fluid typography helpers</td>
+          <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ fluidClamp()</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-white/90">Container query utilities</td>
+          <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Built in</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-white/90">Runtime dependencies</td>
+          <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 0</span></td>
+          <td class="px-4 py-4"><span class="text-orange-200">⚠️ Extra stack</span></td>
+          <td class="px-4 py-4"><span class="text-orange-200">⚠️ Hook soup</span></td>
+          <td class="px-4 py-4"><span class="text-orange-200">⚠️ Kitchen sink</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-white/90">Framework coverage</td>
+          <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 8 frameworks</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+          <td class="px-4 py-4"><span class="text-red-300">❌ React only</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

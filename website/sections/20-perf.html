@@ -1,0 +1,172 @@
+<!-- HEAD SNIPPET: SEO + preload hints + reduced motion + noscript fallback -->
+<script>
+  document.documentElement.classList.add('is-loading');
+</script>
+<link
+  rel="preload"
+  href="/fonts/inter-latin.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link rel="dns-prefetch" href="//cdn.tailwindcss.com" />
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "fluidity-ts",
+    "description": "The complete SSR-safe, zero-dependency responsive toolkit for TypeScript",
+    "url": "https://github.com/Fluidiety/fluidity-ts",
+    "codeRepository": "https://github.com/Fluidiety/fluidity-ts",
+    "programmingLanguage": "TypeScript",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Organization", "name": "Fluidiety" }
+  }
+</script>
+<style>
+  .skip-link {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #0a0a0a;
+    font-weight: 700;
+    text-decoration: none;
+    transform: translateY(-140%);
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+    outline: 3px solid #22d3ee;
+    outline-offset: 2px;
+  }
+
+  .perf-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: grid;
+    place-items: center;
+    gap: 0.875rem;
+    background: rgba(10, 10, 10, 0.92);
+    color: #ffffff;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .perf-loader__spinner {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #22d3ee;
+    border-radius: 9999px;
+    animation: perf-spin 0.8s linear infinite;
+  }
+
+  .perf-loader[hidden] {
+    display: none;
+  }
+
+  html:not(.is-loading) .perf-loader {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  @keyframes perf-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+<noscript>
+  <style>
+    .reveal,
+    .reveal.is-visible,
+    [data-counter],
+    [data-tab-panel],
+    .marquee-track,
+    .scanline,
+    .bp-line,
+    .bp-wave,
+    .perf-loader {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+      visibility: visible !important;
+    }
+  </style>
+</noscript>
+
+<!-- BODY START SNIPPET: skip link + loading state -->
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="perf-loader" role="status" aria-live="polite" aria-label="Page loading">
+  <span class="perf-loader__spinner" aria-hidden="true"></span>
+  <span>Loading fluidity-ts…</span>
+</div>
+
+<!-- EXISTING MARKUP UPDATES: add target id + aria-labels to key controls -->
+<main id="main-content">
+  <!-- existing landing page content -->
+</main>
+
+<nav aria-label="Primary navigation">
+  <a href="#why" aria-label="Jump to Why fluidity-ts section">Why</a>
+  <a href="#features" aria-label="Jump to Features section">Features</a>
+  <a href="#frameworks" aria-label="Jump to Frameworks section">Frameworks</a>
+  <a href="#benchmarks" aria-label="Jump to Benchmarks section">Benchmarks</a>
+  <a
+    href="https://github.com/Fluidiety/fluidity-ts#readme"
+    target="_blank"
+    rel="noreferrer"
+    aria-label="Open fluidity-ts documentation in a new tab"
+  >
+    Docs
+  </a>
+</nav>
+
+<button
+  type="button"
+  data-copy="npm install fluidity-ts"
+  aria-label="Copy npm install command for fluidity-ts"
+>
+  npm install fluidity-ts
+</button>
+<a
+  href="https://github.com/Fluidiety/fluidity-ts"
+  target="_blank"
+  rel="noreferrer"
+  aria-label="View the fluidity-ts GitHub repository in a new tab"
+>
+  View on GitHub
+</a>
+
+<!-- BODY END SNIPPET: hide loader after first paint -->
+<script>
+  const finishPerfLoading = () => {
+    document.documentElement.classList.remove('is-loading');
+    document.querySelector('.perf-loader')?.setAttribute('hidden', 'hidden');
+  };
+
+  if (document.readyState === 'complete') {
+    finishPerfLoading();
+  } else {
+    window.addEventListener('load', finishPerfLoading, { once: true });
+  }
+</script>
