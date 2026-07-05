@@ -1,6 +1,6 @@
-# fluidity-ts + SvelteKit
+# reflow + SvelteKit
 
-Minimal SvelteKit example showing `fluidity-ts/svelte` with shared context.
+Minimal SvelteKit example showing `reflow/svelte` with shared context.
 
 ## Run locally
 

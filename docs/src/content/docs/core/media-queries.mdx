@@ -8,7 +8,7 @@ description: Use the built-in mq object and SSR-safe media query watchers.
 `mq` is a prebuilt catalog of common media query strings. Pair it with `watchMedia()` in framework-agnostic code or `useMediaQuery()` in React/Vue.
 
 ```ts
-import { mq, watchMedia } from "fluidity-ts";
+import { mq, watchMedia } from "reflow";
 
 const darkMode = watchMedia(mq.prefersDark);
 console.log(darkMode.matches());
@@ -67,7 +67,7 @@ console.log(darkMode.matches());
 `watchMedia(query)` returns a small SSR-safe wrapper:
 
 ```ts
-import { watchMedia } from "fluidity-ts";
+import { watchMedia } from "reflow";
 
 const watcher = watchMedia("(min-width: 1024px)");
 
@@ -86,8 +86,8 @@ On the server, `watchMedia()` returns `false` and a no-op subscription instead o
 ## React usage
 
 ```tsx
-import { mq } from "fluidity-ts";
-import { useMediaQuery } from "fluidity-ts/react";
+import { mq } from "reflow";
+import { useMediaQuery } from "reflow/react";
 
 function MotionToggle() {
   const reducedMotion = useMediaQuery(mq.prefersReducedMotion, false);
@@ -98,7 +98,7 @@ function MotionToggle() {
 ## Custom queries still work
 
 ```ts
-import { watchMedia } from "fluidity-ts";
+import { watchMedia } from "reflow";
 
 const ultrawide = watchMedia("(min-aspect-ratio: 21/9)");
 ```

@@ -8,7 +8,7 @@ description: Create typed breakpoint systems and resolve values against viewport
 `createBreakpoints()` is the center of the library. You pass a map of names to minimum widths and get a typed system back.
 
 ```ts
-import { createBreakpoints } from "fluidity-ts";
+import { createBreakpoints } from "reflow";
 
 const breakpoints = {
   mobile: 0,
@@ -33,7 +33,7 @@ system.only("tablet");
 ## Full TypeScript example
 
 ```ts
-import { createBreakpoints, resolveResponsive } from "fluidity-ts";
+import { createBreakpoints, resolveResponsive } from "reflow";
 
 const breakpoints = {
   mobile: 0,
@@ -60,7 +60,7 @@ console.log(gutter);               // 24
 `createBreakpoints()` gives you the underlying system. In React, `useBreakpoint()` exposes ergonomic helpers built on the same ordering:
 
 ```tsx
-import { useBreakpoint } from "fluidity-ts/react";
+import { useBreakpoint } from "reflow/react";
 
 type AppBreakpoints = {
   mobile: 0;
@@ -106,10 +106,10 @@ Because the input map is declared `as const`, TypeScript keeps the literal keys.
 
 ## Default breakpoints
 
-`fluidity-ts` also exports `defaultBreakpoints` and `defaultSystem`:
+`reflow` also exports `defaultBreakpoints` and `defaultSystem`:
 
 ```ts
-import { defaultBreakpoints, defaultSystem } from "fluidity-ts";
+import { defaultBreakpoints, defaultSystem } from "reflow";
 
 defaultBreakpoints; // { xs: 0, sm: 640, md: 768, lg: 1024, xl: 1280, "2xl": 1536 }
 defaultSystem.resolve(1280); // "xl"

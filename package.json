@@ -1,5 +1,5 @@
 {
-  "name": "fluidity-ts",
+  "name": "reflow",
   "version": "1.3.0",
   "description": "The complete, SSR-safe, framework-agnostic responsive toolkit for TypeScript: typed breakpoints, fluid clamp, container queries, modern preference media, and a first-class React adapter — zero runtime deps.",
   "keywords": [
@@ -40,17 +40,17 @@
   ],
   "license": "MIT",
   "author": "Tamish Mhatre <tamishmhatre26@gmail.com>",
-  "homepage": "https://github.com/fluidiety/fluidity-ts#readme",
+  "homepage": "https://github.com/valtors/reflow#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fluidiety/fluidity-ts.git"
+    "url": "git+https://github.com/valtors/reflow.git"
   },
   "bugs": {
-    "url": "https://github.com/fluidiety/fluidity-ts/issues"
+    "url": "https://github.com/valtors/reflow/issues"
   },
   "funding": {
     "type": "github",
-    "url": "https://github.com/sponsors/Fluidiety"
+    "url": "https://github.com/sponsors/valtors"
   },
   "type": "module",
   "main": "./dist/index.cjs",

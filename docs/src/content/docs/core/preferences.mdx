@@ -23,7 +23,7 @@ description: Read accessibility and user preference media features with typed ke
 ## Core API
 
 ```ts
-import { getAllPreferences, getPreference, observePreference } from "fluidity-ts";
+import { getAllPreferences, getPreference, observePreference } from "reflow";
 
 const dark = getPreference("dark");
 const prefs = getAllPreferences();
@@ -38,7 +38,7 @@ stop();
 ## React hook
 
 ```tsx
-import { usePreference } from "fluidity-ts/react";
+import { usePreference } from "reflow/react";
 
 export function PreferencesPanel() {
   const reducedMotion = usePreference("reducedMotion");
@@ -60,7 +60,7 @@ export function PreferencesPanel() {
 If you want a richer API than a boolean preference, use `useColorScheme()` or the Vue/Svelte equivalents.
 
 ```tsx
-import { useColorScheme } from "fluidity-ts/react";
+import { useColorScheme } from "reflow/react";
 
 const { colorScheme, isDark, setColorScheme } = useColorScheme({
   serverDefault: "light",

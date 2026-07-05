@@ -1,5 +1,5 @@
 {
-  "name": "fluidity-ts-nuxt-example",
+  "name": "reflow-nuxt-example",
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
@@ -7,7 +7,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "fluidity-ts": "latest"
+    "reflow": "latest"
   },
   "devDependencies": {
     "nuxt": "^3.14.0",

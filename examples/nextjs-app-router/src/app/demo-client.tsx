@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Show, useBreakpoint, useResponsiveValue, useViewport } from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+import { Show, useBreakpoint, useResponsiveValue, useViewport } from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 import type { AppBreakpoints } from "../breakpoints";
 
 const panelClass =
@@ -85,7 +85,7 @@ export default function DemoClient() {
               Build responsive interfaces that already know their layout before hydration.
             </h1>
             <p className="max-w-2xl text-balance leading-8 text-[var(--muted)]" style={{ fontSize: leadClamp }}>
-              This example turns fluidity-ts into a full product-quality playground: negotiated Client Hints,
+              This example turns reflow into a full product-quality playground: negotiated Client Hints,
               Tailwind-powered visuals, a live hooks lab, a responsive analytics dashboard, and a fluid type
               system you can copy into production.
             </p>
@@ -168,7 +168,7 @@ export default function DemoClient() {
           </div>
           <p className="max-w-xl text-sm leading-7 text-[var(--muted)]">
             Every route is designed to demonstrate a production use case while surfacing the responsive state
-            that fluidity-ts exposes.
+            that reflow exposes.
           </p>
         </div>
         <div className="grid gap-4 lg:grid-cols-3">

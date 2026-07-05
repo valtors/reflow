@@ -5,7 +5,7 @@ description: Mock matchMedia, ResizeObserver, and viewport size in Vitest or Jes
 
 # Testing
 
-`fluidity-ts/testing` ships helpers for DOM test environments like Vitest + happy-dom, jsdom, or Jest.
+`reflow/testing` ships helpers for DOM test environments like Vitest + happy-dom, jsdom, or Jest.
 
 ## Install the mocks
 
@@ -15,7 +15,7 @@ import {
   installMatchMediaMock,
   installResizeObserverMock,
   setWindowSize,
-} from "fluidity-ts/testing";
+} from "reflow/testing";
 
 export const matchMedia = installMatchMediaMock();
 export const resizeObserver = installResizeObserverMock();
@@ -27,8 +27,8 @@ setWindowSize(1024, 768);
 
 ```tsx
 import { render, screen } from "@testing-library/react";
-import { ResponsiveProvider, useBreakpoint } from "fluidity-ts/react";
-import { setWindowSize } from "fluidity-ts/testing";
+import { ResponsiveProvider, useBreakpoint } from "reflow/react";
+import { setWindowSize } from "reflow/testing";
 
 function Subject() {
   const bp = useBreakpoint();
@@ -51,7 +51,7 @@ test("renders the desktop breakpoint", () => {
 ## Drive media queries manually
 
 ```ts
-import { installMatchMediaMock } from "fluidity-ts/testing";
+import { installMatchMediaMock } from "reflow/testing";
 
 const media = installMatchMediaMock({ "(prefers-color-scheme: dark)": false });
 media.set("(prefers-color-scheme: dark)", true);
@@ -62,7 +62,7 @@ media.uninstall();
 ## Drive ResizeObserver manually
 
 ```ts
-import { installResizeObserverMock } from "fluidity-ts/testing";
+import { installResizeObserverMock } from "reflow/testing";
 
 const resize = installResizeObserverMock();
 resize.resize(myElement, { width: 520, height: 320 });
@@ -73,7 +73,7 @@ resize.uninstall();
 
 ```ts
 import { beforeAll, afterAll } from "vitest";
-import { installMatchMediaMock, installResizeObserverMock } from "fluidity-ts/testing";
+import { installMatchMediaMock, installResizeObserverMock } from "reflow/testing";
 
 let media: ReturnType<typeof installMatchMediaMock>;
 let resize: ReturnType<typeof installResizeObserverMock>;

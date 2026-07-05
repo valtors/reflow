@@ -23,7 +23,7 @@ export interface ProvideBreakpointsOptions {
   serverHeight?: number;
 }
 
-export const FLUIDITY_CONTEXT = createContextId<FluidityContext<BreakpointMap>>("fluidity-ts.qwik");
+export const FLUIDITY_CONTEXT = createContextId<FluidityContext<BreakpointMap>>("reflow.qwik");
 
 export function createFluidityContext<B extends BreakpointMap>(
   system: BreakpointSystem<B>,

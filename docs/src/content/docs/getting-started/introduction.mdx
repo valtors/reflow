@@ -1,21 +1,21 @@
 ---
 title: Introduction
-description: What fluidity-ts is, why it exists, and what comes in the box.
+description: What reflow is, why it exists, and what comes in the box.
 ---
 
 # Introduction
 
-`fluidity-ts` is an SSR-safe responsive toolkit for TypeScript. It combines typed breakpoints, media-query helpers, fluid typography, container-query utilities, preference detection, server-side breakpoint resolution, and framework adapters in one package.
+`reflow` is an SSR-safe responsive toolkit for TypeScript. It combines typed breakpoints, media-query helpers, fluid typography, container-query utilities, preference detection, server-side breakpoint resolution, and framework adapters in one package.
 
 ## Why it exists
 
 Responsive UI work usually means combining a media-query hook, viewport listener, fluid type helper, container-query utility, and a pile of SSR guards. That stack is repetitive, inconsistent, and easy to break during hydration.
 
-`fluidity-ts` solves that by making responsive state a first-class, typed API.
+`reflow` solves that by making responsive state a first-class, typed API.
 
 ## The “5 packages in 1” pitch
 
-You can think of fluidity-ts as these tools bundled behind one API:
+You can think of reflow as these tools bundled behind one API:
 
 1. **Typed breakpoint system** — `createBreakpoints()`, `resolveResponsive()`, `useBreakpoint()`.
 2. **Media and preference toolkit** — `watchMedia()`, `mq`, `useMediaQuery()`, `usePreference()`.
@@ -34,7 +34,7 @@ You can think of fluidity-ts as these tools bundled behind one API:
 
 ## Feature comparison
 
-| Capability | react-responsive | react-use | usehooks-ts | react-device-detect | fluidity-ts |
+| Capability | react-responsive | react-use | usehooks-ts | react-device-detect | reflow |
 | :-- | :--: | :--: | :--: | :--: | :--: |
 | SSR-safe (zero hydration warnings) | ❌ | ⚠️ | ❌ | ❌ | ✅ |
 | Typed breakpoint inference | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -48,19 +48,19 @@ You can think of fluidity-ts as these tools bundled behind one API:
 ## Architecture at a glance
 
 ```ts
-import { createBreakpoints, mq, watchMedia } from "fluidity-ts";
-import { fluidClamp } from "fluidity-ts/styles";
-import { useBreakpoint } from "fluidity-ts/react";
-import { resolveServerBreakpoint } from "fluidity-ts/server";
+import { createBreakpoints, mq, watchMedia } from "reflow";
+import { fluidClamp } from "reflow/styles";
+import { useBreakpoint } from "reflow/react";
+import { resolveServerBreakpoint } from "reflow/server";
 ```
 
-- `fluidity-ts` → framework-agnostic responsive primitives.
-- `fluidity-ts/react` → React hooks and components.
-- `fluidity-ts/vue` → Vue 3 composables.
-- `fluidity-ts/svelte` → Svelte stores.
-- `fluidity-ts/styles` → CSS string helpers.
-- `fluidity-ts/server` → SSR and Client Hints helpers.
-- `fluidity-ts/testing` / `fluidity-ts/tailwind` → ecosystem integrations.
+- `reflow` → framework-agnostic responsive primitives.
+- `reflow/react` → React hooks and components.
+- `reflow/vue` → Vue 3 composables.
+- `reflow/svelte` → Svelte stores.
+- `reflow/styles` → CSS string helpers.
+- `reflow/server` → SSR and Client Hints helpers.
+- `reflow/testing` / `reflow/tailwind` → ecosystem integrations.
 
 ## Next steps
 

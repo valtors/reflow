@@ -1,5 +1,5 @@
-import { createBreakpoints } from "fluidity-ts";
-import { createFluidityPlugin } from "fluidity-ts/vue";
+import { createBreakpoints } from "reflow";
+import { createFluidityPlugin } from "reflow/vue";
 
 export const breakpointValues = {
   mobile: 0,

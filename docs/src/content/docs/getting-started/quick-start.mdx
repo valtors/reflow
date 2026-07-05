@@ -16,7 +16,7 @@ This example shows the main flow:
 
 ```ts
 // src/responsive.ts
-import { createBreakpoints } from "fluidity-ts";
+import { createBreakpoints } from "reflow";
 
 export const appBreakpoints = {
   mobile: 0,
@@ -35,7 +35,7 @@ export const system = createBreakpoints(appBreakpoints);
 // src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ResponsiveProvider } from "fluidity-ts/react";
+import { ResponsiveProvider } from "reflow/react";
 import { system } from "./responsive";
 import { App } from "./App";
 
@@ -50,7 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
 ```tsx
 // src/App.tsx
-import { useBreakpoint } from "fluidity-ts/react";
+import { useBreakpoint } from "reflow/react";
 import type { AppBreakpoints } from "./responsive";
 
 export function App() {
@@ -68,7 +68,7 @@ export function App() {
 ## 4) Add fluid typography
 
 ```tsx
-import { fluidClamp } from "fluidity-ts/styles";
+import { fluidClamp } from "reflow/styles";
 
 const heroTitleStyle = {
   fontSize: fluidClamp({
@@ -84,9 +84,9 @@ const heroTitleStyle = {
 ## 5-minute working example
 
 ```tsx
-import { createBreakpoints } from "fluidity-ts";
-import { ResponsiveProvider, Show, useBreakpoint, useResponsiveValue } from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+import { createBreakpoints } from "reflow";
+import { ResponsiveProvider, Show, useBreakpoint, useResponsiveValue } from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 
 const breakpoints = {
   mobile: 0,
@@ -104,7 +104,7 @@ function Dashboard() {
 
   return (
     <main style={{ padding: 24 }}>
-      <h1 style={{ fontSize: fluidClamp({ minPx: 28, maxPx: 48 }) }}>fluidity-ts quick start</h1>
+      <h1 style={{ fontSize: fluidClamp({ minPx: 28, maxPx: 48 }) }}>reflow quick start</h1>
       <p>Active breakpoint: {bp.active}</p>
       <p>Grid columns: {columns}</p>
 

@@ -9,7 +9,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        "fluidity-ts/svelte": fileURLToPath(new URL("./src/lib/fluidity-svelte.ts", import.meta.url)),
+        "reflow/svelte": fileURLToPath(new URL("./src/lib/fluidity-svelte.ts", import.meta.url)),
       },
     },
   },

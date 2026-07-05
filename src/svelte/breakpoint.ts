@@ -13,8 +13,8 @@ export interface BreakpointState<B extends BreakpointMap> {
  * @example
  * ```svelte
  * <script>
- *   import { breakpoint } from 'fluidity-ts/svelte';
- *   import { createBreakpoints } from 'fluidity-ts';
+ *   import { breakpoint } from 'reflow/svelte';
+ *   import { createBreakpoints } from 'reflow';
  *
  *   const bp = breakpoint(createBreakpoints({ mobile: 0, tablet: 768, desktop: 1024 }));
  * </script>

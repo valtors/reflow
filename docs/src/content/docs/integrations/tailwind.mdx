@@ -1,17 +1,17 @@
 ---
 title: Tailwind CSS
-description: Keep Tailwind screens aligned with your fluidity-ts breakpoint system.
+description: Keep Tailwind screens aligned with your reflow breakpoint system.
 ---
 
 # Tailwind CSS
 
-`tailwindPreset(system)` converts a fluidity-ts breakpoint system into a Tailwind `screens` preset. The goal is simple: one source of truth for breakpoints.
+`tailwindPreset(system)` converts a reflow breakpoint system into a Tailwind `screens` preset. The goal is simple: one source of truth for breakpoints.
 
 ## Shared configuration
 
 ```ts
 // src/responsive.ts
-import { createBreakpoints } from "fluidity-ts";
+import { createBreakpoints } from "reflow";
 
 export const system = createBreakpoints({
   sm: 0,
@@ -25,7 +25,7 @@ export const system = createBreakpoints({
 
 ```ts
 // tailwind.config.ts
-import { tailwindPreset } from "fluidity-ts/tailwind";
+import { tailwindPreset } from "reflow/tailwind";
 import { system } from "./src/responsive";
 
 export default {
@@ -52,7 +52,7 @@ Breakpoints with a `0` minimum are omitted because Tailwind's base styles alread
 ## Runtime + utility classes together
 
 ```tsx
-import { useBreakpoint } from "fluidity-ts/react";
+import { useBreakpoint } from "reflow/react";
 
 type TailwindBreakpoints = {
   sm: 0;

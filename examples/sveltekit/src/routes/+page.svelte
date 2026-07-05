@@ -33,11 +33,11 @@
 </script>
 
 <svelte:head>
-  <title>fluidity-ts + SvelteKit</title>
+  <title>reflow + SvelteKit</title>
 </svelte:head>
 
 <main>
-  <h1>fluidity-ts + SvelteKit</h1>
+  <h1>reflow + SvelteKit</h1>
   <p>
     These values render with SSR-friendly defaults first, then stay in sync through store
     subscriptions after hydration.

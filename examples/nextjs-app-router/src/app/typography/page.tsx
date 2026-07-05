@@ -1,8 +1,8 @@
 "use client";
 
-import { createBreakpoints, defaultBreakpoints } from "fluidity-ts";
-import { useBreakpoint, useResponsiveValue } from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+import { createBreakpoints, defaultBreakpoints } from "reflow";
+import { useBreakpoint, useResponsiveValue } from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 import type { AppBreakpoints } from "@/breakpoints";
 
 const panelClass =
@@ -111,7 +111,7 @@ export default function TypographyPage() {
         <aside className={`${panelClass} space-y-5`}>
           <div>
             <span className={pillClass}>Default breakpoints</span>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Core presets from fluidity-ts</h2>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Core presets from reflow</h2>
           </div>
           <div className="grid gap-3">
             {Object.entries(defaultBreakpoints).map(([key, value]) => (

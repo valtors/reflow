@@ -1,15 +1,15 @@
-# Contributing to fluidity-ts
+# Contributing to reflow
 
 Thanks for your interest in contributing! 🎉
 
-We welcome bug fixes, new features, documentation improvements, and ecosystem integrations. This guide covers the expected workflow for contributing to `fluidity-ts`.
+We welcome bug fixes, new features, documentation improvements, and ecosystem integrations. This guide covers the expected workflow for contributing to `reflow`.
 
 ## Quick Start
 
 ```bash
 # Clone the repo
-git clone https://github.com/Fluidiety/fluidity-ts.git
-cd fluidity-ts
+git clone https://github.com/valtors/reflow.git
+cd reflow
 
 # Install dependencies
 npm install
@@ -99,14 +99,14 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ## Reporting Issues
 
-- Use [GitHub Issues](https://github.com/Fluidiety/fluidity-ts/issues)
+- Use [GitHub Issues](https://github.com/valtors/reflow/issues)
 - Include reproduction steps and environment details
 - Check existing issues before opening a new one
 
 ## Community
 
-- [GitHub Discussions](https://github.com/Fluidiety/fluidity-ts/discussions) — Questions, ideas, show & tell
-- [Roadmap](https://github.com/Fluidiety/fluidity-ts/discussions/6) — See what's planned
+- [GitHub Discussions](https://github.com/valtors/reflow/discussions) — Questions, ideas, show & tell
+- [Roadmap](https://github.com/valtors/reflow/discussions/6) — See what's planned
 - [Code of Conduct](./CODE_OF_CONDUCT.md) — Expected community standards
 
 ## License

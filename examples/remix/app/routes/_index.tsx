@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useBreakpoint, useColorScheme, useViewport } from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+import { useBreakpoint, useColorScheme, useViewport } from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 
 const defaultBreakpoints = {
   xs: 0,
@@ -48,7 +48,7 @@ export default function Index() {
     >
       <section style={{ ...cardStyle, display: "grid", gap: 16 }}>
         <span style={{ color: "var(--accent)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-          fluidity-ts × Remix
+          reflow × Remix
         </span>
         <h1 style={{ margin: 0, fontSize: displayClamp, lineHeight: 1.05 }}>
           SSR-safe responsive UI with FluidityProvider and client hints

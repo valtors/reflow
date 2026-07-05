@@ -24,7 +24,7 @@ const matches = computed(() => ({
 <template>
   <main class="page">
     <section class="hero">
-      <p class="eyebrow">Nuxt 3 + fluidity-ts/vue</p>
+      <p class="eyebrow">Nuxt 3 + reflow/vue</p>
       <h1>SSR-safe responsive state in a single composable.</h1>
       <p class="lede">
         This page uses <code>useBreakpoint()</code>, <code>useViewport()</code>, and

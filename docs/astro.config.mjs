@@ -4,13 +4,13 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'fluidity-ts',
+      title: 'reflow',
       description: 'The complete, SSR-safe responsive toolkit for TypeScript',
       social: [
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/Fluidiety/fluidity-ts',
+          href: 'https://github.com/valtors/reflow',
         },
       ],
       sidebar: [

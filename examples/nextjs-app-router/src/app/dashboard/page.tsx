@@ -1,6 +1,6 @@
 "use client";
 
-import { Show, useBreakpoint, useResponsiveValue, useViewport } from "fluidity-ts/react";
+import { Show, useBreakpoint, useResponsiveValue, useViewport } from "reflow/react";
 import type { AppBreakpoints } from "@/breakpoints";
 
 const panelClass =

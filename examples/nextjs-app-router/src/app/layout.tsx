@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import type { ReactNode } from "react";
-import { ResponsiveProvider } from "fluidity-ts/react";
-import { clientHintsResponseHeaders, resolveServerBreakpoint } from "fluidity-ts/server";
+import { ResponsiveProvider } from "reflow/react";
+import { clientHintsResponseHeaders, resolveServerBreakpoint } from "reflow/server";
 import { SiteChrome } from "@/components/site-chrome";
 import { breakpointSystem } from "../breakpoints";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "fluidity-ts • Next.js App Router showcase",
+  title: "reflow • Next.js App Router showcase",
   description:
-    "Comprehensive responsive showcase for fluidity-ts with SSR breakpoint detection, Client Hints, Tailwind CSS, and interactive demos.",
+    "Comprehensive responsive showcase for reflow with SSR breakpoint detection, Client Hints, Tailwind CSS, and interactive demos.",
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

@@ -7,7 +7,7 @@ import { watchMedia } from "../core/media.js";
  * @example
  * ```svelte
  * <script>
- *   import { mediaQuery } from 'fluidity-ts/svelte';
+ *   import { mediaQuery } from 'reflow/svelte';
  *   const isMobile = mediaQuery('(max-width: 768px)');
  * </script>
  * <p>{$isMobile ? 'Mobile' : 'Desktop'}</p>

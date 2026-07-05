@@ -9,8 +9,8 @@ import {
   usePreference,
   useResponsiveValue,
   useViewport,
-} from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+} from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 
 export function App() {
   return (
@@ -36,7 +36,7 @@ function Demo() {
   return (
     <main style={{ padding, fontSize: bodySize }}>
       <h1 style={{ fontSize: headingSize, margin: "0 0 12px" }}>
-        🌊 fluidity-ts <span className="badge">live demo</span>
+        🌊 reflow <span className="badge">live demo</span>
       </h1>
       <p className="lede">
         Resize the window. Every value below updates live — no flash, no hydration warning.
@@ -88,8 +88,8 @@ function Demo() {
 
       <footer>
         Built with{" "}
-        <a href="https://www.npmjs.com/package/fluidity-ts">fluidity-ts</a> ·{" "}
-        <a href="https://github.com/Fluidiety/fluidity-ts">GitHub</a>
+        <a href="https://www.npmjs.com/package/reflow">reflow</a> ·{" "}
+        <a href="https://github.com/valtors/reflow">GitHub</a>
       </footer>
     </main>
   );

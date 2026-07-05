@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Share what you've built with fluidity-ts. We'd love to see real-world examples, learn about your setup, and celebrate your work.
+        Share what you've built with reflow. We'd love to see real-world examples, learn about your setup, and celebrate your work.
   - type: input
     id: project-name
     attributes:
@@ -24,7 +24,7 @@ body:
     id: framework
     attributes:
       label: Framework
-      description: Which framework did you use with fluidity-ts?
+      description: Which framework did you use with reflow?
       options:
         - React
         - Vue
@@ -40,7 +40,7 @@ body:
     id: what-you-built
     attributes:
       label: What did you build?
-      description: Tell us what your project does and where fluidity-ts fits in.
+      description: Tell us what your project does and where reflow fits in.
     validations:
       required: true
   - type: textarea

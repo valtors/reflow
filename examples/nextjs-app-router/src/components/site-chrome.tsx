@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ReactNode, useEffect } from "react";
-import { type ColorScheme, useBreakpoint, useColorScheme, useViewport } from "fluidity-ts/react";
+import { type ColorScheme, useBreakpoint, useColorScheme, useViewport } from "reflow/react";
 import type { AppBreakpoints } from "@/breakpoints";
 
 const navItems = [
@@ -42,7 +42,7 @@ export function SiteChrome({ children, serverColorScheme, serverWidth, ssrSource
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <Link href="/" className="text-lg font-semibold tracking-[-0.03em] text-[var(--text)]">
-                  fluidity-ts <span className="text-[var(--accent-strong)]">showcase</span>
+                  reflow <span className="text-[var(--accent-strong)]">showcase</span>
                 </Link>
                 <p className="mt-1 text-sm text-[var(--muted)]">
                   App Router demo with SSR-aware breakpoints, Client Hints, Tailwind CSS, and persistent theme state.

@@ -11,8 +11,8 @@ The Svelte adapter exposes readable stores. That makes the API fit naturally int
 
 ```svelte
 <script lang="ts">
-  import { breakpoint } from "fluidity-ts/svelte";
-  import { createBreakpoints } from "fluidity-ts";
+  import { breakpoint } from "reflow/svelte";
+  import { createBreakpoints } from "reflow";
 
   const system = createBreakpoints({ mobile: 0, tablet: 768, desktop: 1024 } as const);
   const bp = breakpoint(system);
@@ -31,7 +31,7 @@ The Svelte adapter exposes readable stores. That makes the API fit naturally int
 
 ```svelte
 <script lang="ts">
-  import { mediaQuery, preference, viewport } from "fluidity-ts/svelte";
+  import { mediaQuery, preference, viewport } from "reflow/svelte";
 
   const dark = mediaQuery("(prefers-color-scheme: dark)");
   const reducedMotion = preference("reducedMotion");
@@ -47,7 +47,7 @@ The Svelte adapter exposes readable stores. That makes the API fit naturally int
 
 ```svelte
 <script lang="ts">
-  import { containerQuery, containerSize } from "fluidity-ts/svelte";
+  import { containerQuery, containerSize } from "reflow/svelte";
 
   let card: HTMLDivElement;
   $: wide = card ? containerQuery(card, { minPx: 480 }) : null;
@@ -71,7 +71,7 @@ The Svelte adapter exposes readable stores. That makes the API fit naturally int
 
 ```svelte
 <script lang="ts">
-  import { colorScheme } from "fluidity-ts/svelte";
+  import { colorScheme } from "reflow/svelte";
 
   const theme = colorScheme({ storageKey: "theme" });
 </script>
@@ -85,7 +85,7 @@ The Svelte adapter exposes readable stores. That makes the API fit naturally int
 
 ```svelte
 <script lang="ts">
-  import { devicePixelRatio, pointer, safeArea } from "fluidity-ts/svelte";
+  import { devicePixelRatio, pointer, safeArea } from "reflow/svelte";
 
   const dpr = devicePixelRatio();
   const capabilities = pointer();

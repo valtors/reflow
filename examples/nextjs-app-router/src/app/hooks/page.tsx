@@ -13,8 +13,8 @@ import {
   useResponsiveValue,
   useSafeArea,
   useViewport,
-} from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+} from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 import type { AppBreakpoints } from "@/breakpoints";
 
 const panelClass =
@@ -76,7 +76,7 @@ export default function HooksPage() {
         <div className={panelClass}>
           <span className={pillClass}>Complete hooks lab</span>
           <h1 className="mt-4 max-w-3xl text-balance font-semibold leading-[0.98] tracking-[-0.04em]" style={{ fontSize: heroClamp }}>
-            Every fluidity-ts signal, surfaced in a single live dashboard.
+            Every reflow signal, surfaced in a single live dashboard.
           </h1>
           <p className="mt-4 max-w-3xl leading-8 text-[var(--muted)]" style={{ fontSize: bodyClamp }}>
             Resize the window, toggle the theme, change the container width, or move between displays to watch

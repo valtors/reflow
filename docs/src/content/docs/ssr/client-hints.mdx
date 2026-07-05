@@ -13,10 +13,10 @@ Client Hints let the browser send device information in HTTP headers so the serv
 - `Viewport-Width` — legacy fallback used by some stacks.
 - `Sec-CH-UA-Mobile` — `?1` for mobile form factors.
 
-fluidity-ts exposes `clientHintsResponseHeaders` so you can opt-in once and reuse the same values everywhere.
+reflow exposes `clientHintsResponseHeaders` so you can opt-in once and reuse the same values everywhere.
 
 ```ts
-import { clientHintsResponseHeaders } from "fluidity-ts/server";
+import { clientHintsResponseHeaders } from "reflow/server";
 
 for (const [key, value] of Object.entries(clientHintsResponseHeaders)) {
   console.log(key, value);
@@ -26,8 +26,8 @@ for (const [key, value] of Object.entries(clientHintsResponseHeaders)) {
 ## Resolve directly from hints
 
 ```ts
-import { createBreakpoints } from "fluidity-ts";
-import { resolveBreakpointFromHints } from "fluidity-ts/server";
+import { createBreakpoints } from "reflow";
+import { resolveBreakpointFromHints } from "reflow/server";
 
 const system = createBreakpoints({ mobile: 0, tablet: 768, desktop: 1024 } as const);
 
@@ -46,7 +46,7 @@ result?.width;  // 834
 ## Fallback to user agent
 
 ```ts
-import { resolveBreakpointFromUserAgent } from "fluidity-ts/server";
+import { resolveBreakpointFromUserAgent } from "reflow/server";
 
 const guessed = resolveBreakpointFromUserAgent(
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)",
@@ -57,7 +57,7 @@ const guessed = resolveBreakpointFromUserAgent(
 ## One helper for both
 
 ```ts
-import { resolveServerBreakpoint } from "fluidity-ts/server";
+import { resolveServerBreakpoint } from "reflow/server";
 
 const resolved = resolveServerBreakpoint(
   {

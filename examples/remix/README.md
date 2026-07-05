@@ -1,6 +1,6 @@
-# fluidity-ts — Remix example
+# reflow — Remix example
 
-Minimal Remix + Vite example showing `fluidity-ts` with SSR-safe breakpoints.
+Minimal Remix + Vite example showing `reflow` with SSR-safe breakpoints.
 
 ## What it demonstrates
 
@@ -26,6 +26,6 @@ Open the local Remix URL printed by Vite.
 
 ## Notes
 
-- This example depends on the local package via `"fluidity-ts": "file:../../"`.
+- This example depends on the local package via `"reflow": "file:../../"`.
 - On the first request, the browser may not have sent `Sec-CH-Viewport-Width` yet; `resolveServerBreakpoint()` falls back to a coarse user-agent guess until the hint is available.
 - In the current package, the provider export is `ResponsiveProvider`; this example aliases it to `FluidityProvider` for readability.

@@ -1,4 +1,4 @@
-import { useBreakpoint } from "fluidity-ts/react";
+import { useBreakpoint } from "reflow/react";
 import { getColumns, getLayoutLabel, type DemoBreakpoint } from "../lib/fluidity";
 
 export default function ReactBreakpoint() {
@@ -15,7 +15,7 @@ export default function ReactBreakpoint() {
       <div className="island-header">
         <div>
           <p className="eyebrow">React island</p>
-          <h2>fluidity-ts/react</h2>
+          <h2>reflow/react</h2>
         </div>
         <span className="badge">{active}</span>
       </div>

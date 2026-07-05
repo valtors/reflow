@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useBreakpoint } from "fluidity-ts/vue";
+import { useBreakpoint } from "reflow/vue";
 import { getColumns, getLayoutLabel, type DemoBreakpoint } from "../lib/fluidity";
 
 const bp = useBreakpoint();
@@ -19,7 +19,7 @@ const checks = computed(() => [
     <div class="island-header">
       <div>
         <p class="eyebrow">Vue island</p>
-        <h2>fluidity-ts/vue</h2>
+        <h2>reflow/vue</h2>
       </div>
       <span class="badge">{{ active }}</span>
     </div>

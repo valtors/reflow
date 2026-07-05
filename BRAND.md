@@ -1,4 +1,4 @@
-# fluidity-ts — Logo Design Brief
+# reflow — Logo Design Brief
 
 > ✅ **Status:** A primary mark has been chosen and lives at `assets/brand/logo.png` (a black, rounded-square avatar with two fluid drops inside a circle — reads as "fluid + contained"). The rest of this brief is kept for future variants (dark mode, monochrome, social card, banner, favicon set).
 
@@ -6,7 +6,7 @@
 
 ## 1. What we are building (in 60 seconds)
 
-**fluidity-ts** is an open-source TypeScript library that helps developers build websites and apps that look and feel right on every screen — from a 320 px folding phone to a 4K monitor — without the usual hydration bugs, copy-pasted CSS hacks, or 22 KB Frankenstein dependency stacks.
+**reflow** is an open-source TypeScript library that helps developers build websites and apps that look and feel right on every screen — from a 320 px folding phone to a 4K monitor — without the usual hydration bugs, copy-pasted CSS hacks, or 22 KB Frankenstein dependency stacks.
 
 **One-line pitch:**
 > *The complete, SSR-safe, framework-agnostic responsive toolkit for TypeScript.*
@@ -42,8 +42,8 @@ If you had to pick two: **fluid + typed**. The logo should sit at the intersecti
 
 ## 3. Naming
 
-- **Library name:** `fluidity-ts`
-- **Wordmark spelling:** all lowercase: `fluidity-ts`
+- **Library name:** `reflow`
+- **Wordmark spelling:** all lowercase: `reflow`
 - **Spoken as:** "fluidity TS" or "fluidity"
 - **Optional short form for square avatars:** `fl` or `f~` (the wave symbol is intentional)
 
@@ -141,13 +141,13 @@ All saved into `assets/brand/` at the repo root. (Folder doesn't exist yet — d
 > Keep prompts simple — the more we describe, the more likely the model adds noise. Run each prompt 4–8 times and pick.
 
 **Midjourney / Ideogram (Concept A — wave through a grid):**
-> minimal logo for a typescript library called fluidity-ts, a smooth horizontal sine wave passing through four vertical bars of increasing height, deep teal to soft cyan gradient, flat vector, white background, geometric, calm, modern, no text, centered, clean negative space — `--style raw --v 6 --ar 1:1`
+> minimal logo for a typescript library called reflow, a smooth horizontal sine wave passing through four vertical bars of increasing height, deep teal to soft cyan gradient, flat vector, white background, geometric, calm, modern, no text, centered, clean negative space — `--style raw --v 6 --ar 1:1`
 
 **Midjourney / Ideogram (Concept C — tilde monogram):**
 > minimal vector logo, a bold lowercase letter f with its crossbar replaced by a tilde, deep teal color #0EA5A5, inside a soft rounded square with subtle gradient, flat design, geometric, modern, no text outside the mark, centered, white background — `--style raw --v 6 --ar 1:1`
 
 **Recraft / DALL·E wordmark:**
-> wordmark logo "fluidity-ts" all lowercase, Inter font weight 600, the word "fluidity" in deep teal #0EA5A5, the suffix "-ts" in lighter weight and lighter teal, a small minimal sine wave above or replacing the dot of the i, white background, vector, clean, no extra elements
+> wordmark logo "reflow" all lowercase, Inter font weight 600, the word "fluidity" in deep teal #0EA5A5, the suffix "-ts" in lighter weight and lighter teal, a small minimal sine wave above or replacing the dot of the i, white background, vector, clean, no extra elements
 
 ---
 
@@ -166,7 +166,7 @@ A version is good enough to ship when:
 ## 11. Once we have the logo
 
 - Drop files into `assets/brand/` in the repo.
-- Update README hero: `<img src="./assets/brand/banner.svg" alt="fluidity-ts" />`.
+- Update README hero: `<img src="./assets/brand/banner.svg" alt="reflow" />`.
 - Update `package.json` with: `"funding": "...",` (optional) and reference the social card via OG meta tags on the docs site.
 - Set the GitHub org avatar to `logo-256.png`.
 - Set the npm package logo (npm reads `package.json#repository` and pulls the GitHub avatar — so updating the org avatar is enough).

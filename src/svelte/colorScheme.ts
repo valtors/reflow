@@ -85,7 +85,7 @@ function writeStorage(key?: string, value?: ColorScheme | null) {
  * @example
  * ```svelte
  * <script>
- *   import { colorScheme } from 'fluidity-ts/svelte';
+ *   import { colorScheme } from 'reflow/svelte';
  *   const { scheme, isDark, set } = colorScheme({ storageKey: 'theme' });
  * </script>
  * <button on:click={() => set($isDark ? 'light' : 'dark')}>

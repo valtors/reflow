@@ -1,5 +1,5 @@
 {
-  "name": "fluidity-ts-sveltekit-example",
+  "name": "reflow-sveltekit-example",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "fluidity-ts": "latest"
+    "reflow": "latest"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",

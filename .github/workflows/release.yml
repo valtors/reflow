@@ -32,8 +32,8 @@ jobs:
         with:
           publish: npm run release
           version: npx changeset version
-          commit: "chore: release fluidity-ts"
-          title: "chore: release fluidity-ts"
+          commit: "chore: release reflow"
+          title: "chore: release reflow"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

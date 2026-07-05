@@ -1,16 +1,16 @@
-# fluidity-ts — Vite + React demo
+# reflow — Vite + React demo
 
-A live, interactive showcase of [fluidity-ts](https://www.npmjs.com/package/fluidity-ts).
+A live, interactive showcase of [reflow](https://www.npmjs.com/package/reflow).
 
 ## ▶️ Open in StackBlitz (no install)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/Fluidiety/fluidity-ts/tree/main/examples/vite-react)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/valtors/reflow/tree/main/examples/vite-react)
 
 ## Run locally
 
 ```bash
-git clone https://github.com/Fluidiety/fluidity-ts
-cd fluidity-ts/examples/vite-react
+git clone https://github.com/valtors/reflow
+cd reflow/examples/vite-react
 npm install
 npm run dev
 ```

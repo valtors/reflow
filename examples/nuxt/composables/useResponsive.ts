@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from "vue";
-import { useBreakpoint, useColorScheme, useViewport } from "fluidity-ts/vue";
+import { useBreakpoint, useColorScheme, useViewport } from "reflow/vue";
 import type { AppBreakpoints } from "~/plugins/fluidity";
 
 const serverColorScheme = "light" as const;
@@ -9,7 +9,7 @@ export function useResponsive() {
   const viewport = useViewport();
   const { colorScheme, isDark, setColorScheme } = useColorScheme({
     serverDefault: serverColorScheme,
-    storageKey: "fluidity-ts-nuxt-color-scheme",
+    storageKey: "reflow-nuxt-color-scheme",
   });
 
   const hydrated = ref(false);

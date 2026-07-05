@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import { derived } from 'svelte/store';
-import { breakpoint, colorScheme, viewport } from 'fluidity-ts/svelte';
+import { breakpoint, colorScheme, viewport } from 'reflow/svelte';
 
 const RESPONSIVE_CONTEXT = Symbol('fluidity-responsive');
 

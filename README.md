@@ -2,10 +2,10 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/brand/logo-dark.png">
-  <img src="./assets/brand/logo.png" alt="fluidity-ts" width="140" height="140">
+  <img src="./assets/brand/logo.png" alt="reflow" width="140" height="140">
 </picture>
 
-<h1>fluidity-ts</h1>
+<h1>reflow</h1>
 
 <p><strong>The complete, SSR-safe, framework-agnostic responsive toolkit for TypeScript.</strong></p>
 
@@ -15,21 +15,21 @@
 </p>
 
 <p>
-  <a href="https://www.npmjs.com/package/fluidity-ts"><img alt="npm version" src="https://img.shields.io/npm/v/fluidity-ts?style=flat-square&color=0EA5A5"></a>
-  <a href="https://www.npmjs.com/package/fluidity-ts"><img alt="downloads" src="https://img.shields.io/npm/dm/fluidity-ts?style=flat-square&label=downloads&color=22D3EE"></a>
-  <a href="https://bundlephobia.com/package/fluidity-ts"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/fluidity-ts?style=flat-square&label=gzip&color=67E8F0"></a>
-  <a href="https://www.npmjs.com/package/fluidity-ts"><img alt="types" src="https://img.shields.io/npm/types/fluidity-ts?style=flat-square&color=3178C6"></a>
-  <a href="https://github.com/fluidiety/fluidity-ts/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/fluidiety/fluidity-ts/ci.yml?style=flat-square&label=CI"></a>
-  <a href="https://github.com/Fluidiety/fluidity-ts/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Fluidiety/fluidity-ts?style=flat-square&color=FFD700"></a>
-  <a href="./LICENSE"><img alt="license" src="https://img.shields.io/npm/l/fluidity-ts?style=flat-square&color=0F172A"></a>
+  <a href="https://www.npmjs.com/package/reflow"><img alt="npm version" src="https://img.shields.io/npm/v/reflow?style=flat-square&color=0EA5A5"></a>
+  <a href="https://www.npmjs.com/package/reflow"><img alt="downloads" src="https://img.shields.io/npm/dm/reflow?style=flat-square&label=downloads&color=22D3EE"></a>
+  <a href="https://bundlephobia.com/package/reflow"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/reflow?style=flat-square&label=gzip&color=67E8F0"></a>
+  <a href="https://www.npmjs.com/package/reflow"><img alt="types" src="https://img.shields.io/npm/types/reflow?style=flat-square&color=3178C6"></a>
+  <a href="https://github.com/valtors/reflow/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/valtors/reflow/ci.yml?style=flat-square&label=CI"></a>
+  <a href="https://github.com/valtors/reflow/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/valtors/reflow?style=flat-square&color=FFD700"></a>
+  <a href="./LICENSE"><img alt="license" src="https://img.shields.io/npm/l/reflow?style=flat-square&color=0F172A"></a>
 </p>
 
-> 🌐 **[fluidity-ts.vercel.app](https://fluidity-ts.vercel.app)** — See the full interactive showcase
+> 🌐 **[reflow.vercel.app](https://reflow.vercel.app)** — See the full interactive showcase
 
 <p>
-  <a href="https://fluidiety.github.io/fluidity-ts-demo/"><strong>Live Demo</strong></a>
+  <a href="https://valtors.github.io/reflow-demo/"><strong>Live Demo</strong></a>
   &nbsp;·&nbsp;
-  <a href="https://stackblitz.com/github/Fluidiety/fluidity-ts-demo"><strong>StackBlitz</strong></a>
+  <a href="https://stackblitz.com/github/valtors/reflow-demo"><strong>StackBlitz</strong></a>
   &nbsp;·&nbsp;
   <a href="./CONTRIBUTING.md"><strong>Contributing</strong></a>
 </p>
@@ -38,7 +38,7 @@
 
 ```bash
 # npm / yarn / pnpm
-npm install fluidity-ts
+npm install reflow
 ```
 
 <p align="center">
@@ -48,7 +48,7 @@ npm install fluidity-ts
     <a href="#framework-support">Frameworks</a> ·
     <a href="#quick-start">Quick Start</a> ·
     <a href="#whats-included">What's Included</a> ·
-    <a href="#why-fluidity-ts">Why fluidity-ts?</a> ·
+    <a href="#why-reflow">Why reflow?</a> ·
     <a href="#ecosystem">Ecosystem</a> ·
     <a href="#ssr-integration">SSR</a> ·
     <a href="#api-reference">API</a> ·
@@ -64,13 +64,13 @@ npm install fluidity-ts
 
 Building responsive UIs in 2026 means duct-taping 5+ packages together — a media-query hook, a window-size hook, a fluid-type calculator, a container-query polyfill, a UA sniffer. Each ships its own hydration footguns, its own global state, its own untyped API. You end up with 22 KB of overlapping deps and a graveyard of `typeof window !== "undefined"` checks.
 
-**fluidity-ts replaces all of them with one library.** One import, one provider, one type system — from breakpoint detection to fluid typography to server-side rendering.
+**reflow replaces all of them with one library.** One import, one provider, one type system — from breakpoint detection to fluid typography to server-side rendering.
 
 <br/>
 
 ## How It Compares
 
-| Capability                               | react-responsive | react-use | usehooks-ts | use-media | @vueuse/core | react-device-detect | **fluidity-ts** |
+| Capability                               | react-responsive | react-use | usehooks-ts | use-media | @vueuse/core | react-device-detect | **reflow** |
 | :--------------------------------------- | :--------------: | :-------: | :---------: | :-------: | :----------: | :-----------------: | :-------------: |
 | SSR-safe (zero hydration warnings)       |        ❌        |    ⚠️     |     ❌      |    ⚠️     |      ⚠️      |         ❌          |      **✅**     |
 | Typed breakpoint inference               |        ❌        |    ❌     |     ❌      |    ❌     |      ⚠️      |         ❌          |      **✅**     |
@@ -119,8 +119,8 @@ Building responsive UIs in 2026 means duct-taping 5+ packages together — a med
 
 ```tsx
 // App.tsx
-import { ResponsiveProvider, useBreakpoint, useResponsiveValue, Show } from "fluidity-ts/react";
-import { fluidClamp } from "fluidity-ts/styles";
+import { ResponsiveProvider, useBreakpoint, useResponsiveValue, Show } from "reflow/react";
+import { fluidClamp } from "reflow/styles";
 
 function App() {
   const bp = useBreakpoint();
@@ -155,7 +155,7 @@ export default () => (
 
 ```vue
 <script setup lang="ts">
-import { useBreakpoint } from 'fluidity-ts/vue';
+import { useBreakpoint } from 'reflow/vue';
 
 const bp = useBreakpoint();
 </script>
@@ -170,7 +170,7 @@ const bp = useBreakpoint();
 
 ```svelte
 <script>
-  import { breakpoint } from 'fluidity-ts/svelte';
+  import { breakpoint } from 'reflow/svelte';
   const bp = breakpoint();
 </script>
 
@@ -183,7 +183,7 @@ const bp = useBreakpoint();
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 
-## Why fluidity-ts?
+## Why reflow?
 
 <table>
 <tr>
@@ -224,7 +224,7 @@ Every hook uses `useSyncExternalStore` with `getServerSnapshot`. Pair with `<Res
 <td>
 
 ### 🧩 Framework-Agnostic
-Vanilla core works in Vue, Svelte, Solid, or plain JS. React adapter is opt-in via `fluidity-ts/react`. Use just the core — it has zero dependencies.
+Vanilla core works in Vue, Svelte, Solid, or plain JS. React adapter is opt-in via `reflow/react`. Use just the core — it has zero dependencies.
 
 </td>
 </tr>
@@ -250,7 +250,7 @@ One toolkit, split into focused modules you can adopt independently.
 ## Architecture
 
 ```text
-fluidity-ts
+reflow
 ├── core/          ← Framework-agnostic primitives (no React, no DOM assumptions)
 │   ├── breakpoints    createBreakpoints(), defaultBreakpoints, resolve/up/down/between/only
 │   ├── media          watchMedia(), mq.* (prebuilt media query strings)
@@ -311,14 +311,14 @@ fluidity-ts
 
 | Import | Description | Size (gzip) |
 | :--- | :--- | ---: |
-| `fluidity-ts` | Vanilla core — breakpoints, media, viewport, container, preferences, pointer, DPR, safe-area, store | ~2.4 KB |
-| `fluidity-ts/react` | React hooks + components — everything above, reactive | ~3.3 KB |
-| `fluidity-ts/vue` | Vue 3 composables | — |
-| `fluidity-ts/svelte` | Svelte stores | — |
-| `fluidity-ts/styles` | CSS helpers — fluidClamp, containerQuery, responsiveStyle, safeArea, print, a11y | ~1.3 KB |
-| `fluidity-ts/server` | Server resolver — Client Hints + UA → breakpoint + width | ~0.8 KB |
-| `fluidity-ts/testing` | Test mocks — matchMedia, ResizeObserver, setWindowSize | — |
-| `fluidity-ts/tailwind` | Tailwind preset — sync your breakpoints to Tailwind screens | — |
+| `reflow` | Vanilla core — breakpoints, media, viewport, container, preferences, pointer, DPR, safe-area, store | ~2.4 KB |
+| `reflow/react` | React hooks + components — everything above, reactive | ~3.3 KB |
+| `reflow/vue` | Vue 3 composables | — |
+| `reflow/svelte` | Svelte stores | — |
+| `reflow/styles` | CSS helpers — fluidClamp, containerQuery, responsiveStyle, safeArea, print, a11y | ~1.3 KB |
+| `reflow/server` | Server resolver — Client Hints + UA → breakpoint + width | ~0.8 KB |
+| `reflow/testing` | Test mocks — matchMedia, ResizeObserver, setWindowSize | — |
+| `reflow/tailwind` | Tailwind preset — sync your breakpoints to Tailwind screens | — |
 
 All entries are **tree-shakeable** (`sideEffects: false`), ship **ESM + CJS**, and have **full TypeScript declarations**.
 
@@ -333,7 +333,7 @@ Replace copy-pasted CSS from utopia.fyi with a typed function:
 
 ```ts
 // styles/typography.ts
-import { fluidClamp, fluidScale } from "fluidity-ts/styles";
+import { fluidClamp, fluidScale } from "reflow/styles";
 
 // Single value
 const fontSize = fluidClamp({ minPx: 16, maxPx: 22, minVwPx: 360, maxVwPx: 1280 });
@@ -357,7 +357,7 @@ No polyfill needed — native `ResizeObserver` under the hood:
 ```tsx
 // components/Card.tsx
 import { useRef } from "react";
-import { useContainerQuery, useContainerSize } from "fluidity-ts/react";
+import { useContainerQuery, useContainerSize } from "reflow/react";
 
 function Card() {
   const ref = useRef<HTMLDivElement>(null);
@@ -382,7 +382,7 @@ Respect every user preference — all typed, all SSR-safe:
 
 ```tsx
 // app/App.tsx
-import { usePreference } from "fluidity-ts/react";
+import { usePreference } from "reflow/react";
 
 function App() {
   const reducedMotion = usePreference("reduced-motion");
@@ -408,7 +408,7 @@ Declarative show/hide based on breakpoints:
 
 ```tsx
 // components/navigation.tsx
-import { Show, Hide } from "fluidity-ts/react";
+import { Show, Hide } from "reflow/react";
 
 <Show above="md">
   <DesktopSidebar />
@@ -436,7 +436,7 @@ Drop a breakpoint badge in your app during development:
 
 ```tsx
 // app/devtools.tsx
-import { BreakpointBadge } from "fluidity-ts/react";
+import { BreakpointBadge } from "reflow/react";
 
 // Shows "md · 768×1024" in the corner — auto-hidden in production
 <BreakpointBadge position="bottom-right" />
@@ -451,7 +451,7 @@ Define your own breakpoint system with full type inference:
 
 ```ts
 // breakpoints.ts
-import { createBreakpoints } from "fluidity-ts";
+import { createBreakpoints } from "reflow";
 
 const bp = createBreakpoints({
   mobile: 0,
@@ -470,12 +470,12 @@ bp.between("tablet", "wide"); // → "(min-width: 600px) and (max-width: 1439.98
 <details>
 <summary><strong>Tailwind Integration</strong></summary>
 
-Share breakpoints between fluidity-ts and Tailwind CSS:
+Share breakpoints between reflow and Tailwind CSS:
 
 ```ts
 // tailwind.config.ts
-import { tailwindPreset } from "fluidity-ts/tailwind";
-import { defaultBreakpoints } from "fluidity-ts";
+import { tailwindPreset } from "reflow/tailwind";
+import { defaultBreakpoints } from "reflow";
 
 export default {
   presets: [tailwindPreset({ breakpoints: defaultBreakpoints })],
@@ -491,7 +491,7 @@ The core works everywhere — no React required:
 
 ```ts
 // responsive.ts
-import { createBreakpoints, observeViewport, watchMedia, observePreference } from "fluidity-ts";
+import { createBreakpoints, observeViewport, watchMedia, observePreference } from "reflow";
 
 const bp = createBreakpoints({ sm: 640, md: 768, lg: 1024 } as const);
 
@@ -516,13 +516,13 @@ observePreference("reducedMotion", (on) => {
 
 ## Ecosystem
 
-fluidity-ts is built to slot into the rest of your design-system toolchain.
+reflow is built to slot into the rest of your design-system toolchain.
 
 | Integration | What it gives you |
 | :--- | :--- |
 | **Panda CSS plugin** | Bring typed breakpoints and responsive primitives into recipe-driven styling workflows. |
 | **Vanilla Extract integration** | Use `responsiveStyle()` and fluid helpers inside `.css.ts` files without adding runtime coupling. |
-| **Tailwind plugin** | Mirror a single breakpoint source of truth into Tailwind `screens` with `fluidity-ts/tailwind`. |
+| **Tailwind plugin** | Mirror a single breakpoint source of truth into Tailwind `screens` with `reflow/tailwind`. |
 | **Storybook addon** | Inspect breakpoints, preferences, and viewport state while building and reviewing components. |
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
@@ -535,8 +535,8 @@ fluidity-ts is built to slot into the rest of your design-system toolchain.
 ```tsx
 // app/layout.tsx
 import { headers } from "next/headers";
-import { resolveBreakpointFromHints } from "fluidity-ts/server";
-import { ResponsiveProvider } from "fluidity-ts/react";
+import { resolveBreakpointFromHints } from "reflow/server";
+import { ResponsiveProvider } from "reflow/react";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const h = await headers();
@@ -576,7 +576,7 @@ export default {
 
 ```ts
 // server.ts
-import { resolveServerBreakpoint, clientHintsResponseHeaders } from "fluidity-ts/server";
+import { resolveServerBreakpoint, clientHintsResponseHeaders } from "reflow/server";
 
 // Add Client Hints headers to responses
 app.use((req, res, next) => {
@@ -599,7 +599,7 @@ app.get("/", (req, res) => {
 
 ## Testing
 
-fluidity-ts ships test utilities so your component tests don't need a real browser:
+reflow ships test utilities so your component tests don't need a real browser:
 
 ```ts
 // vitest.setup.ts (or jest.setup.ts)
@@ -607,7 +607,7 @@ import {
   installMatchMediaMock,
   installResizeObserverMock,
   setWindowSize,
-} from "fluidity-ts/testing";
+} from "reflow/testing";
 
 const matchMedia = installMatchMediaMock();
 const resizeObserver = installResizeObserverMock();
@@ -637,10 +637,10 @@ resizeObserver.resize(myElement, { width: 500, height: 300 });
 
 | Entry | Min + gzip |
 | :--- | ---: |
-| `fluidity-ts` (core) | ~2.4 KB |
-| `fluidity-ts/react` | ~3.3 KB |
-| `fluidity-ts/styles` | ~1.3 KB |
-| `fluidity-ts/server` | ~0.8 KB |
+| `reflow` (core) | ~2.4 KB |
+| `reflow/react` | ~3.3 KB |
+| `reflow/styles` | ~1.3 KB |
+| `reflow/server` | ~0.8 KB |
 | **Total (all entries)** | **~7.8 KB** |
 
 Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-limit). Every PR that exceeds the budget fails.
@@ -650,7 +650,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 ## API Reference
 
 <details>
-<summary><strong>Core</strong> — <code>fluidity-ts</code></summary>
+<summary><strong>Core</strong> — <code>reflow</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -676,7 +676,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>React</strong> — <code>fluidity-ts/react</code></summary>
+<summary><strong>React</strong> — <code>reflow/react</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -699,7 +699,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>Vue 3</strong> — <code>fluidity-ts/vue</code></summary>
+<summary><strong>Vue 3</strong> — <code>reflow/vue</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -718,7 +718,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>Svelte 5</strong> — <code>fluidity-ts/svelte</code></summary>
+<summary><strong>Svelte 5</strong> — <code>reflow/svelte</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -736,7 +736,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>Styles</strong> — <code>fluidity-ts/styles</code></summary>
+<summary><strong>Styles</strong> — <code>reflow/styles</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -759,7 +759,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>Server</strong> — <code>fluidity-ts/server</code></summary>
+<summary><strong>Server</strong> — <code>reflow/server</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -771,7 +771,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>Testing</strong> — <code>fluidity-ts/testing</code></summary>
+<summary><strong>Testing</strong> — <code>reflow/testing</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -782,7 +782,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 </details>
 
 <details>
-<summary><strong>Tailwind</strong> — <code>fluidity-ts/tailwind</code></summary>
+<summary><strong>Tailwind</strong> — <code>reflow/tailwind</code></summary>
 
 | Export | Type | Description |
 | :--- | :---: | :--- |
@@ -794,7 +794,7 @@ Bundle budgets are enforced in CI via [size-limit](https://github.com/ai/size-li
 
 ## Used By
 
-Projects and design systems using fluidity-ts will be featured here soon. [**Add your project!**](https://github.com/Fluidiety/fluidity-ts/issues/new?title=Add%20my%20project%20to%20the%20Used%20By%20section&body=Project%20name%3A%0ALink%3A%0AHow%20you%20use%20fluidity-ts%3A)
+Projects and design systems using reflow will be featured here soon. [**Add your project!**](https://github.com/valtors/reflow/issues/new?title=Add%20my%20project%20to%20the%20Used%20By%20section&body=Project%20name%3A%0ALink%3A%0AHow%20you%20use%20reflow%3A)
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 
@@ -802,7 +802,7 @@ Projects and design systems using fluidity-ts will be featured here soon. [**Add
 
 <div align="center">
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Fluidiety/fluidity-ts&type=Date)](https://star-history.com/#Fluidiety/fluidity-ts&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=valtors/reflow&type=Date)](https://star-history.com/#valtors/reflow&Date)
 
 </div>
 
@@ -814,7 +814,7 @@ Projects and design systems using fluidity-ts will be featured here soon. [**Add
   <strong>Help fund SSR-safe responsive tooling for the TypeScript ecosystem.</strong>
   <br/>
   <br/>
-  <a href="https://github.com/sponsors/Fluidiety"><strong>Become a sponsor on GitHub Sponsors</strong></a>
+  <a href="https://github.com/sponsors/valtors"><strong>Become a sponsor on GitHub Sponsors</strong></a>
 </div>
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
@@ -829,12 +829,12 @@ We'd love your help. Check out [**CONTRIBUTING.md**](./CONTRIBUTING.md) for the 
 
 ```bash
 # local development
-git clone https://github.com/fluidiety/fluidity-ts && cd fluidity-ts
+git clone https://github.com/valtors/reflow && cd reflow
 npm install
 npm run verify   # typecheck + lint + test + build + publint + attw + size
 ```
 
-Look for [`good first issue`](https://github.com/fluidiety/fluidity-ts/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started. We follow the [Contributor Covenant](./CODE_OF_CONDUCT.md).
+Look for [`good first issue`](https://github.com/valtors/reflow/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started. We follow the [Contributor Covenant](./CODE_OF_CONDUCT.md).
 
 <p align="center"><sub>──────────── ✦ ────────────</sub></p>
 
@@ -842,11 +842,11 @@ Look for [`good first issue`](https://github.com/fluidiety/fluidity-ts/issues?q=
 
 <div align="center">
 
-[MIT](./LICENSE) © [Tamish Mhatre](https://github.com/tamishmhatre) and [fluidity-ts contributors](https://github.com/fluidiety/fluidity-ts/graphs/contributors).
+[MIT](./LICENSE) © [Tamish Mhatre](https://github.com/tamishmhatre) and [reflow contributors](https://github.com/valtors/reflow/graphs/contributors).
 
 <br/>
 
-<strong>If fluidity-ts saves you time, consider giving it a ⭐</strong>
+<strong>If reflow saves you time, consider giving it a ⭐</strong>
 
 <br/>
 

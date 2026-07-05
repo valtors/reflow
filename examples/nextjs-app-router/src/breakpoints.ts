@@ -1,4 +1,4 @@
-import { createBreakpoints } from "fluidity-ts";
+import { createBreakpoints } from "reflow";
 
 export const breakpointValues = {
   mobile: 0,

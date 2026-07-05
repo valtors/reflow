@@ -19,7 +19,7 @@
           <p class="mt-4 text-mist">Read viewport hints during server rendering, choose the right breakpoint before the first paint, and hydrate into the same layout without flicker.</p>
         </div>
         <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { headers } <span class="code-keyword">from</span> <span class="code-string">'next/headers'</span>
-<span class="code-keyword">import</span> { resolveBreakpointFromHints } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/server'</span>
+<span class="code-keyword">import</span> { resolveBreakpointFromHints } <span class="code-keyword">from</span> <span class="code-string">'reflow/server'</span>
 
 <span class="code-keyword">const</span> requestHeaders = <span class="code-keyword">await</span> <span class="code-fn">headers</span>()
 <span class="code-keyword">const</span> { width, breakpoint } = <span class="code-fn">resolveBreakpointFromHints</span>(requestHeaders)
@@ -32,7 +32,7 @@
           <h3 class="text-2xl font-bold">Design Systems</h3>
           <p class="mt-4 text-mist">Keep tokens, spacing, and type scales in sync with one responsive source of truth instead of hand-tuning clamp values across every component.</p>
         </div>
-        <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { fluidScale, responsiveStyle } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
+        <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { fluidScale, responsiveStyle } <span class="code-keyword">from</span> <span class="code-string">'reflow/styles'</span>
 
 <span class="code-keyword">export</span> <span class="code-keyword">const</span> typeScale = <span class="code-fn">fluidScale</span>([
   <span class="code-string">'body'</span>, <span class="code-string">'title'</span>, <span class="code-string">'display'</span>
@@ -49,7 +49,7 @@
           <h3 class="text-2xl font-bold">Component Libraries</h3>
           <p class="mt-4 text-mist">Build container-aware primitives that adapt to their own footprint, so cards, navs, and shells stay resilient wherever product teams compose them.</p>
         </div>
-        <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { containerQuery, defineContainer } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/styles'</span>
+        <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { containerQuery, defineContainer } <span class="code-keyword">from</span> <span class="code-string">'reflow/styles'</span>
 
 <span class="code-keyword">export</span> <span class="code-keyword">const</span> cardRoot = {
   ...<span class="code-fn">defineContainer</span>(<span class="code-string">'card'</span>),
@@ -64,7 +64,7 @@
           <h3 class="text-2xl font-bold">Dashboards</h3>
           <p class="mt-4 text-mist">Tune dense, data-heavy interfaces by breakpoint so tables, filters, and side panels simplify automatically without another layer of resize plumbing.</p>
         </div>
-        <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'fluidity-ts/react'</span>
+        <pre class="overflow-x-auto rounded-2xl border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'reflow/react'</span>
 
 <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })
 

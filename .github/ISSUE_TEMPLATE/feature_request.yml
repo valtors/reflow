@@ -1,11 +1,11 @@
 name: ✨ Feature Request
-description: Suggest a new feature or improvement for fluidity-ts
+description: Suggest a new feature or improvement for reflow
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the idea! If you're still exploring the problem space, you can also start a discussion in [GitHub Discussions](https://github.com/Fluidiety/fluidity-ts/discussions).
+        Thanks for the idea! If you're still exploring the problem space, you can also start a discussion in [GitHub Discussions](https://github.com/valtors/reflow/discussions).
   - type: textarea
     id: problem-description
     attributes:

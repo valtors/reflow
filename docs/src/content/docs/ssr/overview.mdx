@@ -1,6 +1,6 @@
 ---
 title: SSR Overview
-description: Understand the hydration mismatch problem and how fluidity-ts avoids it.
+description: Understand the hydration mismatch problem and how reflow avoids it.
 ---
 
 # SSR Overview
@@ -18,12 +18,12 @@ const width = window.innerWidth;
 
 They are not available during SSR, and effect-driven fixes only run **after** the first paint.
 
-## How fluidity-ts solves it
+## How reflow solves it
 
 In React, the adapter uses `useSyncExternalStore` with a stable `getServerSnapshot()` value. That means server and client agree on the initial responsive state.
 
 ```tsx
-import { ResponsiveProvider, useBreakpoint } from "fluidity-ts/react";
+import { ResponsiveProvider, useBreakpoint } from "reflow/react";
 
 function App() {
   const bp = useBreakpoint();

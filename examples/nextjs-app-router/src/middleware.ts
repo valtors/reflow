@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { clientHintsResponseHeaders } from "fluidity-ts/server";
+import { clientHintsResponseHeaders } from "reflow/server";
 
 const MOBILE_WIDTH = 390;
 const TABLET_WIDTH = 834;

@@ -5,7 +5,7 @@ description: Generate native container-query CSS and observe containers in JavaS
 
 # Container Queries
 
-fluidity-ts gives you both sides of container queries:
+reflow gives you both sides of container queries:
 
 - **CSS builders**: `containerQuery()` and `defineContainer()`.
 - **JavaScript observers**: `observeContainer()`, `useContainerQuery()`, and `useContainerSize()`.
@@ -13,7 +13,7 @@ fluidity-ts gives you both sides of container queries:
 ## CSS helpers
 
 ```ts
-import { containerQuery, defineContainer } from "fluidity-ts/styles";
+import { containerQuery, defineContainer } from "reflow/styles";
 
 const containerStyles = defineContainer("card");
 // "container-type: inline-size; container-name: card;"
@@ -25,7 +25,7 @@ const wideCard = containerQuery({ name: "card", minPx: 480 });
 ### Example with CSS-in-JS
 
 ```ts
-import { containerQuery, defineContainer } from "fluidity-ts/styles";
+import { containerQuery, defineContainer } from "reflow/styles";
 
 const cardCss = `
   .card { ${defineContainer("card")} }
@@ -38,7 +38,7 @@ const cardCss = `
 ## Core observation API
 
 ```ts
-import { getContainerSize, matchesContainerRange, observeContainer } from "fluidity-ts";
+import { getContainerSize, matchesContainerRange, observeContainer } from "reflow";
 
 const card = document.querySelector(".card")!;
 console.log(getContainerSize(card));
@@ -55,7 +55,7 @@ stop();
 
 ```tsx
 import { useRef } from "react";
-import { useContainerQuery, useContainerSize } from "fluidity-ts/react";
+import { useContainerQuery, useContainerSize } from "reflow/react";
 
 export function ProductCard() {
   const ref = useRef<HTMLDivElement>(null);
@@ -75,7 +75,7 @@ export function ProductCard() {
 
 ```ts
 import { ref } from "vue";
-import { useContainerQuery } from "fluidity-ts/vue";
+import { useContainerQuery } from "reflow/vue";
 
 const card = ref<HTMLElement | null>(null);
 const isWide = useContainerQuery(card, { minPx: 480 });
@@ -85,7 +85,7 @@ const isWide = useContainerQuery(card, { minPx: 480 });
 
 ```svelte
 <script lang="ts">
-  import { containerQuery } from "fluidity-ts/svelte";
+  import { containerQuery } from "reflow/svelte";
 
   let card: HTMLDivElement;
   $: wideCard = card ? containerQuery(card, { minPx: 480 }) : null;

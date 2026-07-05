@@ -5,12 +5,12 @@ description: Use the core responsive primitives without any framework.
 
 # Vanilla TypeScript
 
-The root `fluidity-ts` entry point is framework-agnostic. You can build event-driven responsive behavior with zero adapter code.
+The root `reflow` entry point is framework-agnostic. You can build event-driven responsive behavior with zero adapter code.
 
 ## `createFluidityStore()`
 
 ```ts
-import { createBreakpoints, createFluidityStore } from "fluidity-ts";
+import { createBreakpoints, createFluidityStore } from "reflow";
 
 const system = createBreakpoints({ mobile: 0, tablet: 768, desktop: 1024 } as const);
 const store = createFluidityStore(system, { initialWidth: 1024, initialHeight: 768 });
@@ -26,7 +26,7 @@ stop();
 ## `watchMedia()`
 
 ```ts
-import { mq, watchMedia } from "fluidity-ts";
+import { mq, watchMedia } from "reflow";
 
 const darkMode = watchMedia(mq.prefersDark);
 const unsubscribe = darkMode.subscribe((matches) => {
@@ -37,7 +37,7 @@ const unsubscribe = darkMode.subscribe((matches) => {
 ## `observeViewport()`
 
 ```ts
-import { createBreakpoints, observeViewport } from "fluidity-ts";
+import { createBreakpoints, observeViewport } from "reflow";
 
 const system = createBreakpoints({ mobile: 0, tablet: 768, desktop: 1024 } as const);
 
@@ -50,7 +50,7 @@ observeViewport(({ width, height, orientation }) => {
 ## `observeContainer()`
 
 ```ts
-import { observeContainer } from "fluidity-ts";
+import { observeContainer } from "reflow";
 
 const panel = document.querySelector("[data-panel]")!;
 observeContainer(panel, ({ width }) => {
@@ -61,7 +61,7 @@ observeContainer(panel, ({ width }) => {
 ## `observePreference()`
 
 ```ts
-import { observePreference } from "fluidity-ts";
+import { observePreference } from "reflow";
 
 observePreference("reducedMotion", (enabled) => {
   document.documentElement.classList.toggle("reduced-motion", enabled);
@@ -71,12 +71,12 @@ observePreference("reducedMotion", (enabled) => {
 ## Event-based usage pattern
 
 ```ts
-import { getDevicePixelRatio, getPointerCapabilities, getSafeArea } from "fluidity-ts";
+import { getDevicePixelRatio, getPointerCapabilities, getSafeArea } from "reflow";
 
 console.log(getDevicePixelRatio());
 console.log(getPointerCapabilities());
 console.log(getSafeArea());
 ```
 
-That makes fluidity-ts a good fit for Web Components, Lit, Solid, Alpine, or any custom runtime that can work with plain functions and subscriptions.
+That makes reflow a good fit for Web Components, Lit, Solid, Alpine, or any custom runtime that can work with plain functions and subscriptions.
 

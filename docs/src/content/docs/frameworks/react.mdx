@@ -12,8 +12,8 @@ The React adapter is built around one shared store and `useSyncExternalStore`, s
 `ResponsiveProvider` is optional in purely client-rendered apps, but recommended whenever you need SSR or custom breakpoints.
 
 ```tsx
-import { createBreakpoints } from "fluidity-ts";
-import { ResponsiveProvider } from "fluidity-ts/react";
+import { createBreakpoints } from "reflow";
+import { ResponsiveProvider } from "reflow/react";
 
 const breakpoints = {
   mobile: 0,
@@ -37,7 +37,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 ## Breakpoints and responsive values
 
 ```tsx
-import { Show, useBreakpoint, useResponsiveValue } from "fluidity-ts/react";
+import { Show, useBreakpoint, useResponsiveValue } from "reflow/react";
 import type { AppBreakpoints } from "../responsive";
 
 export function Navigation() {
@@ -79,7 +79,7 @@ import {
   useResponsiveValue,
   useSafeArea,
   useViewport,
-} from "fluidity-ts/react";
+} from "reflow/react";
 ```
 
 ### `useBreakpoint()`
@@ -158,7 +158,7 @@ const { dvh, svh, lvh } = useDynamicViewport();
 ## `Show` and `Hide`
 
 ```tsx
-import { Hide, Show } from "fluidity-ts/react";
+import { Hide, Show } from "reflow/react";
 
 <Show<AppBreakpoints> between={["tablet", "desktop"]}>
   <TabletOnlyChart />
@@ -172,7 +172,7 @@ import { Hide, Show } from "fluidity-ts/react";
 ## `BreakpointBadge`
 
 ```tsx
-import { BreakpointBadge } from "fluidity-ts/react";
+import { BreakpointBadge } from "reflow/react";
 
 export function DevTools() {
   return <BreakpointBadge position="bottom-right" />;

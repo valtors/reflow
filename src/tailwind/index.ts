@@ -1,14 +1,14 @@
 import type { BreakpointMap, BreakpointSystem } from "../core/breakpoints.js";
 
 /**
- * Generate a Tailwind CSS preset that mirrors a fluidity-ts breakpoint
+ * Generate a Tailwind CSS preset that mirrors a reflow breakpoint
  * system. Use it from your `tailwind.config.{js,ts}` to guarantee Tailwind
  * and your runtime hooks agree on every breakpoint.
  *
  * @example
  *   // tailwind.config.js
- *   import { tailwindPreset } from "fluidity-ts/tailwind";
- *   import { defaultSystem } from "fluidity-ts";
+ *   import { tailwindPreset } from "reflow/tailwind";
+ *   import { defaultSystem } from "reflow";
  *   export default { presets: [tailwindPreset(defaultSystem)] };
  */
 export function tailwindPreset<B extends BreakpointMap>(

@@ -9,4 +9,4 @@ export { devicePixelRatio } from "./devicePixelRatio.js";
 export { pointer } from "./pointer.js";
 export { safeArea } from "./safeArea.js";
 // Show.svelte is exported as a raw Svelte component file.
-// Import it directly: import Show from 'fluidity-ts/svelte/Show.svelte';
+// Import it directly: import Show from 'reflow/svelte/Show.svelte';

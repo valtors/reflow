@@ -1,6 +1,6 @@
-# fluidity-ts landing page
+# reflow landing page
 
-Static landing page for `fluidity-ts` built as a single `index.html` file with Tailwind CSS via CDN and vanilla JavaScript.
+Static landing page for `reflow` built as a single `index.html` file with Tailwind CSS via CDN and vanilla JavaScript.
 
 ## Deploy
 

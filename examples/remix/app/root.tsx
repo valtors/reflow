@@ -7,8 +7,8 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import { ResponsiveProvider as FluidityProvider } from "fluidity-ts/react";
-import { resolveServerBreakpoint } from "fluidity-ts/server";
+import { ResponsiveProvider as FluidityProvider } from "reflow/react";
+import { resolveServerBreakpoint } from "reflow/server";
 
 const globalStyles = `
   :root {
@@ -71,10 +71,10 @@ export function loader({ request }: LoaderFunctionArgs) {
 }
 
 export const meta = () => [
-  { title: "fluidity-ts × Remix" },
+  { title: "reflow × Remix" },
   {
     name: "description",
-    content: "Minimal Remix example showing fluidity-ts with SSR client hints.",
+    content: "Minimal Remix example showing reflow with SSR client hints.",
   },
 ];
 

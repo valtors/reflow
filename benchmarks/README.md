@@ -1,6 +1,6 @@
 # Benchmarks
 
-This folder contains a small benchmarking suite for the built `fluidity-ts` distribution.
+This folder contains a small benchmarking suite for the built `reflow` distribution.
 
 ## Setup
 

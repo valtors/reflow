@@ -1,5 +1,5 @@
 {
-  "name": "fluidity-ts-benchmarks",
+  "name": "reflow-benchmarks",
   "private": true,
   "type": "module",
   "scripts": {

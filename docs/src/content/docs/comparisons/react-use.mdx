@@ -5,18 +5,18 @@ description: Why useSyncExternalStore matters for responsive hooks and SSR.
 
 # vs react-use
 
-`react-use` is a broad utility collection. Its responsive hooks are convenient, but fluidity-ts is purpose-built for responsive design and SSR.
+`react-use` is a broad utility collection. Its responsive hooks are convenient, but reflow is purpose-built for responsive design and SSR.
 
 ## Why `useSyncExternalStore` matters
 
-React introduced `useSyncExternalStore` so external subscriptions can behave correctly in concurrent rendering, Strict Mode, and SSR. fluidity-ts builds its responsive React adapter around that API.
+React introduced `useSyncExternalStore` so external subscriptions can behave correctly in concurrent rendering, Strict Mode, and SSR. reflow builds its responsive React adapter around that API.
 
 That matters because media query and viewport hooks often fail in one of two ways:
 
 - they read browser state too early during SSR, or
 - they only repair the value in an effect after the first paint.
 
-fluidity-ts avoids both by pairing a live store subscription with a stable `getServerSnapshot()`.
+reflow avoids both by pairing a live store subscription with a stable `getServerSnapshot()`.
 
 ## Side-by-side
 
@@ -28,8 +28,8 @@ const prefersDark = useMedia("(prefers-color-scheme: dark)", false);
 ```
 
 ```tsx
-// fluidity-ts
-import { useMediaQuery } from "fluidity-ts/react";
+// reflow
+import { useMediaQuery } from "reflow/react";
 
 const prefersDark = useMediaQuery("(prefers-color-scheme: dark)", false);
 ```

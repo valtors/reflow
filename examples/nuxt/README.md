@@ -1,4 +1,4 @@
-# fluidity-ts — Nuxt 3 example
+# reflow — Nuxt 3 example
 
 A minimal Nuxt 3 demo showing how to use the Vue adapter with SSR-safe defaults.
 

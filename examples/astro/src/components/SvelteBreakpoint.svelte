@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { breakpoint } from "fluidity-ts/svelte";
+  import { breakpoint } from "reflow/svelte";
   import { getColumns, getLayoutLabel, type DemoBreakpoint } from "../lib/fluidity";
 
   const bp = breakpoint();
@@ -18,7 +18,7 @@
   <div class="island-header">
     <div>
       <p class="eyebrow">Svelte island</p>
-      <h2>fluidity-ts/svelte</h2>
+      <h2>reflow/svelte</h2>
     </div>
     <span class="badge">{active}</span>
   </div>

@@ -10,7 +10,7 @@ description: Generate CSS clamp expressions and type scales from TypeScript.
 ## `fluidClamp()`
 
 ```ts
-import { fluidClamp } from "fluidity-ts/styles";
+import { fluidClamp } from "reflow/styles";
 
 const body = fluidClamp({
   minPx: 16,
@@ -38,7 +38,7 @@ interface ClampOptions {
 ## `fluidScale()`
 
 ```ts
-import { fluidScale } from "fluidity-ts/styles";
+import { fluidScale } from "reflow/styles";
 
 const typeScale = fluidScale(["sm", "base", "lg", "xl", "2xl"], {
   minPx: 14,
@@ -63,7 +63,7 @@ const pxValue = fluidClamp({ minPx: 18, maxPx: 24, unit: "px" });
 
 ## Math behind the generated `clamp()`
 
-fluidity-ts calculates:
+reflow calculates:
 
 - `slope = (maxPx - minPx) / (maxVwPx - minVwPx)`
 - `interceptPx = minPx - slope * minVwPx`
@@ -84,7 +84,7 @@ clamp(1rem, 0.8333rem + 0.8333vw, 1.5rem)
 ## Real usage
 
 ```tsx
-import { fluidClamp } from "fluidity-ts/styles";
+import { fluidClamp } from "reflow/styles";
 
 const styles = {
   h1: {

@@ -5,17 +5,17 @@ description: Compare feature scope, Strict Mode safety, and migration options.
 
 # vs usehooks-ts
 
-`usehooks-ts` exposes a small `useMediaQuery()` helper. fluidity-ts covers that use case, but also adds typed breakpoints, SSR width injection, container queries, fluid type, preferences, testing helpers, and framework adapters.
+`usehooks-ts` exposes a small `useMediaQuery()` helper. reflow covers that use case, but also adds typed breakpoints, SSR width injection, container queries, fluid type, preferences, testing helpers, and framework adapters.
 
 ## Strict Mode and hydration hazards
 
 Hooks that read `matchMedia()` imperatively and then synchronize state in effects can flicker under React Strict Mode or show the wrong branch during hydration. `useSyncExternalStore` exists specifically to model external subscriptions safely.
 
-fluidity-ts uses that model for breakpoints, viewport state, and media queries.
+reflow uses that model for breakpoints, viewport state, and media queries.
 
 ## Limited feature set vs full toolkit
 
-| Capability | usehooks-ts | fluidity-ts |
+| Capability | usehooks-ts | reflow |
 | :-- | :--: | :--: |
 | Media query hook | ✅ | ✅ |
 | Typed breakpoints | ❌ | ✅ |
@@ -37,7 +37,7 @@ const desktop = useMediaQuery("(min-width: 1024px)");
 
 ```tsx
 // after
-import { useMediaQuery } from "fluidity-ts/react";
+import { useMediaQuery } from "reflow/react";
 
 const desktop = useMediaQuery("(min-width: 1024px)", false);
 ```

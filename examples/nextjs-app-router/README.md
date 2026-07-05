@@ -1,6 +1,6 @@
-# fluidity-ts — Next.js App Router showcase
+# reflow — Next.js App Router showcase
 
-A polished App Router example that turns `fluidity-ts` into a full responsive playground: SSR breakpoint detection, negotiated Client Hints, a dark-mode toggle, a hooks lab, a dashboard layout, and a fluid typography demo.
+A polished App Router example that turns `reflow` into a full responsive playground: SSR breakpoint detection, negotiated Client Hints, a dark-mode toggle, a hooks lab, a dashboard layout, and a fluid typography demo.
 
 ## What it demonstrates
 
@@ -22,7 +22,7 @@ A polished App Router example that turns `fluidity-ts` into a full responsive pl
 
 ## Setup
 
-This example resolves `fluidity-ts` directly from the repository source, so you can start it without building the package first:
+This example resolves `reflow` directly from the repository source, so you can start it without building the package first:
 
 ```bash
 cd examples/nextjs-app-router
@@ -44,6 +44,6 @@ If you want to document the example visually, these are the most useful captures
 
 ## Notes
 
-- This example depends on the local package via `"fluidity-ts": "file:../../"` and uses local path aliases so the demo can compile directly from the repository source.
+- This example depends on the local package via `"reflow": "file:../../"` and uses local path aliases so the demo can compile directly from the repository source.
 - On the first request the browser may not have sent viewport Client Hints yet, so middleware injects a UA-based width fallback and upgrades to real hints once the browser starts sending them.
 - `Sec-CH-Prefers-Color-Scheme` is also read on the server so the first paint can align with the user&apos;s preferred theme when available.

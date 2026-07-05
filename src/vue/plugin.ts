@@ -14,8 +14,8 @@ export interface FluidityPluginOptions<B extends BreakpointMap = BreakpointMap> 
  *
  * @example
  * ```ts
- * import { createFluidityPlugin } from "fluidity-ts/vue";
- * import { createBreakpoints } from "fluidity-ts";
+ * import { createFluidityPlugin } from "reflow/vue";
+ * import { createBreakpoints } from "reflow";
  *
  * const app = createApp(App);
  * app.use(

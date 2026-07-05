@@ -15,7 +15,7 @@ A typical App Router setup has three pieces:
 
 ```ts
 // lib/responsive.ts
-import { createBreakpoints } from "fluidity-ts";
+import { createBreakpoints } from "reflow";
 
 export const breakpoints = {
   mobile: 0,
@@ -34,7 +34,7 @@ export const system = createBreakpoints(breakpoints);
 // middleware.ts
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { clientHintsResponseHeaders } from "fluidity-ts/server";
+import { clientHintsResponseHeaders } from "reflow/server";
 
 export function middleware(_request: NextRequest) {
   const response = NextResponse.next();
@@ -57,8 +57,8 @@ export const config = {
 // app/layout.tsx
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
-import { ResponsiveProvider } from "fluidity-ts/react";
-import { resolveServerBreakpoint } from "fluidity-ts/server";
+import { ResponsiveProvider } from "reflow/react";
+import { resolveServerBreakpoint } from "reflow/server";
 import { system } from "../lib/responsive";
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -88,7 +88,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 ## Using the result in a component
 
 ```tsx
-import { useBreakpoint } from "fluidity-ts/react";
+import { useBreakpoint } from "reflow/react";
 import type { AppBreakpoints } from "../lib/responsive";
 
 export function Shell() {

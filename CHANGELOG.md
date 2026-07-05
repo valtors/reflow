@@ -8,11 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Added
 - New framework adapters
-  - Solid.js adapter (`fluidity-ts/solid`)
-  - Angular adapter with Signals (`fluidity-ts/angular`)
-  - Preact adapter (`fluidity-ts/preact`)
-  - Qwik adapter (`fluidity-ts/qwik`)
-  - Lit / Web Components adapter (`fluidity-ts/lit`)
+  - Solid.js adapter (`reflow/solid`)
+  - Angular adapter with Signals (`reflow/angular`)
+  - Preact adapter (`reflow/preact`)
+  - Qwik adapter (`reflow/qwik`)
+  - Lit / Web Components adapter (`reflow/lit`)
 - Responsive image utilities
   - `generateSrcset()`
   - `generateSizes()`
@@ -61,7 +61,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ## [1.0.0] - Initial Release
 
 ### Added
-- Core responsive toolkit (`fluidity-ts/core`)
+- Core responsive toolkit (`reflow/core`)
   - `createBreakpoints()` — typed breakpoint system
   - `watchMedia()` — SSR-safe matchMedia wrapper
   - `observeContainer()` — container query observation
@@ -70,7 +70,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
   - `getPreference()` / `observePreference()` — user preference media
   - `observeViewport()` / `observeVisualViewport()` — viewport tracking
   - `getSafeArea()` / `observeSafeArea()` — safe area insets
-- React adapter (`fluidity-ts/react`)
+- React adapter (`reflow/react`)
   - `ResponsiveProvider` — context provider with SSR support
   - `useBreakpoint()` — typed breakpoint hook
   - `useMediaQuery()` — reactive media query hook
@@ -82,11 +82,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
   - `useSafeArea()` — safe area insets hook
   - `Show` / `Hide` — conditional rendering components
   - `BreakpointBadge` — debug overlay component
-- Styles (`fluidity-ts/styles`) — fluid typography with CSS clamp
-- Server (`fluidity-ts/server`) — SSR utilities for Next.js and Express
-- Testing (`fluidity-ts/testing`) — test utilities and viewport mocking
-- Tailwind (`fluidity-ts/tailwind`) — Tailwind CSS preset generation
+- Styles (`reflow/styles`) — fluid typography with CSS clamp
+- Server (`reflow/server`) — SSR utilities for Next.js and Express
+- Testing (`reflow/testing`) — test utilities and viewport mocking
+- Tailwind (`reflow/tailwind`) — Tailwind CSS preset generation
 
-[1.3.0]: https://github.com/Fluidiety/fluidity-ts/compare/v1.1.0...v1.3.0
-[1.1.0]: https://github.com/Fluidiety/fluidity-ts/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/Fluidiety/fluidity-ts/releases/tag/v1.0.0
+[1.3.0]: https://github.com/valtors/reflow/compare/v1.1.0...v1.3.0
+[1.1.0]: https://github.com/valtors/reflow/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/valtors/reflow/releases/tag/v1.0.0
