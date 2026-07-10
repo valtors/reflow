@@ -14,24 +14,30 @@ export interface ContainerQueryRange {
 /**
  * Container query store. Pass a DOM element.
  */
-export function containerQuery(el: Element, range: ContainerQueryRange, serverDefault = false) {
+export function containerQuery(
+  el: Element,
+  range: ContainerQueryRange,
+  serverDefault = false,
+  options: { debounce?: number; throttle?: number } = {},
+) {
   return readable(serverDefault, (set) => {
     if (typeof window === "undefined") return;
     const resolvedRange = { minPx: range.minPx, maxPx: range.maxPx };
     set(matchesContainerRange(getContainerSize(el), resolvedRange));
     return observeContainer(el, (size) => {
       set(matchesContainerRange(size, resolvedRange));
-    });
+    }, options);
   });
 }
 
-/**
- * Container size store.
- */
-export function containerSize(el: Element, serverDefault: ContainerSize = { width: 0, height: 0 }) {
+export function containerSize(
+  el: Element,
+  serverDefault: ContainerSize = { width: 0, height: 0 },
+  options: { debounce?: number; throttle?: number } = {},
+) {
   return readable<ContainerSize>(serverDefault, (set) => {
     if (typeof window === "undefined") return;
     set(getContainerSize(el));
-    return observeContainer(el, set);
+    return observeContainer(el, set, options);
   });
 }

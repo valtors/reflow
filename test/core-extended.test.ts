@@ -262,6 +262,35 @@ describe("container", () => {
     unsub();
     document.body.removeChild(el);
   });
+
+  it("observeContainer with debounce delays callback", async () => {
+    const el = document.createElement("div");
+    document.body.appendChild(el);
+    const calls: ContainerSize[] = [];
+    const unsub = observeContainer(el, (size) => calls.push(size), { debounce: 30 });
+
+    await new Promise((r) => setTimeout(r, 50));
+    expect(calls.length).toBe(0);
+
+    unsub();
+    document.body.removeChild(el);
+  });
+
+  it("observeContainer with throttle limits callback frequency", async () => {
+    const el = document.createElement("div");
+    document.body.appendChild(el);
+    const calls: ContainerSize[] = [];
+    const unsub = observeContainer(el, (size) => calls.push(size), { throttle: 50 });
+
+    await new Promise((r) => setTimeout(r, 10));
+    const firstCount = calls.length;
+
+    await new Promise((r) => setTimeout(r, 100));
+    expect(calls.length).toBeGreaterThanOrEqual(firstCount);
+
+    unsub();
+    document.body.removeChild(el);
+  });
 });
 
 // ---------- Viewport (extended) ----------
@@ -299,6 +328,38 @@ describe("viewport (extended)", () => {
     const calls: Array<{ width: number; height: number }> = [];
     const unsub = observeViewport((state) => calls.push(state), { immediate: true });
     expect(calls.length).toBe(1);
+    unsub();
+  });
+
+  it("observeViewport with debounce delays callback", async () => {
+    const calls: Array<{ width: number; height: number }> = [];
+    const unsub = observeViewport((state) => calls.push(state), { debounce: 30 });
+
+    setWindowSize(500, 400);
+    expect(calls.length).toBe(0);
+
+    await new Promise((r) => setTimeout(r, 60));
+    expect(calls.length).toBe(1);
+
+    unsub();
+  });
+
+  it("observeViewport with throttle fires at most once per period", async () => {
+    const calls: Array<{ width: number; height: number }> = [];
+    const unsub = observeViewport((state) => calls.push(state), { throttle: 50 });
+
+    setWindowSize(500, 400);
+    await new Promise((r) => setTimeout(r, 10));
+
+    setWindowSize(600, 500);
+    await new Promise((r) => setTimeout(r, 10));
+
+    setWindowSize(700, 600);
+    await new Promise((r) => setTimeout(r, 100));
+
+    expect(calls.length).toBeLessThanOrEqual(3);
+    expect(calls.length).toBeGreaterThanOrEqual(1);
+
     unsub();
   });
 

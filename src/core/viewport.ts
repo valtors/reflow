@@ -37,16 +37,21 @@ function read(): ViewportState {
  */
 export function observeViewport(
   listener: ViewportListener,
-  options: { immediate?: boolean } = {},
+  options: { immediate?: boolean; debounce?: number; throttle?: number } = {},
 ): () => void {
   if (!isBrowser()) return () => {};
 
   let scheduled = false;
   let lastWidth = window.innerWidth;
   let lastHeight = window.innerHeight;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let lastFire = 0;
 
   const fire = () => {
     scheduled = false;
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = null;
+    lastFire = Date.now();
     const w = window.innerWidth;
     const h = window.innerHeight;
     if (w === lastWidth && h === lastHeight) return;
@@ -60,12 +65,23 @@ export function observeViewport(
   };
 
   const onResize = () => {
-    if (scheduled) return;
-    scheduled = true;
-    if (typeof requestAnimationFrame === "function") {
-      requestAnimationFrame(fire);
-    } else {
-      setTimeout(fire, 16);
+    if (options.debounce) {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(fire, options.debounce);
+    } else if (options.throttle) {
+      const elapsed = Date.now() - lastFire;
+      if (elapsed >= options.throttle) {
+        fire();
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(fire, options.throttle - elapsed);
+      }
+    } else if (!scheduled) {
+      scheduled = true;
+      if (typeof requestAnimationFrame === "function") {
+        requestAnimationFrame(fire);
+      } else {
+        setTimeout(fire, 16);
+      }
     }
   };
 
@@ -77,6 +93,7 @@ export function observeViewport(
   return () => {
     window.removeEventListener("resize", onResize);
     window.removeEventListener("orientationchange", onResize);
+    if (timeoutId) clearTimeout(timeoutId);
   };
 }
 
