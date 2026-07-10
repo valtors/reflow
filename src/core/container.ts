@@ -20,14 +20,20 @@ const isBrowser = (): boolean => typeof window !== "undefined";
 export function observeContainer(
   target: Element,
   listener: (size: ContainerSize) => void,
+  options: { debounce?: number; throttle?: number } = {},
 ): () => void {
   if (!isBrowser() || typeof ResizeObserver === "undefined") return () => {};
 
   let scheduled = false;
   let pending: ContainerSize | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let lastFire = 0;
 
   const fire = () => {
     scheduled = false;
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = null;
+    lastFire = Date.now();
     if (pending) {
       const s = pending;
       pending = null;
@@ -38,7 +44,7 @@ export function observeContainer(
   const ro = new ResizeObserver((entries) => {
     const entry = entries[0];
     if (!entry) return;
-    // Prefer borderBoxSize when available; fall back to contentRect.
+
     let width: number;
     let height: number;
     const box = entry.borderBoxSize;
@@ -51,14 +57,32 @@ export function observeContainer(
       height = entry.contentRect.height;
     }
     pending = { width, height };
-    if (scheduled) return;
-    scheduled = true;
-    if (typeof requestAnimationFrame === "function") requestAnimationFrame(fire);
-    else setTimeout(fire, 0);
+
+    if (options.debounce) {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(fire, options.debounce);
+    } else if (options.throttle) {
+      const elapsed = Date.now() - lastFire;
+      if (elapsed >= options.throttle) {
+        fire();
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(fire, options.throttle - elapsed);
+      }
+    } else if (!scheduled) {
+      scheduled = true;
+      if (typeof requestAnimationFrame === "function") {
+        requestAnimationFrame(fire);
+      } else {
+        setTimeout(fire, 0);
+      }
+    }
   });
 
   ro.observe(target);
-  return () => ro.disconnect();
+  return () => {
+    ro.disconnect();
+    if (timeoutId) clearTimeout(timeoutId);
+  };
 }
 
 /** Snapshot a container's current size (sync). */

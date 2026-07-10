@@ -22,6 +22,7 @@ export function useContainerQuery(
   target: MaybeAccessor<ContainerTarget>,
   range: ContainerQueryRange,
   serverDefault = false,
+  options: { debounce?: number; throttle?: number } = {},
 ): Accessor<boolean> {
   const [matches, setMatches] = createSignal(serverDefault);
 
@@ -38,7 +39,7 @@ export function useContainerQuery(
       setMatches(matchesContainerRange(getContainerSize(element), currentRange));
       const unsubscribe = observeContainer(element, (size) => {
         setMatches(matchesContainerRange(size, currentRange));
-      });
+      }, options);
 
       onCleanup(unsubscribe);
     });
@@ -56,6 +57,7 @@ export interface UseContainerSizeResult {
 export function useContainerSize(
   target: MaybeAccessor<ContainerTarget>,
   serverDefault: ContainerSize = { width: 0, height: 0 },
+  options: { debounce?: number; throttle?: number } = {},
 ): UseContainerSizeResult {
   const [size, setSize] = createSignal(serverDefault);
 
@@ -71,7 +73,7 @@ export function useContainerSize(
       setSize(getContainerSize(element));
       const unsubscribe = observeContainer(element, (nextSize) => {
         setSize(nextSize);
-      });
+      }, options);
 
       onCleanup(unsubscribe);
     });

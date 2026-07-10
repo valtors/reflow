@@ -44,6 +44,7 @@ export function createFluidityStore<B extends BreakpointMap>(
   options: {
     initialWidth?: number;
     initialHeight?: number;
+    debounce?: number;
   } = {},
 ): FluidityStore<B> {
   const initialWidth = options.initialWidth ?? (isBrowser() ? window.innerWidth : 1024);
@@ -54,6 +55,7 @@ export function createFluidityStore<B extends BreakpointMap>(
   const listeners = new Set<() => void>();
   let resizeAttached = false;
   let detach: (() => void) | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const recompute = () => {
     if (!isBrowser()) return;
@@ -67,22 +69,23 @@ export function createFluidityStore<B extends BreakpointMap>(
   const attach = () => {
     if (resizeAttached || !isBrowser()) return;
     resizeAttached = true;
-    let scheduled = false;
+
     const onResize = () => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(() => {
-        scheduled = false;
-        recompute();
-      });
+      if (options.debounce) {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(recompute, options.debounce);
+      } else {
+        requestAnimationFrame(recompute);
+      }
     };
+
     window.addEventListener("resize", onResize, { passive: true });
     window.addEventListener("orientationchange", onResize, { passive: true });
-    // Initial sync (in case window resized between create() and first subscribe).
     recompute();
     detach = () => {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("orientationchange", onResize);
+      if (timeoutId) clearTimeout(timeoutId);
       resizeAttached = false;
     };
   };
@@ -96,7 +99,6 @@ export function createFluidityStore<B extends BreakpointMap>(
         ...serverSnapshot,
         ...partial,
       };
-      // Recompute derived fields if width/height changed.
       if (partial.width !== undefined || partial.height !== undefined) {
         serverSnapshot = buildSnapshot(system, merged.width, merged.height);
       } else {

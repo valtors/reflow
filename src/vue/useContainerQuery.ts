@@ -18,6 +18,7 @@ export function useContainerQuery(
   elRef: Ref<Element | null>,
   range: ContainerQueryRange,
   serverDefault = false,
+  options: { debounce?: number; throttle?: number } = {},
 ): Readonly<Ref<boolean>> {
   const matches = ref(serverDefault);
 
@@ -34,7 +35,7 @@ export function useContainerQuery(
       matches.value = matchesContainerRange(getContainerSize(el), currentRange);
       unsub = observeContainer(el, (size) => {
         matches.value = matchesContainerRange(size, currentRange);
-      });
+      }, options);
     };
 
     onMounted(startObserving);
@@ -53,6 +54,7 @@ export function useContainerQuery(
 export function useContainerSize(
   elRef: Ref<Element | null>,
   serverDefault: ContainerSize = { width: 0, height: 0 },
+  options: { debounce?: number; throttle?: number } = {},
 ): { readonly width: Ref<number>; readonly height: Ref<number> } {
   const width = ref(serverDefault.width);
   const height = ref(serverDefault.height);
@@ -72,7 +74,7 @@ export function useContainerSize(
       unsub = observeContainer(el, (nextSize) => {
         width.value = nextSize.width;
         height.value = nextSize.height;
-      });
+      }, options);
     };
 
     onMounted(startObserving);

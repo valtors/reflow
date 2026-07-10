@@ -22,6 +22,7 @@ export function useContainerQuery(
   ref: RefObject<Element | null>,
   range: ContainerQueryRange,
   serverDefault = false,
+  options: { debounce?: number; throttle?: number } = {},
 ): boolean {
   const [matches, setMatches] = useState<boolean>(serverDefault);
   const minPx = range.minPx;
@@ -34,9 +35,9 @@ export function useContainerQuery(
     setMatches(matchesContainerRange(getContainerSize(el), r));
     const unsub = observeContainer(el, (size) => {
       setMatches(matchesContainerRange(size, r));
-    });
+    }, options);
     return unsub;
-  }, [ref, minPx, maxPx]);
+  }, [ref, minPx, maxPx, options.debounce, options.throttle]);
 
   return matches;
 }
@@ -45,13 +46,14 @@ export function useContainerQuery(
 export function useContainerSize(
   ref: RefObject<Element | null>,
   serverDefault: ContainerSize = { width: 0, height: 0 },
+  options: { debounce?: number; throttle?: number } = {},
 ): ContainerSize {
   const [size, setSize] = useState<ContainerSize>(serverDefault);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     setSize(getContainerSize(el));
-    return observeContainer(el, setSize);
-  }, [ref]);
+    return observeContainer(el, setSize, options);
+  }, [ref, options.debounce, options.throttle]);
   return size;
 }
