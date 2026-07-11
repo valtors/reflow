@@ -132,6 +132,10 @@ Reflow puts it all in one place:
 - **Server rendering.** `resolveBreakpointFromHints(headers)` reads Client Hints with UA fallback. Works with Next.js, Hono, Express, anything.
 - **Zero framework lock-in.** Core has no React dependency. Use it in Vue, Svelte, Solid, or plain JS.
 
+## How does reflow compare?
+
+See the [full comparison](./docs/comparison.md) against react-responsive, @vueuse/core, and usehooks-ts.
+
 ## What's included
 
 | Module | Exports |
