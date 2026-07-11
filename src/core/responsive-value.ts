@@ -1,6 +1,11 @@
 /**
  * Pick a value for the active breakpoint, falling back to the closest
  * smaller-or-equal defined entry (mobile-first cascade).
+ *
+ * @param system - A breakpoint system created by `createBreakpoints`.
+ * @param value - Either a plain value or a map of breakpoint keys to values.
+ * @param width - The current viewport width in CSS pixels.
+ * @returns The resolved value, or `undefined` if none matched.
  */
 import type { BreakpointKey, BreakpointMap, BreakpointSystem } from "./breakpoints.js";
 
