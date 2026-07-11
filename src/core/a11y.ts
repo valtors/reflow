@@ -101,6 +101,12 @@ export interface A11yAuditResult {
   tapSpacing: { passes: boolean; actual: number; required: number };
 }
 
+/**
+ * Audit responsive values against WCAG touch target, font size, and tap spacing requirements.
+ *
+ * @param config - `{ touchTargetPx, fontSizePx, tapSpacingPx?, level? }`.
+ * @returns Per-check pass/fail with actual and required values.
+ */
 export function auditResponsiveA11y(config: {
   touchTargetPx: number;
   fontSizePx: number;
