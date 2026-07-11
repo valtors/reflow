@@ -14,3 +14,4 @@ export * from "./useColorScheme.js";
 export * from "./Show.js";
 export * from "./BreakpointBadge.js";
 export * from "./DevTools.js";
+export * from "./useElementSize.js";
