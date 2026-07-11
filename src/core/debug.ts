@@ -52,6 +52,13 @@ export interface PerfMark {
   average(): number;
 }
 
+/**
+ * Create a performance marker that tracks elapsed time across multiple samples.
+ * Useful for profiling responsive recalculations during development.
+ *
+ * @param _name - Label for the perf mark (currently unused but reserved for future logging).
+ * @returns `{ start, end, average }` methods for measuring code execution.
+ */
 export function createPerfMark(_name: string): PerfMark {
   let startedAt: number | null = null;
   let total = 0;
