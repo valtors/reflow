@@ -250,6 +250,7 @@ Full API docs are in the source. Each module exports typed functions with JSDoc.
 | `useContainerQuery(ref, range)` | hook | Boolean, does container match range? |
 | `useContainerSize(ref)` | hook | `{ width, height }` of container |
 | `useDynamicViewport()` | hook | `{ dvh, svh, lvh }` in px |
+| `useElementSize(ref)` | hook | `{ width, height }` of any element |
 | `Show` / `Hide` | component | Conditional render by breakpoint |
 | `BreakpointBadge` | component | Dev overlay, auto-hidden in production |
 
