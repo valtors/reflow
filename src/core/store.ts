@@ -2,10 +2,7 @@ import type { BreakpointKey, BreakpointMap, BreakpointSystem } from "./breakpoin
 import type { Preferences } from "./preferences.js";
 
 /**
- * The shared store backing all hooks. Holds the current viewport,
- * breakpoint, preferences, pointer capabilities, etc., and notifies
- * subscribers on change. Designed for `useSyncExternalStore` (`getSnapshot`
- * returns a referentially-stable object until something actually changes).
+ * Snapshot of the current responsive state held by a fluidity store.
  */
 export interface FluidityStoreSnapshot<B extends BreakpointMap> {
   width: number;
@@ -14,6 +11,11 @@ export interface FluidityStoreSnapshot<B extends BreakpointMap> {
   orientation: "portrait" | "landscape";
 }
 
+/**
+ * Shared reactive store backing all framework hooks. Designed for
+ * `useSyncExternalStore` — `getSnapshot` returns a referentially-stable
+ * object until something actually changes.
+ */
 export interface FluidityStore<B extends BreakpointMap> {
   readonly system: BreakpointSystem<B>;
   getSnapshot(): FluidityStoreSnapshot<B>;
@@ -39,6 +41,14 @@ function buildSnapshot<B extends BreakpointMap>(
   };
 }
 
+/**
+ * Create a shared fluidity store that tracks viewport, breakpoint,
+ * and orientation changes. Used internally by every framework adapter.
+ *
+ * @param system - A breakpoint system created by `createBreakpoints`.
+ * @param options - Optional `{ initialWidth, initialHeight, debounce }`.
+ * @returns A `FluidityStore` instance for `useSyncExternalStore`.
+ */
 export function createFluidityStore<B extends BreakpointMap>(
   system: BreakpointSystem<B>,
   options: {
