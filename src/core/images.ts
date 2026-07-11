@@ -102,12 +102,26 @@ function resolveMimeType(format?: string): string | undefined {
   return MIME_TYPES[format.toLowerCase()] ?? `image/${format.toLowerCase()}`;
 }
 
+/**
+ * Generate a `srcset` string from a list of image sources sorted by width.
+ *
+ * @param sources - Array of `{ src, width }` pairs. At least one source is required.
+ * @returns A comma-separated srcset string like `"img-480.jpg 480w, img-800.jpg 800w"`.
+ */
 export function generateSrcset(sources: ResponsiveImageSource[]): string {
   return normalizeSources(sources)
     .map(({ src, width }) => `${src} ${width}w`)
     .join(", ");
 }
 
+/**
+ * Generate a `sizes` string from a breakpoint system and per-breakpoint size values.
+ * Uses mobile-first cascade: each breakpoint inherits the last defined size.
+ *
+ * @param system - A breakpoint system created by `createBreakpoints`.
+ * @param config - Map of breakpoint keys to CSS size values (e.g. `"50vw"`).
+ * @returns A comma-separated sizes string, e.g. `"(min-width: 768px) 50vw, 100vw"`.
+ */
 export function generateSizes<B extends BreakpointMap>(
   system: BreakpointSystem<B>,
   config: Partial<Record<BreakpointKey<B>, string>>,
@@ -138,6 +152,14 @@ export function generateSizes<B extends BreakpointMap>(
   return [...conditional, fallback].join(", ");
 }
 
+/**
+ * Calculate image widths for each breakpoint, accounting for device pixel ratios.
+ * Useful for generating a set of image source files at the right resolutions.
+ *
+ * @param system - A breakpoint system created by `createBreakpoints`.
+ * @param options - Optional `{ devicePixelRatios, maxWidth }` to control output.
+ * @returns Sorted array of unique pixel widths.
+ */
 export function calculateImageWidths<B extends BreakpointMap>(
   system: BreakpointSystem<B>,
   options: { devicePixelRatios?: number[]; maxWidth?: number } = {},
@@ -173,6 +195,12 @@ export function calculateImageWidths<B extends BreakpointMap>(
     .sort((a, b) => a - b);
 }
 
+/**
+ * Build all attributes needed for a responsive `<img>` tag in one call.
+ *
+ * @param config - Source list, alt text, optional sizes string and loading strategy.
+ * @returns `{ srcSet, sizes, src, alt, loading }` ready to spread onto an `<img>`.
+ */
 export function responsiveImage(config: ResponsiveImageConfig): ResponsiveImageAttributes {
   const sources = normalizeSources(config.sources);
 
@@ -185,6 +213,13 @@ export function responsiveImage(config: ResponsiveImageConfig): ResponsiveImageA
   };
 }
 
+/**
+ * Build art-direction `<source>` elements for a `<picture>` tag.
+ * Each variant maps a media query to a different image source.
+ *
+ * @param variants - Array of `{ media, src, width?, height?, format? }`.
+ * @returns Sources and a fallback for the `<picture>` element.
+ */
 export function artDirection(variants: ArtDirectionVariant[]): ArtDirectionAttributes {
   if (variants.length === 0) {
     throw new Error("artDirection: at least one variant is required");
@@ -209,6 +244,14 @@ export function artDirection(variants: ArtDirectionVariant[]): ArtDirectionAttri
   };
 }
 
+/**
+ * Alias for `calculateImageWidths`. Returns breakpoint-aware image widths
+ * for generating responsive image source files.
+ *
+ * @param system - A breakpoint system created by `createBreakpoints`.
+ * @param options - Optional `{ devicePixelRatios, maxWidth }`.
+ * @returns Sorted array of unique pixel widths.
+ */
 export function imageBreakpoints<B extends BreakpointMap>(
   system: BreakpointSystem<B>,
   options?: { devicePixelRatios?: number[]; maxWidth?: number },
