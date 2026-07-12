@@ -1,3 +1,4 @@
+"use client";
 
 import { type RefObject, useEffect, useState } from "preact/hooks";
 import { type ContainerSize, getContainerSize, observeContainer } from "../core/container.js";
