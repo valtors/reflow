@@ -327,6 +327,10 @@ We follow the [Contributor Covenant](./CODE_OF_CONDUCT.md).
 
 If reflow saves you time, star the repo.
 
+## Companion Project
+
+[**Relay**](https://github.com/valtors/relay) - a local-first MCP server with 40+ tools for file ops, web fetch, screenshots, agent memory, and more. Same org, same philosophy: boring tech that just works.
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=valtors/reflow&type=Date)](https://star-history.com/#valtors/reflow&Date)
