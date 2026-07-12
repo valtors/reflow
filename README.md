@@ -113,7 +113,7 @@ unsub();
 | React | `reflow/react` | Full hooks + components |
 | Vue 3 | `reflow/vue` | Composables + plugin |
 | Svelte 5 | `reflow/svelte` | Stores |
-| Solid | `reflow/solid` | Core functions |
+| Solid | `reflow/solid` | Core + responsive hooks |
 | Qwik | `reflow/qwik` | Core functions |
 | Preact | `reflow/preact` | React-compatible |
 | Angular | `reflow/angular` | Core functions |
