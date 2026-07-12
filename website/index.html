@@ -1,2181 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>reflow - SSR-safe responsive toolkit for TypeScript</title>
-    <meta
-      name="description"
-      content="Typed breakpoints, fluid clamp utilities, container queries, and SSR-safe adapters across 8 frameworks — all with 0 runtime deps." />
-    <meta name="theme-color" content="#0A0A0A" />
-    <link rel="canonical" href="https://github.com/valtors/reflow" />
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>reflow - SSR-safe responsive toolkit for TypeScript</title>
+<meta name="description" content="Typed breakpoints, container queries, fluid typography, and user preference hooks. One API across 8 frameworks. Zero runtime deps. SSR-safe." />
+<meta name="theme-color" content="#0a0a0a" />
+<link rel="canonical" href="https://github.com/valtors/reflow" />
+<meta property="og:title" content="reflow - SSR-safe responsive toolkit for TypeScript" />
+<meta property="og:description" content="Typed breakpoints, container queries, fluid typography, and user preference hooks. One API across 8 frameworks. Zero runtime deps. SSR-safe." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://github.com/valtors/reflow" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #0a0a0a; --fg: #e5e5e5; --muted: #737373; --accent: #22d3ee; --border: #262626; --card: #111111; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  code, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
 
-    <meta property="og:title" content="reflow - SSR-safe responsive toolkit for TypeScript" />
-    <meta
-      property="og:description"
-      content="Typed breakpoints, fluid clamp utilities, container queries, and SSR-safe adapters across 8 frameworks — all with 0 runtime deps." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://github.com/valtors/reflow" />
+  header { border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--fg); }
+  .logo-mark { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--accent); }
+  .header-links { display: flex; gap: 20px; font-size: 14px; }
+  .header-links a { color: var(--muted); }
+  .header-links a:hover { color: var(--fg); }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="reflow - SSR-safe responsive toolkit for TypeScript" />
-    <meta
-      name="twitter:description"
-      content="Typed breakpoints, fluid clamp utilities, container queries, and SSR-safe adapters across 8 frameworks — all with 0 runtime deps." />
+  .hero { padding: 80px 0 60px; }
+  .hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+  .hero p { font-size: 20px; color: var(--muted); max-width: 640px; margin-bottom: 32px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .badge { font-size: 12px; font-weight: 600; padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; color: var(--muted); }
+  .badge.accent { color: var(--accent); border-color: #155e63; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta a { display: inline-block; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+  .cta-primary { background: var(--accent); color: #000; }
+  .cta-primary:hover { background: #06b6d4; text-decoration: none; }
+  .cta-secondary { border: 1px solid var(--border); color: var(--fg); }
+  .cta-secondary:hover { border-color: var(--muted); text-decoration: none; }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet" />
+  .install { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 0 0 60px; display: flex; align-items: center; justify-content: space-between; }
+  .install code { font-size: 15px; color: var(--accent); }
+  .install button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 4px 8px; }
 
-    <script>
-      window.tailwind = window.tailwind || {};
-      window.tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              ink: '#0A0A0A',
-              teal: '#0EA5A5',
-              cyan: '#22D3EE',
-              flame: '#F97316',
-              mist: '#9CA3AF',
-            },
-            boxShadow: {
-              glow: '0 0 0 1px rgba(34, 211, 238, 0.24), 0 0 40px rgba(14, 165, 165, 0.16)',
-              flame: '0 20px 50px rgba(249, 115, 22, 0.28)',
-            },
-            backgroundImage: {
-              heroGlow:
-                'radial-gradient(circle at top, rgba(34, 211, 238, 0.24), transparent 35%), radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.14), transparent 25%)',
-            },
-          },
-        },
-      };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-  document.documentElement.classList.add('is-loading');
-</script>
-    <link
-  rel="preload"
-  href="/fonts/inter-latin.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
-<link rel="dns-prefetch" href="//cdn.tailwindcss.com" />
-    <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareSourceCode",
-    "name": "reflow",
-    "description": "Typed responsive APIs for TypeScript: breakpoints, fluid clamp utilities, container queries, and SSR-safe framework adapters.",
-    "url": "https://github.com/valtors/reflow",
-    "codeRepository": "https://github.com/valtors/reflow",
-    "programmingLanguage": "TypeScript",
-    "license": "https://opensource.org/licenses/MIT",
-    "author": { "@type": "Organization", "name": "valtors" }
+  section { padding: 48px 0; border-top: 1px solid var(--border); }
+  section h2 { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: var(--muted); }
+  .card .mono { font-size: 13px; color: var(--accent); display: block; margin-bottom: 8px; }
+
+  .frameworks { width: 100%; }
+  .frameworks th, .frameworks td { text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .frameworks th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .frameworks td:first-child { font-weight: 600; }
+  .frameworks .status { color: var(--accent); font-size: 13px; }
+
+  .code-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; overflow-x: auto; margin-top: 16px; }
+  .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--fg); }
+  .code-block .kw { color: #c084fc; }
+  .code-block .str { color: #86efac; }
+  .code-block .fn { color: #fcd34d; }
+
+  .stats { display: flex; gap: 48px; }
+  .stat .num { font-size: 32px; font-weight: 800; color: var(--accent); }
+  .stat .label { font-size: 13px; color: var(--muted); }
+
+  footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; }
+  footer p { font-size: 13px; color: var(--muted); }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--fg); }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 36px; }
+    .hero p { font-size: 17px; }
+    .grid { grid-template-columns: 1fr; }
+    .stats { flex-wrap: wrap; gap: 24px; }
+    .frameworks th, .frameworks td { padding: 8px 10px; font-size: 13px; }
   }
-</script>
-    <style>
-      @property --border-angle {
-          syntax: '<angle>';
-          inherits: false;
-          initial-value: 0turn;
-        }
-
-        :root {
-          color-scheme: dark;
-          --bg: #0a0a0a;
-          --panel: rgba(12, 15, 18, 0.82);
-          --line: rgba(34, 211, 238, 0.18);
-          --text: #f8fafc;
-          --muted: #9ca3af;
-          --teal: #0ea5a5;
-          --cyan: #22d3ee;
-          --orange: #f97316;
-          --mouse-x: 50%;
-          --mouse-y: 50%;
-          --panel-strong: rgba(8, 10, 14, 0.94);
-          --line-strong: rgba(34, 211, 238, 0.42);
-          --shadow-cyan: 0 0 0 1px rgba(34, 211, 238, 0.14), 0 24px 80px rgba(6, 182, 212, 0.16);
-          --shadow-orange: 0 18px 50px rgba(249, 115, 22, 0.2);
-          --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
-          --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
-          --z-cursor-glow: 0;
-          --z-noise-overlay: 30;
-          --z-header: 50;
-          --z-mobile-menu: 60;
-          --z-scroll-progress: 70;
-        }
-
-        *,
-        *::before,
-        *::after {
-          box-sizing: border-box;
-        }
-
-        html,
-        body {
-          margin: 0;
-          min-height: 100%;
-          padding: 0;
-        }
-
-        html {
-          scroll-behavior: smooth;
-          text-rendering: optimizeLegibility;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-
-        body {
-          position: relative;
-          font-family: 'Inter', sans-serif;
-          background:
-            radial-gradient(circle at top, rgba(34, 211, 238, 0.04), transparent 28%),
-            linear-gradient(180deg, #050607 0%, var(--bg) 35%, #060708 100%);
-          color: var(--text);
-          overflow-x: hidden;
-          scroll-behavior: smooth;
-        }
-
-        ::selection {
-          background: rgb(34 211 238 / 30%);
-          color: var(--text);
-        }
-
-        body::before,
-        body::after {
-          content: '';
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-        }
-
-        body::before {
-          z-index: -2;
-          background:
-            linear-gradient(rgb(34 211 238 / 0.065) 1px, transparent 1px),
-            linear-gradient(90deg, rgb(34 211 238 / 0.065) 1px, transparent 1px);
-          background-size: 56px 56px;
-          mask-image: radial-gradient(circle at center, black 34%, rgb(0 0 0 / 0.78) 58%, transparent 100%);
-          -webkit-mask-image: radial-gradient(circle at center, black 34%, rgb(0 0 0 / 0.78) 58%, transparent 100%);
-        }
-
-        body::after {
-          z-index: -1;
-          background:
-            radial-gradient(circle at 14% 10%, rgb(34 211 238 / 0.16), transparent 0 28%),
-            radial-gradient(circle at 84% 12%, rgb(249 115 22 / 0.15), transparent 0 22%),
-            radial-gradient(circle at 52% 100%, rgb(14 165 165 / 0.12), transparent 0 30%),
-            radial-gradient(circle at 50% 52%, rgb(34 211 238 / 0.04), transparent 0 36%),
-            radial-gradient(rgb(255 255 255 / 0.055) 1px, transparent 1px);
-          background-size: auto, auto, auto, auto, 24px 24px;
-          background-position: center, center, center, center, 0 0;
-        }
-
-        .cursor-glow {
-          position: fixed;
-          inset: 0;
-          z-index: var(--z-cursor-glow);
-          pointer-events: none;
-          background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgb(34 211 238 / 0.06), transparent 65%);
-          will-change: opacity;
-        }
-
-        .noise-overlay {
-          position: fixed;
-          inset: 0;
-          z-index: var(--z-noise-overlay);
-          pointer-events: none;
-          opacity: 0.025;
-          mix-blend-mode: screen;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        }
-
-        .scroll-progress {
-          position: fixed;
-          inset: 0 0 auto 0;
-          width: 100%;
-          height: 2px;
-          z-index: var(--z-scroll-progress);
-          transform: scaleX(var(--scroll-progress-scale, 0));
-          transform-origin: left center;
-          will-change: transform;
-          background: linear-gradient(90deg, var(--teal), var(--cyan));
-          box-shadow: 0 0 18px rgb(34 211 238 / 0.45);
-        }
-
-        .noise {
-          position: relative;
-          isolation: isolate;
-        }
-
-        .noise::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-          pointer-events: none;
-          background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02) 18%, transparent 42%);
-        }
-
-        .divider {
-          width: min(100%, 76rem);
-          height: 1px;
-          margin-inline: auto;
-          background: linear-gradient(90deg, transparent, rgb(14 165 165 / 0.9), rgb(34 211 238 / 0.92), transparent);
-          box-shadow: 0 0 24px rgb(34 211 238 / 0.26), 0 0 80px rgb(14 165 165 / 0.12);
-        }
-
-        .reveal {
-          opacity: 0;
-          transform: translateY(28px) scale(0.97);
-          transition:
-            opacity 0.85s var(--ease-premium),
-            transform 0.85s var(--ease-premium);
-          transition-delay: var(--delay, 0ms);
-          will-change: opacity, transform;
-        }
-
-        .reveal.is-visible {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-
-        .code-window {
-          position: relative;
-          overflow: hidden;
-          border: 1px solid rgb(255 255 255 / 0.08);
-          border-radius: 2rem;
-          background:
-            linear-gradient(180deg, rgb(15 23 42 / 0.88), rgb(3 7 18 / 0.96)),
-            linear-gradient(135deg, rgb(34 211 238 / 0.08), transparent 42%, rgb(249 115 22 / 0.08));
-          box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05), var(--shadow-cyan);
-          backdrop-filter: blur(20px);
-        }
-
-        .code-window::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          background: linear-gradient(135deg, rgb(34 211 238 / 0.08), transparent 34%, rgb(249 115 22 / 0.08));
-        }
-
-        .code-line {
-          display: block;
-          white-space: pre-wrap;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.95rem;
-          line-height: 1.8;
-          color: #dbeafe;
-        }
-
-        .code-comment {
-          color: #64748b;
-        }
-
-        .code-keyword {
-          color: #c084fc;
-        }
-
-        .code-fn {
-          color: #22d3ee;
-        }
-
-        .code-string {
-          color: #f9a8d4;
-        }
-
-        .code-type {
-          color: #fb923c;
-        }
-
-        .code-prop {
-          color: #93c5fd;
-        }
-
-        .code-value {
-          color: #86efac;
-        }
-
-        .marquee {
-          position: relative;
-          overflow: hidden;
-          mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-          -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-        }
-
-        .marquee-track {
-          display: flex;
-          width: max-content;
-          will-change: transform;
-          animation: marquee 26s linear infinite;
-        }
-
-        .marquee:hover .marquee-track {
-          animation-play-state: paused;
-        }
-
-        .hero-grid {
-          position: relative;
-          overflow: hidden;
-          border: 1px solid rgb(34 211 238 / 0.18);
-          background:
-            radial-gradient(circle at top, rgb(34 211 238 / 0.2), transparent 36%),
-            radial-gradient(circle at 82% 18%, rgb(249 115 22 / 0.12), transparent 24%),
-            linear-gradient(180deg, rgb(5 8 12 / 0.95), rgb(10 10 10 / 0.98));
-          box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), var(--shadow-cyan);
-        }
-
-        .hero-grid::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          background:
-            linear-gradient(rgb(34 211 238 / 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgb(34 211 238 / 0.08) 1px, transparent 1px);
-          background-size: 52px 52px;
-          opacity: 0.5;
-        }
-
-        .scanline {
-          position: absolute;
-          inset: auto 0 18%;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, rgb(34 211 238 / 0.94), transparent);
-          box-shadow: 0 0 20px rgb(34 211 238 / 0.4), 0 0 50px rgb(14 165 165 / 0.18);
-          animation: sweep 6.4s var(--ease-soft) infinite;
-        }
-
-        .bp-line {
-          position: absolute;
-          bottom: 18%;
-          width: 2px;
-          background: linear-gradient(180deg, rgb(34 211 238 / 0.16), rgb(34 211 238 / 0.95), rgb(34 211 238 / 0.16));
-          box-shadow: 0 0 18px rgb(34 211 238 / 0.22);
-          transform-origin: bottom center;
-          animation: pulseLine 5.6s var(--ease-soft) infinite;
-        }
-
-        .bp-line span {
-          position: absolute;
-          top: -1.8rem;
-          left: 50%;
-          transform: translateX(-50%);
-          font: 700 0.65rem 'JetBrains Mono', monospace;
-          color: #67e8f9;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-        }
-
-        .bp-wave {
-          position: absolute;
-          left: -10%;
-          right: -10%;
-          top: 42%;
-          height: 120px;
-          border-top: 3px solid rgb(34 211 238 / 0.9);
-          border-radius: 50%;
-          filter: drop-shadow(0 0 18px rgb(34 211 238 / 0.25));
-          animation: floatWave 10s var(--ease-soft) infinite;
-        }
-
-        .bp-wave::before,
-        .bp-wave::after {
-          content: '';
-          position: absolute;
-          inset: auto 0;
-          height: 120px;
-          border-top: 3px solid rgb(14 165 165 / 0.82);
-          border-radius: 50%;
-        }
-
-        .bp-wave::before {
-          top: -28px;
-          left: 12%;
-          right: 12%;
-        }
-
-        .bp-wave::after {
-          top: 26px;
-          left: 18%;
-          right: 18%;
-          border-top-color: rgb(249 115 22 / 0.72);
-        }
-
-        .float-orb {
-          position: absolute;
-          width: 10px;
-          aspect-ratio: 1;
-          border-radius: 999px;
-          background: radial-gradient(circle, #67e8f9, #0ea5a5 68%, transparent 100%);
-          box-shadow: 0 0 18px rgb(34 211 238 / 0.45), 0 0 32px rgb(14 165 165 / 0.2);
-          animation: orbit 8s var(--ease-soft) infinite;
-        }
-
-        .float-orb.one {
-          top: 26%;
-          left: 18%;
-        }
-
-        .float-orb.two {
-          top: 48%;
-          right: 21%;
-          animation-delay: 1.8s;
-        }
-
-        .float-orb.three {
-          bottom: 20%;
-          left: 42%;
-          animation-delay: 3.4s;
-        }
-
-        .bar {
-          position: relative;
-          overflow: hidden;
-          border-radius: inherit;
-        }
-
-        .bar::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.18), transparent);
-          transform: translateX(-100%);
-          animation: shine 4.4s var(--ease-soft) infinite;
-        }
-
-        .faq-content {
-          display: none;
-        }
-
-        .faq-content > * {
-          opacity: 0;
-          transform: translateY(-0.35rem);
-          transition:
-            opacity 0.3s ease-out,
-            transform 0.3s var(--ease-premium);
-          will-change: opacity, transform;
-        }
-
-        .faq-item.open .faq-content {
-          display: block;
-        }
-
-        .faq-item.open .faq-content > * {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .faq-item.open {
-          border-color: rgb(34 211 238 / 0.28);
-          box-shadow: var(--shadow-cyan);
-        }
-
-        .faq-item.open .faq-icon {
-          transform: rotate(45deg);
-          color: var(--cyan);
-        }
-
-        .faq-icon {
-          transition: transform 0.28s var(--ease-premium), color 0.28s ease-out;
-        }
-
-        .mobile-menu-link {
-          will-change: transform, color;
-        }
-
-        .tab-button.active {
-          color: #fff;
-          border-color: rgb(34 211 238 / 0.55);
-          background: linear-gradient(180deg, rgb(34 211 238 / 0.16), rgb(14 165 165 / 0.08));
-          box-shadow: 0 0 0 1px rgb(34 211 238 / 0.08), 0 12px 30px rgb(14 165 165 / 0.14);
-        }
-
-        .tab-panel {
-          display: none;
-        }
-
-        .tab-panel.active {
-          display: grid;
-        }
-
-        .counter {
-          font-variant-numeric: tabular-nums;
-        }
-
-        .gradient-border {
-          position: relative;
-          isolation: isolate;
-        }
-
-        .gradient-border::before {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          z-index: -1;
-          border-radius: inherit;
-          background: conic-gradient(from var(--border-angle), rgb(34 211 238 / 0.08), rgb(34 211 238 / 0.7), rgb(249 115 22 / 0.56), rgb(14 165 165 / 0.82), rgb(34 211 238 / 0.08));
-          animation: borderRotate 7s linear infinite;
-          -webkit-mask:
-            linear-gradient(#000 0 0) content-box,
-            linear-gradient(#000 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          padding: 1px;
-        }
-
-        .shimmer-text {
-          color: transparent;
-          background-image: linear-gradient(90deg, rgb(255 255 255 / 0.52) 0%, #fff 22%, rgb(34 211 238 / 0.95) 50%, #fff 78%, rgb(255 255 255 / 0.52) 100%);
-          background-size: 200% 100%;
-          background-position: -200% 0;
-          -webkit-background-clip: text;
-          background-clip: text;
-          animation: shimmer 4.6s var(--ease-soft) infinite;
-        }
-
-        @keyframes shimmer {
-          from {
-            background-position: -200% 0;
-          }
-
-          to {
-            background-position: 200% 0;
-          }
-        }
-
-        @keyframes borderRotate {
-          from {
-            --border-angle: 0turn;
-          }
-
-          to {
-            --border-angle: 1turn;
-          }
-        }
-
-        @keyframes marquee {
-          from {
-            transform: translateX(0);
-          }
-
-          to {
-            transform: translateX(-50%);
-          }
-        }
-
-        @keyframes sweep {
-          0%,
-          100% {
-            transform: translateY(-120px);
-            opacity: 0.3;
-          }
-
-          50% {
-            transform: translateY(120px);
-            opacity: 1;
-          }
-        }
-
-        @keyframes pulseLine {
-          0%,
-          100% {
-            transform: scaleY(0.94);
-            opacity: 0.64;
-          }
-
-          50% {
-            transform: scaleY(1.05);
-            opacity: 1;
-          }
-        }
-
-        @keyframes floatWave {
-          0%,
-          100% {
-            transform: translateX(-2%) translateY(0);
-          }
-
-          50% {
-            transform: translateX(2%) translateY(-10px);
-          }
-        }
-
-        @keyframes orbit {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0) scale(0.8);
-            opacity: 0.45;
-          }
-
-          50% {
-            transform: translate3d(0, -18px, 0) scale(1.2);
-            opacity: 1;
-          }
-        }
-
-        @keyframes shine {
-          from {
-            transform: translateX(-100%);
-          }
-
-          to {
-            transform: translateX(100%);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .cursor-glow {
-            display: none;
-          }
-
-          .bp-wave {
-            top: 48%;
-            left: -16%;
-            right: -16%;
-            height: 92px;
-          }
-
-          .bp-wave::before,
-          .bp-wave::after {
-            height: 92px;
-          }
-
-          .bp-wave::before {
-            top: -20px;
-            left: 10%;
-            right: 10%;
-          }
-
-          .bp-wave::after {
-            top: 18px;
-            left: 14%;
-            right: 14%;
-          }
-        }
-
-      .skip-link {
-          position: absolute;
-          top: 1rem;
-          left: 1rem;
-          z-index: 1000;
-          padding: 0.75rem 1rem;
-        border: 1px solid rgb(34 211 238 / 0.28);
-        border-radius: 9999px;
-        background: rgb(8 10 14 / 0.96);
-        color: #f8fafc;
-        font-weight: 700;
-        text-decoration: none;
-        transform: translateY(-140%);
-        transition: transform 0.2s ease;
-        box-shadow: var(--shadow-cyan);
-      }
-
-        .skip-link:focus {
-          transform: translateY(0);
-          outline: 3px solid #22d3ee;
-          outline-offset: 2px;
-        }
-
-        a:focus-visible,
-        button:focus-visible,
-        [role='tab']:focus-visible {
-          outline: 3px solid rgb(34 211 238 / 0.9);
-          outline-offset: 3px;
-        }
-
-        .perf-loader {
-          position: fixed;
-          inset: 0;
-          z-index: 999;
-          display: grid;
-          place-items: center;
-          gap: 0.875rem;
-          background: rgba(10, 10, 10, 0.92);
-          color: #ffffff;
-          transition: opacity 0.25s ease, visibility 0.25s ease;
-        }
-
-        .perf-loader__spinner {
-          width: 2.75rem;
-          height: 2.75rem;
-          border: 3px solid rgba(255, 255, 255, 0.2);
-          border-top-color: #22d3ee;
-          border-radius: 9999px;
-          animation: perf-spin 0.8s linear infinite;
-        }
-
-        .perf-loader[hidden] {
-          display: none;
-        }
-
-        html:not(.is-loading) .perf-loader {
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none;
-        }
-
-        @keyframes perf-spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          html {
-            scroll-behavior: auto !important;
-          }
-
-          .cursor-glow {
-            display: none;
-          }
-
-          *,
-          *::before,
-          *::after {
-            animation: none !important;
-            transition: none !important;
-          }
-        }
-    </style>
-    <noscript>
-  <style>
-    .reveal,
-    .reveal.is-visible,
-    [data-counter],
-    .marquee-track,
-    .scanline,
-    .bp-line,
-    .bp-wave,
-    .perf-loader {
-      opacity: 1 !important;
-      transform: none !important;
-      animation: none !important;
-      visibility: visible !important;
-    }
-
-    .tab-panel {
-      display: grid !important;
-    }
-
-    .faq-content {
-      display: block !important;
-    }
-
-    .faq-content > * {
-      opacity: 1 !important;
-      transform: none !important;
-    }
-  </style>
-</noscript>
-  </head>
-  <body class="bg-ink text-white selection:bg-cyan/30 selection:text-white">
-    <a class="skip-link" href="#top">Skip to content</a>
-<div class="perf-loader" role="status" aria-live="polite" aria-label="Page loading">
-  <span class="perf-loader__spinner" aria-hidden="true"></span>
-  <span>Loading reflow…</span>
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container header-inner">
+    <a href="https://github.com/valtors/reflow" class="logo">
+      <span class="logo-mark">r</span>
+      reflow
+    </a>
+    <nav class="header-links">
+      <a href="https://github.com/valtors/reflow#readme">Docs</a>
+      <a href="https://github.com/valtors/reflow/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/valtors/reflow">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <h1>SSR-safe responsive toolkit for TypeScript</h1>
+    <p>Typed breakpoints, container queries, fluid typography, and user preference hooks. One API across 8 frameworks. Zero runtime deps.</p>
+    <div class="hero-badges">
+      <span class="badge accent">SSR-safe</span>
+      <span class="badge">Zero deps</span>
+      <span class="badge">8 frameworks</span>
+      <span class="badge">TypeScript strict</span>
+    </div>
+    <div class="cta">
+      <a href="https://github.com/valtors/reflow" class="cta-primary">View on GitHub</a>
+      <a href="https://www.npmjs.com/package/reflow" class="cta-secondary">npm install reflow</a>
+    </div>
+  </div>
+
+  <div class="install">
+    <code>npm install reflow</code>
+    <button onclick="navigator.clipboard.writeText('npm install reflow')">copy</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">40+</div><div class="label">Hooks &amp; utilities</div></div>
+    <div class="stat"><div class="num">8</div><div class="label">Framework adapters</div></div>
+    <div class="stat"><div class="num">0</div><div class="label">Runtime deps</div></div>
+    <div class="stat"><div class="num">100%</div><div class="label">TypeScript strict</div></div>
+  </div>
 </div>
-    <div class="cursor-glow"></div>
-    <div class="noise-overlay"></div>
-    <div class="scroll-progress"></div>
 
-    <header class="sticky top-0 z-[var(--z-header)] border-b border-white/10 bg-black/70 backdrop-blur-xl">
-      <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="#top" class="group inline-flex items-center gap-3" aria-label="Back to top">
-          <span class="flex h-11 w-11 items-center justify-center rounded-[1.5rem] border border-cyan/30 bg-gradient-to-br from-cyan/20 via-cyan/10 to-teal/20 text-xl font-semibold text-cyan shadow-[0_0_28px_rgba(34,211,238,0.35)] ring-1 ring-inset ring-white/10 transition duration-300 group-hover:scale-[1.02] group-hover:shadow-[0_0_36px_rgba(34,211,238,0.45)]">f</span>
-          <span class="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">
-            reflow<span class="text-cyan">-ts</span>
-          </span>
-        </a>
-
-        <nav aria-label="Primary navigation" class="hidden items-center gap-8 md:flex">
-          <a href="#why" class="text-sm font-medium text-mist transition hover:text-white">Why</a>
-          <a href="#features" class="text-sm font-medium text-mist transition hover:text-white">Features</a>
-          <a href="#frameworks" class="text-sm font-medium text-mist transition hover:text-white">Frameworks</a>
-          <a href="#benchmarks" class="text-sm font-medium text-mist transition hover:text-white">Benchmarks</a>
-          <a href="https://github.com/valtors/reflow#readme" target="_blank" rel="noreferrer" class="text-sm font-medium text-mist transition hover:text-white">Docs</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a href="#get-started" data-magnetic class="hidden rounded-full border border-flame/30 bg-flame px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_30px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fb923c] md:inline-flex">Get Started</a>
-          <button
-            id="hamburger-btn"
-            type="button"
-            aria-label="Open menu"
-            aria-controls="mobile-menu"
-            aria-expanded="false"
-            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan/40 hover:bg-white/10 md:hidden"
-          >
-            <span class="sr-only">Open navigation</span>
-            <span class="flex flex-col gap-1.5">
-              <span class="block h-0.5 w-5 rounded-full bg-white"></span>
-              <span class="block h-0.5 w-5 rounded-full bg-white"></span>
-              <span class="block h-0.5 w-5 rounded-full bg-white"></span>
-            </span>
-          </button>
-        </div>
+<section>
+  <div class="container">
+    <h2>What you get</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="mono">useBreakpoint</span>
+        <h3>Typed breakpoints</h3>
+        <p>Define breakpoints once. Get typed keys, active detection, above/below/between checks. Mobile-first.</p>
       </div>
-
-      <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[var(--z-mobile-menu)] flex min-h-screen items-center justify-center bg-black/80 px-6 opacity-0 backdrop-blur-2xl transition duration-300 md:hidden">
-        <button
-          id="mobile-menu-close"
-          type="button"
-          aria-label="Close menu"
-          class="absolute right-6 top-6 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan/40 hover:bg-white/10"
-        >
-          <span class="sr-only">Close navigation</span>
-          <span class="relative block h-5 w-5">
-            <span class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-white"></span>
-            <span class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-white"></span>
-          </span>
-        </button>
-
-        <div class="flex flex-col items-center gap-6 text-center">
-          <a href="#why" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Why</a>
-          <a href="#features" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Features</a>
-          <a href="#frameworks" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Frameworks</a>
-          <a href="#benchmarks" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Benchmarks</a>
-          <a href="https://github.com/valtors/reflow#readme" target="_blank" rel="noreferrer" class="mobile-menu-link text-3xl font-semibold tracking-[-0.03em] text-mist transition hover:text-white">Docs</a>
-          <a href="#get-started" data-magnetic class="mobile-menu-link mt-4 inline-flex rounded-full border border-flame/30 bg-flame px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_10px_30px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#fb923c]">Get Started</a>
-        </div>
+      <div class="card">
+        <span class="mono">useContainerQuery</span>
+        <h3>Container queries</h3>
+        <p>Track element size with ResizeObserver. React, Vue, Svelte, Solid adapters included.</p>
       </div>
-    </header>
-
-        <main id="top" tabindex="-1">
-
-          <section class="reveal is-visible relative overflow-hidden bg-heroGlow">
-
-            <div class="mx-auto grid max-w-7xl gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.08fr_.92fr] lg:px-8 lg:py-28">
-
-              <div class="reveal flex flex-col justify-center" style="--delay: 80ms">
-                <div class="mb-6 inline-flex w-fit items-center gap-3 rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.32em] text-cyan shadow-[0_0_0_1px_rgba(34,211,238,0.12)] backdrop-blur-sm">
-                  <span class="relative flex h-2.5 w-2.5">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan/70"></span>
-                    <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan shadow-[0_0_18px_rgba(34,211,238,0.8)]"></span>
-                  </span>
-                  <span>SSR-safe. Typed. Framework-agnostic.</span>
-                </div>
-
-                <h1 class="max-w-5xl text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl xl:text-7xl">
-                  <span class="block">Typed responsive APIs</span>
-                  <span class="shimmer-text block bg-gradient-to-r from-white via-cyan to-teal bg-clip-text text-transparent">for modern UI stacks</span>
-                </h1>
-
-                <p id="typewriter-text" class="mt-6 max-w-2xl text-lg font-medium leading-8 text-mist sm:text-xl">
-                  SSR-safe. Zero deps. 8 frameworks. One API.
-                </p>
-
-                <p class="mt-4 max-w-2xl text-base leading-7 text-mist/90 sm:text-lg">
-                  Replace the pile of media hooks, fluid type helpers, and hydration fixes with one typed toolkit for breakpoints, container queries, and fluid sizing.
-                </p>
-
-                <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-stretch">
-                  <button
-                    type="button"
-                    data-copy="npm install reflow"
-                    data-magnetic
-                    class="group noise inline-flex items-center justify-between gap-4 rounded-[1.5rem] border border-cyan/20 bg-white/5 px-5 py-4 text-left shadow-glow transition duration-300 hover:-translate-y-1 hover:border-cyan/40 hover:bg-white/10"
-                    aria-label="Copy npm install command"
-                  >
-                    <span class="min-w-0">
-                      <span class="block text-[11px] font-semibold uppercase tracking-[0.32em] text-mist">Install</span>
-                      <span class="mt-1 block font-['JetBrains_Mono'] text-sm text-cyan sm:text-base">npm install reflow</span>
-                    </span>
-                    <span data-copy-label class="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition group-hover:border-cyan/30 group-hover:text-cyan">Copy</span>
-                  </button>
-
-                  <a
-                    href="https://github.com/valtors/reflow"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label="View the reflow GitHub repository in a new tab"
-                    data-magnetic
-                    class="inline-flex items-center justify-center rounded-[1.5rem] border border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.28)] transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:bg-white/10"
-                  >
-                    View repository
-                  </a>
-                </div>
-
-                <div class="mt-10 flex flex-wrap items-center gap-3 text-sm text-mist">
-                  <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">Type-safe breakpoints</span>
-                  <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">Zero hydration mismatch</span>
-                  <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">Container queries + fluid clamp</span>
-                </div>
-              </div>
-
-              <div class="reveal" style="--delay: 180ms">
-                <div class="hero-grid noise relative min-h-[420px] overflow-hidden rounded-[2rem] border border-cyan/20 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.2),_rgba(8,12,24,0.92)_38%,_rgba(2,6,23,0.98)_100%)] p-5 shadow-glow sm:p-7">
-                  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,_rgba(34,211,238,0.14),_transparent_42%)]"></div>
-                  <div class="absolute inset-x-5 top-5 z-10 flex flex-wrap gap-3 text-[11px] font-medium uppercase tracking-[0.25em] text-mist sm:inset-x-7 sm:top-7">
-                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">320px xs</div>
-                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">640px sm</div>
-                    <div class="rounded-full border border-cyan/30 bg-cyan/10 px-3 py-2 text-cyan shadow-[0_0_24px_rgba(34,211,238,0.18)] backdrop-blur-sm">768px md</div>
-                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">1024px lg</div>
-                    <div class="rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm">1440px xl</div>
-                  </div>
-
-                  <div class="absolute inset-x-5 top-24 z-10 rounded-[1.5rem] border border-white/10 bg-black/45 px-4 py-3 font-['JetBrains_Mono'] text-xs text-mist shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md sm:inset-x-7">
-                    <div class="flex items-center justify-between gap-3">
-                      <span class="text-cyan">useBreakpoint()</span>
-                      <span>active: <span class="text-white">&quot;md&quot;</span></span>
-                    </div>
-                    <div class="mt-3 h-px w-full bg-gradient-to-r from-transparent via-cyan/40 to-transparent"></div>
-                    <div class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-[10px] uppercase tracking-[0.28em] text-mist/80">
-                      <span>status</span>
-                      <span class="text-cyan">synced</span>
-                      <span>match</span>
-                      <span class="text-white">768px ≤ viewport &lt; 1024px</span>
-                    </div>
-                  </div>
-
-                  <div class="bp-line" style="left: 14%; height: 38%; animation-delay: 0s"><span>xs</span></div>
-                  <div class="bp-line" style="left: 32%; height: 52%; animation-delay: 0.6s"><span>sm</span></div>
-                  <div class="bp-line" style="left: 50%; height: 68%; animation-delay: 1.2s"><span>md</span></div>
-                  <div class="bp-line" style="left: 68%; height: 82%; animation-delay: 1.8s"><span>lg</span></div>
-                  <div class="bp-line" style="left: 86%; height: 92%; animation-delay: 2.4s"><span>xl</span></div>
-
-                  <div class="bp-wave"></div>
-                  <div class="scanline"></div>
-                  <div class="float-orb one"></div>
-                  <div class="float-orb two"></div>
-                  <div class="float-orb three"></div>
-
-                  <div class="absolute inset-x-5 bottom-6 z-10 grid gap-4 sm:inset-x-7 sm:grid-cols-3">
-                    <div class="rounded-[1.5rem] border border-white/10 bg-black/45 p-4 backdrop-blur-sm">
-                      <div class="text-xs uppercase tracking-[0.3em] text-mist">Viewport</div>
-                      <div class="mt-2 text-2xl font-bold text-white">768 × 1024</div>
-                    </div>
-                    <div class="rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-4 backdrop-blur-sm">
-                      <div class="text-xs uppercase tracking-[0.3em] text-cyan">Hydration</div>
-                      <div class="mt-2 text-2xl font-bold text-white">0 warnings</div>
-                    </div>
-                    <div class="rounded-[1.5rem] border border-flame/20 bg-flame/10 p-4 backdrop-blur-sm">
-                      <div class="text-xs uppercase tracking-[0.3em] text-flame">Bundle</div>
-                      <div class="mt-2 text-2xl font-bold text-white">&lt; 3KB gz</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </section>
-
-          <div class="divider"></div>
-
-    <section class="reveal py-20">
-      <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:px-6 lg:px-8">
-        <div class="reveal">
-          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Works with</p>
-          <h2 class="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
-            One responsive model. Plenty of ways to ship.
-          </h2>
-        </div>
-
-        <div class="marquee reveal rounded-[2rem] border border-white/10 bg-white/5 p-4 shadow-glow sm:p-5">
-          <div class="marquee-track items-center gap-3">
-            <div class="flex min-w-max shrink-0 items-center gap-3 pr-3">
-              <span class="whitespace-nowrap rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-400">React</span>
-              <span class="whitespace-nowrap rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-400">Vue</span>
-              <span class="whitespace-nowrap rounded-full border border-orange-300/20 bg-orange-300/10 px-4 py-2 text-sm font-semibold text-orange-300">Svelte</span>
-              <span class="whitespace-nowrap rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-2 text-sm font-semibold text-sky-300">Solid</span>
-              <span class="whitespace-nowrap rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-400">Angular</span>
-              <span class="whitespace-nowrap rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-sm font-semibold text-violet-400">Preact</span>
-              <span class="whitespace-nowrap rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-sm font-semibold text-indigo-400">Qwik</span>
-              <span class="whitespace-nowrap rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-300">Lit</span>
-              <span class="whitespace-nowrap rounded-full border border-slate-300/20 bg-slate-300/10 px-4 py-2 text-sm font-semibold text-slate-300">Next.js</span>
-              <span class="whitespace-nowrap rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-sm font-semibold text-emerald-300">Nuxt</span>
-              <span class="whitespace-nowrap rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-sm font-semibold text-fuchsia-400">Astro</span>
-              <span class="whitespace-nowrap rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-300">Remix</span>
-              <span class="whitespace-nowrap rounded-full border border-orange-200/20 bg-orange-200/10 px-4 py-2 text-sm font-semibold text-orange-200">SvelteKit</span>
-            </div>
-
-            <div aria-hidden="true" class="flex min-w-max shrink-0 items-center gap-3 pr-3">
-              <span class="whitespace-nowrap rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-400">React</span>
-              <span class="whitespace-nowrap rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-400">Vue</span>
-              <span class="whitespace-nowrap rounded-full border border-orange-300/20 bg-orange-300/10 px-4 py-2 text-sm font-semibold text-orange-300">Svelte</span>
-              <span class="whitespace-nowrap rounded-full border border-sky-300/20 bg-sky-300/10 px-4 py-2 text-sm font-semibold text-sky-300">Solid</span>
-              <span class="whitespace-nowrap rounded-full border border-red-400/20 bg-red-400/10 px-4 py-2 text-sm font-semibold text-red-400">Angular</span>
-              <span class="whitespace-nowrap rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-sm font-semibold text-violet-400">Preact</span>
-              <span class="whitespace-nowrap rounded-full border border-indigo-400/20 bg-indigo-400/10 px-4 py-2 text-sm font-semibold text-indigo-400">Qwik</span>
-              <span class="whitespace-nowrap rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-300">Lit</span>
-              <span class="whitespace-nowrap rounded-full border border-slate-300/20 bg-slate-300/10 px-4 py-2 text-sm font-semibold text-slate-300">Next.js</span>
-              <span class="whitespace-nowrap rounded-full border border-emerald-300/20 bg-emerald-300/10 px-4 py-2 text-sm font-semibold text-emerald-300">Nuxt</span>
-              <span class="whitespace-nowrap rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-4 py-2 text-sm font-semibold text-fuchsia-400">Astro</span>
-              <span class="whitespace-nowrap rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-300">Remix</span>
-              <span class="whitespace-nowrap rounded-full border border-orange-200/20 bg-orange-200/10 px-4 py-2 text-sm font-semibold text-orange-200">SvelteKit</span>
-            </div>
-          </div>
-        </div>
+      <div class="card">
+        <span class="mono">fluidClamp</span>
+        <h3>Fluid typography</h3>
+        <p>Generate clamp() values from min/max px and viewport bounds. No magic numbers.</p>
       </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section class="reveal py-20" aria-labelledby="social-proof-heading">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 id="social-proof-heading" class="sr-only">Built for modern frontend teams</h2>
-        <p class="reveal text-center text-sm uppercase tracking-[0.35em] text-mist">Built for modern frontend teams</p>
-
-        <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 text-center">
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">SSR apps</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Design systems</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Component libraries</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Dashboards</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Marketing sites</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">Docs sites</span>
-          <span class="reveal text-xl font-semibold text-white/40 transition hover:text-white/70">E-commerce</span>
-        </div>
-
-        <div class="reveal mx-auto mt-10 max-w-2xl border-l-2 border-cyan/30 pl-6">
-          <blockquote class="reveal text-left italic text-mist">
-            Adopt it one layer at a time — replace a media hook today, then keep the same breakpoint system as the product grows.
-          </blockquote>
-          <p class="reveal mt-4 text-left text-sm text-mist/80">One responsive model across apps, design systems, and content surfaces.</p>
-        </div>
+      <div class="card">
+        <span class="mono">useColorScheme</span>
+        <h3>User preferences</h3>
+        <p>Detect color scheme, reduced motion, contrast, forced colors, pointer type. All reactive.</p>
       </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section id="why" class="reveal py-20">
-      <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[.9fr_1.1fr] lg:px-8">
-        <div class="reveal max-w-2xl">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">The problem</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight text-white sm:text-5xl">Responsive glue code adds up fast.</h2>
-          <p class="mt-6 text-lg leading-8 text-mist">
-            Most responsive stacks are still stitched together from unrelated hooks, brittle viewport listeners, and hand-rolled CSS helpers. You pay for the same signal multiple times, fight hydration bugs on first paint, and end up with responsive logic scattered across components, styles, and runtime guards.
-          </p>
-
-          <div class="mt-8 space-y-4 text-base leading-7 text-mist">
-            <article class="noise rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow">
-              One package handles media queries. Another does viewport width. A third pretends to do fluid typography. None agree on SSR.
-            </article>
-            <article class="noise rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow">
-              You lose literal breakpoint inference, ship overlapping logic, and still end up guarding everything with <span class="font-['JetBrains_Mono'] text-cyan">typeof window</span>.
-            </article>
-            <article class="noise rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-5 text-white shadow-glow">
-              reflow brings breakpoints, clamp utilities, container helpers, prefers-* APIs, and SSR-safe rendering into one coherent toolkit.
-            </article>
-          </div>
-        </div>
-
-        <div class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" data-tilt>
-      <div class="border-b border-white/10 px-6 py-5">
-        <h3 class="text-lg font-semibold text-white">Responsive stack comparison</h3>
-        <p class="mt-1 text-sm text-mist">A fair look at common responsive trade-offs.</p>
+      <div class="card">
+        <span class="mono">ResponsiveProvider</span>
+        <h3>SSR-safe</h3>
+        <p>Server snapshot support. No hydration mismatch warnings. No typeof window checks.</p>
       </div>
-
-      <div class="overflow-x-auto">
-        <table class="min-w-[56rem] w-full text-left text-sm">
-          <thead class="bg-white/5 text-xs uppercase tracking-[0.24em] text-mist">
-            <tr>
-              <th class="px-6 py-4 font-semibold">Capability</th>
-              <th class="border-x border-cyan/20 bg-cyan/10 px-4 py-4 font-semibold text-white">reflow</th>
-              <th class="px-4 py-4 font-semibold">react-responsive</th>
-              <th class="px-4 py-4 font-semibold">usehooks-ts</th>
-              <th class="px-4 py-4 font-semibold">react-use</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-white/10">
-            <tr>
-              <td class="px-6 py-4 text-white/90">SSR-safe first paint</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Server snapshot + hints</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Manual SSR setup</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client-derived</span></td>
-              <td class="px-4 py-4"><span class="text-orange-200">⚠️ Client-derived</span></td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 text-white/90">Typed breakpoints</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Literal inference</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Not built in</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Not built in</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Not built in</span></td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 text-white/90">Fluid typography helpers</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ fluidClamp()</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 text-white/90">Container query utilities</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ Built in</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Separate utility</span></td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 text-white/90">Responsive scope</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ One toolkit</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Media queries</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ General hooks</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ Broad hook set</span></td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 text-white/90">Framework coverage</td>
-              <td class="border-x border-cyan/20 bg-gradient-to-r from-cyan/12 via-cyan/8 to-transparent px-4 py-4 font-semibold text-white"><span class="text-emerald-300">✅ 8 frameworks</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ React only</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ React only</span></td>
-              <td class="px-4 py-4"><span class="text-mist">➖ React only</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card">
+        <span class="mono">useResponsiveValue</span>
+        <h3>Responsive values</h3>
+        <p>Pass an object keyed by breakpoint, get the matching value back. Works in any framework.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>One API, every framework</h2>
+    <table class="frameworks">
+      <thead><tr><th>Framework</th><th>Entry</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>React</td><td class="mono">reflow/react</td><td class="status">Full hooks + components</td></tr>
+        <tr><td>Vue 3</td><td class="mono">reflow/vue</td><td class="status">Composables + plugin</td></tr>
+        <tr><td>Svelte 5</td><td class="mono">reflow/svelte</td><td class="status">Stores</td></tr>
+        <tr><td>Solid</td><td class="mono">reflow/solid</td><td class="status">Core + responsive hooks</td></tr>
+        <tr><td>Qwik</td><td class="mono">reflow/qwik</td><td class="status">Core functions</td></tr>
+        <tr><td>Preact</td><td class="mono">reflow/preact</td><td class="status">React-compatible</td></tr>
+        <tr><td>Angular</td><td class="mono">reflow/angular</td><td class="status">Core functions</td></tr>
+        <tr><td>Lit</td><td class="mono">reflow/lit</td><td class="status">Core functions</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Quick example</h2>
+    <div class="code-block">
+<pre><span class="kw">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="kw">from</span> <span class="str">"reflow/react"</span>;
+<span class="kw">import</span> { fluidClamp } <span class="kw">from</span> <span class="str">"reflow/styles"</span>;
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">const</span> bp = <span class="fn">useBreakpoint</span>();
+  <span class="kw">const</span> cols = <span class="fn">useResponsiveValue</span>({ xs: <span class="str">1</span>, md: <span class="str">2</span>, xl: <span class="str">4</span> });
+
+  <span class="kw">return</span> (
+    <span class="kw">&lt;main</span> style={{ fontSize: <span class="fn">fluidClamp</span>({ minPx: <span class="str">16</span>, maxPx: <span class="str">22</span> }) }}&gt;
+      &lt;p&gt;Breakpoint: {bp.active}&lt;/p&gt;
+      &lt;Grid columns={cols} /&gt;
+    &lt;/main&gt;
+  );
+}
+
+<span class="kw">export default</span> () =&gt; (
+  <span class="kw">&lt;ResponsiveProvider</span> serverWidth={<span class="str">1024</span>}&gt;
+    <span class="kw">&lt;App</span> /&gt;
+  <span class="kw">&lt;/ResponsiveProvider&gt;</span>
+);</pre>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Why reflow</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>vs react-responsive</h3>
+        <p>Reflow gives you more than media queries: container queries, fluid typography, user preferences, and SSR helpers. Works in 8 frameworks, not just React.</p>
       </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section id="features" class="reveal py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal max-w-3xl">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Features</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Everything responsive. One typed API.</h2>
-          <p class="mt-5 text-lg leading-8 text-mist">Everything your team needs in one coherent API for breakpoints, fluid scales, preferences, container logic, and SSR-safe rendering.</p>
-        </div>
-
-        <div class="mt-12 grid gap-6 lg:grid-cols-3">
-          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
-            <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Typed Breakpoints</div>
-            <h3 class="text-2xl font-bold">Literal types, everywhere.</h3>
-            <p class="mt-3 text-mist">Autocompletion and safe layout decisions from <span class="text-white">xs</span> to <span class="text-white">2xl</span>, without fragile stringly-typed conditions.</p>
-            <div class="mt-5 rounded-[1.5rem] border border-cyan/20 bg-black/40 p-4">
-              <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="text-cyan">const</span> bp = <span class="text-white">useBreakpoint</span>()
-    bp.active <span class="text-white">//</span> <span class="text-cyan">'md'</span>
-    bp.above(<span class="text-cyan">'lg'</span>)
-    bp.between(<span class="text-cyan">'sm'</span>, <span class="text-cyan">'xl'</span>)</code></pre>
-            </div>
-          </article>
-
-          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
-            <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Fluid Typography</div>
-            <h3 class="text-2xl font-bold">Clamp without calculator tabs.</h3>
-            <p class="mt-3 text-mist">Build fluid scales for type and spacing with a single utility, then reuse the same responsive rhythm everywhere.</p>
-            <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-black/40 p-4">
-              <div class="flex items-end gap-2">
-                <div class="flex-1 rounded-t-2xl bg-cyan/25 px-2 py-3 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan" style="height: 3.25rem">sm</div>
-                <div class="flex-1 rounded-t-2xl bg-cyan/40 px-2 py-5 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan" style="height: 4.25rem">md</div>
-                <div class="flex-1 rounded-t-2xl bg-cyan/60 px-2 py-7 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white" style="height: 5.25rem">lg</div>
-                <div class="flex-1 rounded-t-2xl bg-orange-400/70 px-2 py-9 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white" style="height: 6.25rem">xl</div>
-              </div>
-              <p class="mt-4 font-['JetBrains_Mono'] text-xs leading-6 text-cyan">fluidClamp({ minPx: 16, maxPx: 24, minVwPx: 360, maxVwPx: 1440 })</p>
-              <p class="font-['JetBrains_Mono'] text-xs leading-6 text-mist">→ clamp(1rem, 0.83rem + 0.74vw, 1.5rem)</p>
-            </div>
-          </article>
-
-          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
-            <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Container Queries</div>
-            <h3 class="text-2xl font-bold">Responsive by component, not page.</h3>
-            <p class="mt-3 text-mist">Let cards, sidebars, and modules adapt to the space they actually get instead of whatever the viewport happens to be.</p>
-            <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-black/40 p-4">
-              <div class="rounded-[1.5rem] border border-cyan/20 bg-cyan/10 p-3">
-                <div class="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan">
-                  <span>@container card</span>
-                  <span>42rem</span>
-                </div>
-                <div class="mt-3 grid grid-cols-[1.2fr_.8fr] gap-3">
-                  <div class="rounded-[1.5rem] border border-cyan/20 bg-white/5 px-3 py-6 text-sm text-white">media block</div>
-                  <div class="rounded-[1.5rem] border border-white/10 bg-black/50 px-3 py-6 text-center text-sm text-mist">details</div>
-                </div>
-              </div>
-              <div class="mt-3 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-mist">element-aware layout</div>
-            </div>
-          </article>
-
-          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
-            <div class="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Dark Mode &amp; Preferences</div>
-            <h3 class="text-2xl font-bold">Modern prefers-* APIs built in.</h3>
-            <p class="mt-3 text-mist">Read system color scheme, motion, contrast, and other user preferences through one typed media layer.</p>
-            <div class="mt-5 rounded-[1.5rem] border border-white/10 bg-black/40 p-4">
-              <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-color-scheme: dark)'</span>)
-    <span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-reduced-motion: reduce)'</span>)
-    <span class="text-white">watchMedia</span>(<span class="text-cyan">'(prefers-contrast: more)'</span>)</code></pre>
-            </div>
-          </article>
-
-          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow" style="--delay: 100ms">
-            <div class="mb-5 inline-flex rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">SSR-Safe Hydration</div>
-            <h3 class="text-2xl font-bold">Render the right layout first.</h3>
-            <p class="mt-3 text-mist">Server snapshots and client-safe subscriptions help the first paint match the final responsive state without layout flashes.</p>
-            <div class="mt-5 rounded-[1.5rem] border border-cyan/20 bg-black/40 p-4">
-              <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.24em] text-mist">
-                <span>Hydration</span>
-                <span class="text-emerald-300">stable</span>
-              </div>
-              <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
-                <div class="h-full w-full rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div>
-              </div>
-              <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div class="rounded-[1.5rem] border border-white/10 bg-white/5 px-3 py-3 text-mist">serverWidth <span class="mt-1 block font-['JetBrains_Mono'] text-white">1024px</span></div>
-                <div class="rounded-[1.5rem] border border-white/10 bg-white/5 px-3 py-3 text-mist">clientMatch <span class="mt-1 block font-['JetBrains_Mono'] text-cyan">true</span></div>
-              </div>
-            </div>
-          </article>
-
-          <article data-tilt class="reveal noise gradient-border rounded-[2rem] border border-flame/20 bg-white/5 p-6 shadow-glow" style="--delay: 180ms">
-            <div class="mb-5 inline-flex rounded-full border border-flame/20 bg-flame/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-flame">Zero Dependencies</div>
-            <h3 class="text-2xl font-bold">Under 3KB gzipped.</h3>
-            <p class="mt-3 text-mist">No runtime baggage, no CSS parser overhead, and no adapter lock-in—just the responsive primitives your UI actually needs.</p>
-            <div class="mt-5 rounded-[1.5rem] border border-flame/20 bg-black/40 p-4">
-              <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.25em] text-mist">
-                <span>core bundle</span>
-                <span class="text-flame">2.4 KB gz</span>
-              </div>
-              <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
-                <div class="h-full w-[80%] rounded-full bg-gradient-to-r from-cyan via-teal to-flame"></div>
-              </div>
-              <div class="mt-4 flex items-center justify-between font-['JetBrains_Mono'] text-xs text-mist">
-                <span>0 KB</span>
-                <span class="text-flame">3 KB limit</span>
-              </div>
-            </div>
-          </article>
-        </div>
+      <div class="card">
+        <h3>vs usehooks-ts</h3>
+        <p>Reflow is a focused responsive toolkit, not a grab bag. Every API is typed, SSR-safe, and framework-agnostic. Zero deps means zero conflicts.</p>
       </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section class="reveal relative overflow-hidden py-24" aria-labelledby="stats-heading">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.05),transparent_72%)]"></div>
-      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan/25 to-transparent"></div>
-      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 id="stats-heading" class="sr-only">reflow by the numbers</h2>
-        <div class="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
-          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 0ms">
-            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
-            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
-            <div class="relative flex min-h-[11rem] items-center justify-center">
-              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
-              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
-              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
-              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="8" data-prefix="" data-suffix="">0</div>
-            </div>
-            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">Frameworks</div>
-          </article>
-
-          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 80ms">
-            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
-            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
-            <div class="relative flex min-h-[11rem] items-center justify-center">
-              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
-              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
-              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
-              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="3" data-prefix="&lt; " data-suffix="KB">0</div>
-            </div>
-            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">gzipped</div>
-          </article>
-
-          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 160ms">
-            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
-            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
-            <div class="relative flex min-h-[11rem] items-center justify-center">
-              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
-              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
-              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
-              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="156" data-prefix="" data-suffix="">0</div>
-            </div>
-            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">Tests passing</div>
-          </article>
-
-          <article class="reveal noise group relative isolate overflow-hidden rounded-[2rem] border border-cyan/20 bg-white/5 p-10 text-center shadow-glow" style="--delay: 240ms">
-            <div class="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan/70 to-transparent"></div>
-            <div class="absolute inset-x-10 top-8 h-24 rounded-full bg-cyan/10 blur-3xl"></div>
-            <div class="relative flex min-h-[11rem] items-center justify-center">
-              <span class="absolute h-28 w-28 rounded-full border border-cyan/20 bg-cyan/10 opacity-25 blur-xl"></span>
-              <span class="absolute h-24 w-24 rounded-full border border-cyan/30 opacity-20 animate-ping"></span>
-              <span class="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 bg-[radial-gradient(circle,rgba(34,211,238,0.22),transparent_68%)] blur-2xl"></span>
-              <div class="counter relative text-6xl font-black leading-none tracking-[-0.08em] text-white drop-shadow-[0_0_35px_rgba(34,211,238,0.28)] md:text-7xl" data-counter="0" data-prefix="" data-suffix="">0</div>
-            </div>
-            <div class="mt-4 text-sm uppercase tracking-[0.3em] text-mist">Runtime deps</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section id="frameworks" class="reveal py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal max-w-3xl">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Framework support</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">One toolkit. Eight framework adapters.</h2>
-          <p class="mt-5 text-lg leading-8 text-mist">From hooks and composables to signals, stores, and controllers, reflow feels native in every modern UI stack.</p>
-        </div>
-
-        <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <article data-tilt class="reveal rounded-[2rem] border border-sky-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 0ms">
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-2xl font-bold">React</h3>
-              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">Hooks</span>
-            </div>
-            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-    <span class="code-keyword">const</span> desktopNav = bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
-
-    <span class="code-keyword">return</span> desktopNav ? <span class="code-value">&lt;Sidebar /&gt;</span> : <span class="code-value">null</span></code></pre>
-          </article>
-
-          <article data-tilt class="reveal rounded-[2rem] border border-emerald-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 80ms">
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-2xl font-bold">Vue</h3>
-              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Composable</span>
-            </div>
-            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
- 
-    bp.active.value
-    bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)</code></pre>
-          </article>
-
-          <article data-tilt class="reveal rounded-[2rem] border border-orange-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-2xl font-bold">Svelte</h3>
-              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Store</span>
-            </div>
-            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">breakpoint</span>()
-
-    {#if $bp.active === <span class="code-string">'lg'</span>}
-      <span class="code-value">&lt;Sidebar /&gt;</span>
-    {/if}</code></pre>
-          </article>
-
-          <article data-tilt class="reveal rounded-[2rem] border border-sky-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 240ms">
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-2xl font-bold">Solid</h3>
-              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-sky-300">Signals</span>
-            </div>
-            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()
-
-    &lt;<span class="code-type">Show</span> when={bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)}&gt;
-      <span class="code-value">&lt;Sidebar /&gt;</span>
-    &lt;/<span class="code-type">Show</span>&gt;</code></pre>
-          </article>
-
-          <article data-tilt class="reveal rounded-[2rem] border border-red-400/20 bg-white/5 p-6 shadow-glow" style="--delay: 320ms">
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-2xl font-bold">Angular</h3>
-              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-red-400">Signals</span>
-            </div>
-            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">readonly</span> bp = <span class="code-fn">breakpointSignal</span>()
-    <span class="code-keyword">readonly</span> desktop = <span class="code-keyword">this</span>.bp.<span class="code-fn">above</span>(<span class="code-string">'lg'</span>)
-    <span class="code-keyword">readonly</span> compact = <span class="code-keyword">this</span>.bp.<span class="code-fn">below</span>(<span class="code-string">'md'</span>)</code></pre>
-          </article>
-
-          <article data-tilt class="reveal rounded-[2rem] border border-amber-300/20 bg-white/5 p-6 shadow-glow" style="--delay: 400ms">
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-2xl font-bold">Lit</h3>
-              <span class="ml-auto text-right text-sm font-semibold uppercase tracking-[0.2em] text-amber-300">Controller</span>
-            </div>
-            <pre class="mt-5 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-4 font-['JetBrains_Mono'] text-sm leading-7"><code><span class="code-keyword">private</span> bp = <span class="code-keyword">new</span> <span class="code-type">BreakpointController</span>(<span class="code-keyword">this</span>)
-
-    <span class="code-fn">render</span>() {
-      <span class="code-keyword">return</span> <span class="code-fn">html</span>`&lt;app-shell ?desktop=${this.bp.above('lg')}&gt;&lt;/app-shell&gt;`
-    }</code></pre>
-          </article>
-        </div>
-
-        <div class="reveal mt-8 flex flex-wrap gap-3 text-sm text-mist" style="--delay: 480ms">
-          <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Also ships: Preact</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2">Qwik</span>
-        </div>
-      </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section class="reveal py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Code example</p>
-            <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Before: glued together. After: one cohesive API.</h2>
-          </div>
-          <p class="max-w-xl text-mist">The point is not just fewer bytes. It is fewer ideas to juggle.</p>
-        </div>
-
-        <div class="mt-10 grid gap-6 xl:grid-cols-2">
-          <div class="reveal code-window rounded-[2rem] p-6" style="--delay: 0ms">
-            <div class="mb-5 flex items-center justify-between gap-4">
-              <div>
-                <p class="text-xs uppercase tracking-[0.3em] text-red-300">Before</p>
-                <h3 class="mt-2 text-2xl font-bold">Three packages. Four mental models.</h3>
-              </div>
-              <span class="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-red-200">Fragile</span>
-            </div>
-
-            <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { useMediaQuery } <span class="code-keyword">from</span> <span class="code-string">'react-responsive'</span></span><span class="code-line"><span class="code-keyword">import</span> { useWindowSize } <span class="code-keyword">from</span> <span class="code-string">'react-use'</span></span><span class="code-line"><span class="code-keyword">import</span> { useDebounce } <span class="code-keyword">from</span> <span class="code-string">'usehooks-ts'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> isDesktop = <span class="code-fn">useMediaQuery</span>({ minWidth: <span class="code-value">1024</span> })</span><span class="code-line"><span class="code-keyword">const</span> { width = <span class="code-value">0</span> } = <span class="code-fn">useWindowSize</span>()</span><span class="code-line"><span class="code-keyword">const</span> stableWidth = <span class="code-fn">useDebounce</span>(width, <span class="code-value">120</span>)</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">const</span> debounce = (fn, ms) =&gt; {</span><span class="code-line">  <span class="code-keyword">let</span> id</span><span class="code-line">  <span class="code-keyword">return</span> (...args) =&gt; {</span><span class="code-line">    clearTimeout(id)</span><span class="code-line">    id = setTimeout(() =&gt; <span class="code-fn">fn</span>(...args), ms)</span><span class="code-line">  }</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">if</span> (<span class="code-keyword">typeof</span> window === <span class="code-string">'undefined'</span>) <span class="code-keyword">return</span> <span class="code-value">null</span></span><span class="code-line"><span class="code-keyword">const</span> columns = stableWidth &gt; <span class="code-value">900</span> ? <span class="code-value">4</span> : isDesktop ? <span class="code-value">3</span> : <span class="code-value">1</span></span></code></pre>
-          </div>
-
-          <div class="reveal code-window rounded-[2rem] border-cyan/20 p-6 shadow-glow" style="--delay: 160ms">
-            <div class="mb-5 flex items-center justify-between gap-4">
-              <div>
-                <p class="text-xs uppercase tracking-[0.3em] text-cyan">After</p>
-                <h3 class="mt-2 text-2xl font-bold">reflow handles the whole responsive layer.</h3>
-              </div>
-              <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan">Clean</span>
-            </div>
-
-            <pre class="overflow-x-auto font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-line"><span class="code-keyword">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'reflow/react'</span></span><span class="code-line"><span class="code-keyword">import</span> { fluidClamp } <span class="code-keyword">from</span> <span class="code-string">'reflow/styles'</span></span><span class="code-line"></span><span class="code-line"><span class="code-keyword">function</span> <span class="code-fn">Dashboard</span>() {</span><span class="code-line">  <span class="code-keyword">const</span> bp = <span class="code-fn">useBreakpoint</span>()</span><span class="code-line">  <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> })</span><span class="code-line">  <span class="code-keyword">const</span> titleSize = <span class="code-fn">fluidClamp</span>({ minPx: <span class="code-value">18</span>, maxPx: <span class="code-value">28</span> })</span><span class="code-line"></span><span class="code-line">  <span class="code-keyword">return</span> &lt;Grid columns={columns} dense={bp.below(<span class="code-string">'lg'</span>)} style={{ fontSize: titleSize }} /&gt;</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line"><span class="code-keyword">export</span> <span class="code-keyword">default</span> <span class="code-keyword">function</span> <span class="code-fn">App</span>() {</span><span class="code-line">  <span class="code-keyword">return</span> (</span><span class="code-line">    &lt;ResponsiveProvider serverWidth={<span class="code-value">1024</span>}&gt;</span><span class="code-line">      &lt;Dashboard /&gt;</span><span class="code-line">    &lt;/ResponsiveProvider&gt;</span><span class="code-line">  )</span><span class="code-line">}</span></code></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section id="benchmarks" class="reveal py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal max-w-3xl" style="--delay: 0ms">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Benchmarks</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Small enough to stay out of the way.</h2>
-          <p class="mt-5 text-lg leading-8 text-mist">A smaller bundle is only impressive if it still solves the real responsive workload. reflow stays lean while covering far more than viewport-only helpers.</p>
-        </div>
-
-        <div class="mt-12 grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
-          <div data-tilt class="reveal noise overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow" style="--delay: 80ms">
-            <table class="min-w-full text-left text-sm">
-              <caption class="sr-only">Bundle size comparison between reflow and alternative responsive packages</caption>
-              <thead class="bg-white/5 text-xs uppercase tracking-[0.25em] text-mist">
-                <tr>
-                  <th class="px-6 py-4 font-semibold">Package</th>
-                  <th class="px-6 py-4 font-semibold">Bundle min+gz</th>
-                  <th class="px-6 py-4 font-semibold">Notes</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-white/10">
-                <tr class="bg-gradient-to-r from-cyan/15 via-cyan/8 to-transparent">
-                  <td class="px-6 py-5">
-                    <div class="flex flex-wrap items-center gap-3">
-                      <span class="font-semibold text-white">reflow</span>
-                      <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan">Core</span>
-                    </div>
-                  </td>
-                  <td class="px-6 py-5 font-['JetBrains_Mono'] text-cyan">2.4 KB</td>
-                  <td class="px-6 py-5 text-mist">Breakpoints, media, preferences, and container queries</td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 text-white">react-responsive</td>
-                  <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">8.7 KB</td>
-                  <td class="px-6 py-4 text-mist">React-only media queries</td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 text-white">usehooks-ts</td>
-                  <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">12.1 KB</td>
-                  <td class="px-6 py-4 text-mist">General hook collection</td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 text-white">react-use</td>
-                  <td class="px-6 py-4 font-['JetBrains_Mono'] text-orange-200">19.4 KB</td>
-                  <td class="px-6 py-4 text-mist">Broad utility hook set</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="reveal rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow" style="--delay: 160ms">
-            <div class="space-y-5">
-              <div class="reveal" style="--delay: 240ms">
-                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
-                  <span class="text-white">reflow</span>
-                  <span class="font-['JetBrains_Mono'] text-cyan">2.4 KB</span>
-                </div>
-                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[18%] rounded-full bg-gradient-to-r from-teal via-cyan to-cyan"></div></div>
-              </div>
-              <div class="reveal" style="--delay: 320ms">
-                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
-                  <span class="text-white">react-responsive</span>
-                  <span class="font-['JetBrains_Mono'] text-orange-200">8.7 KB</span>
-                </div>
-                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[44%] rounded-full bg-gradient-to-r from-orange-400 to-orange-300"></div></div>
-              </div>
-              <div class="reveal" style="--delay: 400ms">
-                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
-                  <span class="text-white">usehooks-ts</span>
-                  <span class="font-['JetBrains_Mono'] text-orange-200">12.1 KB</span>
-                </div>
-                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[61%] rounded-full bg-gradient-to-r from-orange-500 to-orange-300"></div></div>
-              </div>
-              <div class="reveal" style="--delay: 480ms">
-                <div class="mb-2 flex items-center justify-between gap-4 text-sm">
-                  <span class="text-white">react-use</span>
-                  <span class="font-['JetBrains_Mono'] text-orange-200">19.4 KB</span>
-                </div>
-                <div class="h-4 rounded-full bg-white/10"><div class="bar h-4 w-[94%] rounded-full bg-gradient-to-r from-red-500 to-orange-300"></div></div>
-              </div>
-            </div>
-
-            <p class="reveal mt-6 text-sm leading-7 text-mist" style="--delay: 560ms">reflow keeps the core small enough to feel invisible while solving a much larger slice of the responsive problem.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section class="reveal py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal max-w-3xl">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Use cases</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Built for the places responsive code gets hardest.</h2>
-        </div>
-
-        <div class="reveal mt-10 flex flex-wrap gap-3" role="tablist" aria-label="Use case tabs">
-          <button id="tab-ssr" class="tab-button active rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="ssr" role="tab" aria-selected="true" aria-controls="panel-ssr" tabindex="0" type="button">SSR Apps</button>
-          <button id="tab-design" class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="design" role="tab" aria-selected="false" aria-controls="panel-design" tabindex="-1" type="button">Design Systems</button>
-          <button id="tab-libraries" class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="libraries" role="tab" aria-selected="false" aria-controls="panel-libraries" tabindex="-1" type="button">Component Libraries</button>
-          <button id="tab-dashboards" class="tab-button rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition" data-tab="dashboards" role="tab" aria-selected="false" aria-controls="panel-dashboards" tabindex="-1" type="button">Dashboards</button>
-        </div>
-
-        <div class="mt-8">
-          <div id="panel-ssr" class="tab-panel active reveal grid gap-6 rounded-[2rem] border border-cyan/20 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="ssr" role="tabpanel" aria-labelledby="tab-ssr">
-            <div>
-              <h3 class="text-2xl font-bold">SSR Apps</h3>
-              <p class="mt-4 text-mist">Read viewport hints during server rendering, choose the right breakpoint before the first paint, and hydrate into the same layout without flicker.</p>
-            </div>
-            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { headers } <span class="code-keyword">from</span> <span class="code-string">'next/headers'</span>
-    <span class="code-keyword">import</span> { ResponsiveProvider } <span class="code-keyword">from</span> <span class="code-string">'reflow/react'</span>
-    <span class="code-keyword">import</span> { resolveBreakpointFromHints } <span class="code-keyword">from</span> <span class="code-string">'reflow/server'</span>
-
-    <span class="code-keyword">const</span> requestHeaders = <span class="code-keyword">await</span> <span class="code-fn">headers</span>()
-    <span class="code-keyword">const</span> result = <span class="code-fn">resolveBreakpointFromHints</span>(requestHeaders)
-
-    <span class="code-keyword">return</span> &lt;ResponsiveProvider serverWidth={result?.width}&gt;...&lt;/ResponsiveProvider&gt;</code></pre>
-          </div>
-
-          <div id="panel-design" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="design" role="tabpanel" aria-labelledby="tab-design" hidden>
-            <div>
-              <h3 class="text-2xl font-bold">Design Systems</h3>
-              <p class="mt-4 text-mist">Keep tokens, spacing, and type scales in sync with one responsive source of truth instead of hand-tuning clamp values across every component.</p>
-            </div>
-            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { fluidScale, responsiveStyle } <span class="code-keyword">from</span> <span class="code-string">'reflow/styles'</span>
-
-    <span class="code-keyword">export</span> <span class="code-keyword">const</span> typeScale = <span class="code-fn">fluidScale</span>([
-      <span class="code-string">'body'</span>, <span class="code-string">'title'</span>, <span class="code-string">'display'</span>
-    ], { minPx: <span class="code-value">16</span>, ratio: <span class="code-value">1.2</span>, maxRatio: <span class="code-value">1.35</span> })
-
-    <span class="code-keyword">export</span> <span class="code-keyword">const</span> stack = <span class="code-fn">responsiveStyle</span>(system, <span class="code-string">'gap'</span>, {
-      xs: <span class="code-string">'1rem'</span>,
-      lg: <span class="code-string">'2rem'</span>
-    })</code></pre>
-          </div>
-
-          <div id="panel-libraries" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="libraries" role="tabpanel" aria-labelledby="tab-libraries" hidden>
-            <div>
-              <h3 class="text-2xl font-bold">Component Libraries</h3>
-              <p class="mt-4 text-mist">Build container-aware primitives that adapt to their own footprint, so cards, navs, and shells stay resilient wherever product teams compose them.</p>
-            </div>
-            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { containerQuery, defineContainer } <span class="code-keyword">from</span> <span class="code-string">'reflow/styles'</span>
-
-    <span class="code-keyword">export</span> <span class="code-keyword">const</span> cardCss = <span class="code-string">`
-      .card { ${defineContainer('card')} }
-      ${containerQuery({ name: 'card', minPx: 420 })} {
-        .card__body { grid-template-columns: 1.4fr 1fr; }
-      }
-    `</span></code></pre>
-          </div>
-
-          <div id="panel-dashboards" class="tab-panel reveal grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-glow xl:grid-cols-[.85fr_1.15fr]" data-panel="dashboards" role="tabpanel" aria-labelledby="tab-dashboards" hidden>
-            <div>
-              <h3 class="text-2xl font-bold">Dashboards</h3>
-              <p class="mt-4 text-mist">Tune dense, data-heavy interfaces by breakpoint so tables, filters, and side panels simplify automatically without another layer of resize plumbing.</p>
-            </div>
-            <pre class="overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/50 p-5 font-['JetBrains_Mono'] text-sm leading-7 text-slate-200"><code><span class="code-keyword">import</span> { useResponsiveValue } <span class="code-keyword">from</span> <span class="code-string">'reflow/react'</span>
-
-    <span class="code-keyword">const</span> columns = <span class="code-fn">useResponsiveValue</span>({ xs: <span class="code-value">1</span>, md: <span class="code-value">2</span>, xl: <span class="code-value">4</span> }) ?? <span class="code-value">1</span>
-
-    &lt;DataGrid
-      columns={columns}
-      density={columns === <span class="code-value">1</span> ? <span class="code-string">'compact'</span> : <span class="code-string">'comfortable'</span>}
-      showSidebar={columns &gt;= <span class="code-value">4</span>}
-    /&gt;</code></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section class="reveal py-20">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal text-center">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">FAQ</p>
-          <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Questions teams ask before they switch.</h2>
-        </div>
-
-        <div class="mt-12 space-y-4">
-          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 0ms">
-            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-1" id="faq-button-1">
-              <span class="text-lg font-semibold text-white">Is reflow actually SSR-safe?</span>
-              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-content" id="faq-content-1" role="region" aria-labelledby="faq-button-1" aria-hidden="true">
-              <p class="pt-4 text-mist">Yes. The SSR helpers let you seed the first render with a server width guess so hydration stays aligned.</p>
-            </div>
-          </div>
-
-          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 80ms">
-            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-2" id="faq-button-2">
-              <span class="text-lg font-semibold text-white">Will bundlers tree-shake what I do not use?</span>
-              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-content" id="faq-content-2" role="region" aria-labelledby="faq-button-2" aria-hidden="true">
-              <p class="pt-4 text-mist">Yes. The package ships focused entry points and declares <code class="text-white">sideEffects: false</code> so unused code can be shaken out.</p>
-            </div>
-          </div>
-
-          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 160ms">
-            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-3" id="faq-button-3">
-              <span class="text-lg font-semibold text-white">How hard is migration from existing responsive hooks?</span>
-              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-content" id="faq-content-3" role="region" aria-labelledby="faq-button-3" aria-hidden="true">
-              <p class="pt-4 text-mist">Usually straightforward. Replace your media-query hooks first, then consolidate the rest of your responsive logic behind one API.</p>
-            </div>
-          </div>
-
-          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 240ms">
-            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-4" id="faq-button-4">
-              <span class="text-lg font-semibold text-white">Do I get full TypeScript support across frameworks?</span>
-              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-content" id="faq-content-4" role="region" aria-labelledby="faq-button-4" aria-hidden="true">
-              <p class="pt-4 text-mist">Yes. Breakpoint keys stay literal across the core system and framework adapters, so helpers like useBreakpoint(), responsiveStyle(), and useResponsiveValue() stay typed end to end.</p>
-            </div>
-          </div>
-
-          <div class="faq-item reveal rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-glow" style="--delay: 320ms">
-            <button class="flex w-full items-center justify-between gap-4 text-left" type="button" aria-expanded="false" aria-controls="faq-content-5" id="faq-button-5">
-              <span class="text-lg font-semibold text-white">Can I use this with Tailwind CSS?</span>
-              <span class="faq-icon text-2xl text-mist" aria-hidden="true">+</span>
-            </button>
-            <div class="faq-content" id="faq-content-5" role="region" aria-labelledby="faq-button-5" aria-hidden="true">
-              <p class="pt-4 text-mist">Yes. Use tailwindPreset() to keep Tailwind screens aligned with the same breakpoint system, or run reflow alongside Tailwind without coupling them.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-          <div class="divider"></div>
-
-    <section id="get-started" class="reveal py-24">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="reveal noise overflow-hidden rounded-[2rem] border border-cyan/20 bg-gradient-to-br from-cyan/10 via-white/5 to-flame/10 p-8 shadow-glow sm:p-10 lg:p-14">
-          <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan">Get started</p>
-              <h2 class="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Install it. Replace the first hook today.</h2>
-              <p class="mt-5 max-w-2xl text-lg leading-8 text-mist">Ship the right layout on the first paint, keep the bundle tiny, and stop wiring multiple packages together to solve one problem.</p>
-              <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <button
-                  type="button"
-                  data-copy="npm install reflow"
-                   aria-label="Copy npm install command"
-                  data-magnetic
-                  class="group inline-flex items-center justify-between gap-4 rounded-[1.5rem] border border-cyan/20 bg-black/50 px-5 py-4 text-left shadow-glow transition duration-300 hover:-translate-y-1 hover:border-cyan/40"
-                >
-                  <span class="font-['JetBrains_Mono'] text-sm text-cyan sm:text-base">npm install reflow</span>
-                  <span data-copy-label class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition group-hover:border-cyan/30 group-hover:text-cyan">Copy</span>
-                </button>
-                <a
-                  href="https://www.npmjs.com/package/reflow"
-                  target="_blank"
-                  rel="noreferrer"
-                  data-magnetic
-                  class="inline-flex items-center justify-center rounded-[1.5rem] border border-flame/30 bg-flame px-5 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-[0_16px_40px_rgba(249,115,22,0.28)] transition duration-300 hover:-translate-y-1 hover:bg-[#fb923c]"
-                >
-                  View on npm
-                </a>
-              </div>
-            </div>
-            <div class="space-y-3 lg:pb-1">
-              <a href="https://github.com/valtors/reflow" target="_blank" rel="noreferrer" class="block transition duration-300 hover:-translate-y-1">
-                <img alt="GitHub stars badge" src="https://img.shields.io/github/stars/valtors/reflow?style=for-the-badge&label=GITHUB%20STARS&color=22D3EE" />
-              </a>
-              <a href="https://www.npmjs.com/package/reflow" target="_blank" rel="noreferrer" class="block transition duration-300 hover:-translate-y-1">
-                <img alt="npm downloads badge" src="https://img.shields.io/npm/dm/reflow?style=for-the-badge&label=NPM%20DOWNLOADS&color=F97316" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-        </main>
-
-    <footer class="border-t border-white/10 py-12">
-      <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 text-sm text-mist sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div class="max-w-xl">
-            <div class="flex items-center gap-3">
-              <span class="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl border border-cyan/20 bg-white/5 shadow-glow">
-                <span class="absolute inset-x-1 top-4 h-px rounded-full bg-gradient-to-r from-transparent via-cyan to-transparent"></span>
-                <span class="text-base font-black text-white">f</span>
-                <span class="absolute bottom-2 left-2 right-2 h-2 rounded-full border-t-2 border-teal"></span>
-              </span>
-              <span class="font-semibold tracking-[0.02em]">reflow</span>
-            </div>
-            <p class="mt-4">Typed responsive APIs for modern UI stacks.</p>
-            <p class="mt-2">MIT licensed · Made by valtors</p>
-          </div>
-
-          <div class="flex flex-wrap gap-3 lg:justify-center">
-            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/valtors/reflow#readme" target="_blank" rel="noreferrer">Docs</a>
-            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/valtors/reflow" target="_blank" rel="noreferrer">GitHub</a>
-            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://www.npmjs.com/package/reflow" target="_blank" rel="noreferrer">npm</a>
-            <a class="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition hover:border-cyan/30 hover:text-white" href="https://github.com/valtors/reflow/discussions" target="_blank" rel="noreferrer">Discussions</a>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-3 text-xs uppercase tracking-[0.3em]">
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">React</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Vue</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Svelte</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Solid</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Angular</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Lit</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Preact</span>
-          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-2">Qwik</span>
-        </div>
-      </div>
-    </footer>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const body = document.body;
-        const scrollProgress = document.querySelector('.scroll-progress');
-        const mobileMenu = document.querySelector('#mobile-menu');
-        const hamburgerBtn = document.querySelector('#hamburger-btn');
-        const mobileMenuCloseBtn = document.querySelector('#mobile-menu-close');
-        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
-        const typewriterTarget = document.querySelector('#typewriter-text');
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const supportsInteractivePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-        const openMobileMenu = () => {
-          if (!mobileMenu || !hamburgerBtn) {
-            return;
-          }
-
-          mobileMenu.classList.remove('pointer-events-none', 'opacity-0');
-          mobileMenu.classList.add('pointer-events-auto', 'opacity-100');
-          mobileMenu.setAttribute('aria-hidden', 'false');
-          hamburgerBtn.setAttribute('aria-expanded', 'true');
-          hamburgerBtn.setAttribute('aria-label', 'Close menu');
-          mobileMenuCloseBtn?.focus();
-        };
-
-        const closeMobileMenu = () => {
-          if (!mobileMenu || !hamburgerBtn) {
-            return;
-          }
-
-          mobileMenu.classList.add('pointer-events-none', 'opacity-0');
-          mobileMenu.classList.remove('pointer-events-auto', 'opacity-100');
-          mobileMenu.setAttribute('aria-hidden', 'true');
-          hamburgerBtn.setAttribute('aria-expanded', 'false');
-          hamburgerBtn.setAttribute('aria-label', 'Open menu');
-        };
-
-        const toggleMobileMenu = () => {
-          if (hamburgerBtn?.getAttribute('aria-expanded') === 'true') {
-            closeMobileMenu();
-            return;
-          }
-
-          openMobileMenu();
-        };
-
-        const finishPerfLoading = () => {
-          document.documentElement.classList.remove('is-loading');
-          document.querySelector('.perf-loader')?.setAttribute('hidden', 'hidden');
-        };
-
-        const fallbackCopyText = async (text) => {
-          const textArea = document.createElement('textarea');
-          textArea.value = text;
-          textArea.setAttribute('readonly', '');
-          textArea.style.position = 'fixed';
-          textArea.style.top = '0';
-          textArea.style.left = '0';
-          textArea.style.opacity = '0';
-          document.body.append(textArea);
-          textArea.focus();
-          textArea.select();
-
-          let copied = false;
-
-          try {
-            copied = document.execCommand('copy');
-          } finally {
-            textArea.remove();
-          }
-
-          return copied;
-        };
-
-        const copyTextToClipboard = async (text) => {
-          if (navigator.clipboard?.writeText && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            return true;
-          }
-
-          return fallbackCopyText(text);
-        };
-
-        const revealElements = document.querySelectorAll('.reveal');
-        if (revealElements.length) {
-          const revealObserver = new IntersectionObserver(
-            (entries, observer) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                  return;
-                }
-
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-              });
-            },
-            { threshold: 0.16 }
-          );
-
-          revealElements.forEach((element) => revealObserver.observe(element));
-        }
-
-        const counterElements = document.querySelectorAll('[data-counter]');
-        if (counterElements.length) {
-          const easeOutCubic = (progress) => 1 - Math.pow(1 - progress, 3);
-
-          const animateCounter = (element) => {
-            if (element.dataset.counted === 'true') {
-              return;
-            }
-
-            const targetValue = Number(element.dataset.counter);
-            if (!Number.isFinite(targetValue)) {
-              return;
-            }
-
-            const prefix = element.dataset.prefix ?? '';
-            const suffix = element.dataset.suffix ?? '';
-            const decimals = Number.isInteger(targetValue)
-              ? 0
-              : (String(element.dataset.counter).split('.')[1] || '').length;
-            const startTime = performance.now();
-            element.dataset.counted = 'true';
-
-            const updateValue = (currentValue) => {
-              const formattedValue = decimals
-                ? currentValue.toFixed(decimals)
-                : Math.round(currentValue).toString();
-              element.textContent = `${prefix}${formattedValue}${suffix}`;
-            };
-
-            const tick = (now) => {
-              const elapsed = now - startTime;
-              const progress = Math.min(elapsed / 1400, 1);
-              const easedProgress = easeOutCubic(progress);
-              const currentValue = targetValue * easedProgress;
-
-              updateValue(progress === 1 ? targetValue : currentValue);
-
-              if (progress < 1) {
-                requestAnimationFrame(tick);
-              }
-            };
-
-            updateValue(0);
-            requestAnimationFrame(tick);
-          };
-
-          const counterObserver = new IntersectionObserver(
-            (entries, observer) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                  return;
-                }
-
-                animateCounter(entry.target);
-                observer.unobserve(entry.target);
-              });
-            },
-            { threshold: 0.45 }
-          );
-
-          counterElements.forEach((element) => counterObserver.observe(element));
-        }
-
-        document.querySelectorAll('[data-copy]').forEach((button) => {
-          let resetTimer;
-          const label = button.querySelector('[data-copy-label]') || button.lastElementChild || button;
-          const originalLabel = (label.textContent || '').trim() || 'Copy';
-
-          button.addEventListener('click', async () => {
-            const textToCopy = button.dataset.copy ?? '';
-            if (!textToCopy) {
-              return;
-            }
-
-            const copied = await copyTextToClipboard(textToCopy).catch(() => false);
-            label.textContent = copied ? 'Copied' : 'Copy failed';
-            clearTimeout(resetTimer);
-            resetTimer = window.setTimeout(() => {
-              label.textContent = originalLabel;
-            }, copied ? 1800 : 2200);
-          });
-        });
-
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabPanels = document.querySelectorAll('.tab-panel[data-panel]');
-        if (tabButtons.length && tabPanels.length) {
-          const setActiveTab = (targetPanel) => {
-            tabButtons.forEach((item) => {
-              const isActive = item.dataset.tab === targetPanel;
-              item.classList.toggle('active', isActive);
-              item.setAttribute('aria-selected', String(isActive));
-              item.setAttribute('tabindex', isActive ? '0' : '-1');
-            });
-
-            tabPanels.forEach((panel) => {
-              const isActive = panel.dataset.panel === targetPanel;
-              panel.classList.toggle('active', isActive);
-              panel.classList.toggle('is-visible', isActive);
-              panel.toggleAttribute('hidden', !isActive);
-            });
-          };
-
-          const initialTab = document.querySelector('.tab-button.active')?.dataset.tab || tabButtons[0]?.dataset.tab;
-          if (initialTab) {
-            setActiveTab(initialTab);
-          }
-
-          tabButtons.forEach((button, index) => {
-            button.addEventListener('keydown', (event) => {
-              if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
-                return;
-              }
-
-              event.preventDefault();
-              const nextIndex =
-                event.key === 'ArrowRight'
-                  ? (index + 1) % tabButtons.length
-                  : (index - 1 + tabButtons.length) % tabButtons.length;
-              const nextButton = tabButtons[nextIndex];
-              const nextPanel = nextButton?.dataset.tab;
-              if (!nextButton || !nextPanel) {
-                return;
-              }
-
-              setActiveTab(nextPanel);
-              nextButton.focus();
-            });
-          });
-
-          tabButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-              const targetPanel = button.dataset.tab;
-              if (!targetPanel) {
-                return;
-              }
-
-              setActiveTab(targetPanel);
-            });
-          });
-        }
-
-        const faqButtons = document.querySelectorAll('.faq-item button');
-        if (faqButtons.length) {
-          document.querySelectorAll('.faq-item .faq-content').forEach((content) => {
-            content.setAttribute('aria-hidden', 'true');
-          });
-
-          faqButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-              const faqItem = button.closest('.faq-item');
-              if (!faqItem) {
-                return;
-              }
-
-              const isOpen = faqItem.classList.contains('open');
-              document.querySelectorAll('.faq-item').forEach((item) => {
-                item.classList.remove('open');
-                const itemButton = item.querySelector('button');
-                const itemContent = item.querySelector('.faq-content');
-                itemButton?.setAttribute('aria-expanded', 'false');
-                itemContent?.setAttribute('aria-hidden', 'true');
-              });
-
-              if (!isOpen) {
-                faqItem.classList.add('open');
-                button.setAttribute('aria-expanded', 'true');
-                faqItem.querySelector('.faq-content')?.setAttribute('aria-hidden', 'false');
-              }
-            });
-          });
-        }
-
-        if (supportsInteractivePointer && !prefersReducedMotion) {
-          document.querySelectorAll('[data-magnetic]').forEach((element) => {
-            let rect;
-            const refreshRect = () => {
-              rect = element.getBoundingClientRect();
-            };
-
-            element.addEventListener('mouseenter', refreshRect);
-            element.addEventListener('mousemove', (event) => {
-              if (!rect) {
-                refreshRect();
-              }
-
-              const offsetX = event.clientX - (rect.left + rect.width / 2);
-              const offsetY = event.clientY - (rect.top + rect.height / 2);
-
-              element.style.transition = 'transform 0.1s ease-out';
-              element.style.transform = `translate(${offsetX * 0.15}px, ${offsetY * 0.15}px)`;
-            });
-
-            element.addEventListener('mouseleave', () => {
-              rect = undefined;
-              element.style.transition = 'transform 0.3s ease';
-              element.style.transform = 'translate(0, 0)';
-            });
-          });
-
-          document.querySelectorAll('[data-tilt]').forEach((element) => {
-            let rect;
-            const refreshRect = () => {
-              rect = element.getBoundingClientRect();
-            };
-
-            element.addEventListener('mouseenter', refreshRect);
-            element.addEventListener('mousemove', (event) => {
-              if (!rect) {
-                refreshRect();
-              }
-
-              const relativeX = (event.clientX - rect.left) / rect.width;
-              const relativeY = (event.clientY - rect.top) / rect.height;
-              const rotateY = (relativeX - 0.5) * 12;
-              const rotateX = (0.5 - relativeY) * 12;
-
-              element.style.transition = 'transform 0.08s linear';
-              element.style.transform = `perspective(800px) rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg)`;
-            });
-
-            element.addEventListener('mouseleave', () => {
-              rect = undefined;
-              element.style.transition = 'transform 0.35s ease';
-              element.style.transform = 'none';
-            });
-          });
-
-          document.addEventListener('mousemove', (event) => {
-            body.style.setProperty('--mouse-x', `${event.clientX}px`);
-            body.style.setProperty('--mouse-y', `${event.clientY}px`);
-          });
-        }
-
-        const updateScrollProgress = () => {
-          if (!scrollProgress) {
-            return;
-          }
-
-          const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-          const scrollableHeight = scrollHeight - clientHeight;
-          const progress = scrollableHeight > 0 ? scrollTop / scrollableHeight : 0;
-          const clampedProgress = Math.min(Math.max(progress, 0), 1);
-          scrollProgress.style.setProperty('--scroll-progress-scale', clampedProgress.toFixed(4));
-        };
-
-        window.addEventListener('scroll', updateScrollProgress, { passive: true });
-        updateScrollProgress();
-
-        if (typewriterTarget && !prefersReducedMotion) {
-          const fullText = typewriterTarget.textContent || '';
-          typewriterTarget.textContent = '';
-
-          window.setTimeout(() => {
-            let index = 0;
-            const typeInterval = window.setInterval(() => {
-              typewriterTarget.textContent += fullText.charAt(index);
-              index += 1;
-
-              if (index >= fullText.length) {
-                clearInterval(typeInterval);
-              }
-            }, 50);
-          }, 800);
-        }
-
-        if (mobileMenu && hamburgerBtn) {
-          hamburgerBtn.addEventListener('click', toggleMobileMenu);
-          mobileMenuCloseBtn?.addEventListener('click', closeMobileMenu);
-          mobileMenuLinks.forEach((link) => {
-            link.addEventListener('click', () => {
-              closeMobileMenu();
-            });
-          });
-
-          closeMobileMenu();
-
-          mobileMenu.addEventListener('click', (event) => {
-            if (event.target === mobileMenu) {
-              closeMobileMenu();
-            }
-          });
-
-          document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-              closeMobileMenu();
-            }
-          });
-        }
-
-        if (document.readyState === 'complete') {
-          finishPerfLoading();
-        } else {
-          window.addEventListener('load', finishPerfLoading, { once: true });
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-          anchor.addEventListener('click', (event) => {
-            const href = anchor.getAttribute('href');
-            if (!href || href === '#') {
-              return;
-            }
-
-            const target = document.querySelector(href);
-            if (!target) {
-              return;
-            }
-
-            event.preventDefault();
-            const targetPosition = target.getBoundingClientRect().top + window.scrollY - 80;
-
-            window.scrollTo({
-              top: targetPosition,
-              behavior: prefersReducedMotion ? 'auto' : 'smooth'
-            });
-
-            if (target instanceof HTMLElement) {
-              if (!target.hasAttribute('tabindex')) {
-                target.setAttribute('tabindex', '-1');
-              }
-              target.focus({ preventScroll: true });
-            }
-          });
-        });
-      });
-    </script>
-  </body>
+    </div>
+    <p style="margin-top: 24px; font-size: 14px; color: var(--muted);">
+      Full comparison: <a href="https://github.com/valtors/reflow/blob/main/docs/comparison.md">reflow vs react-responsive vs @vueuse/core vs usehooks-ts</a>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>MIT licensed. Built by <a href="https://github.com/valtors">Valtors</a>.</p>
+    <p style="margin-top: 8px;">
+      <a href="https://github.com/valtors/reflow">GitHub</a> &middot;
+      <a href="https://www.npmjs.com/package/reflow">npm</a> &middot;
+      <a href="https://github.com/valtors/reflow/blob/main/CONTRIBUTING.md">Contributing</a> &middot;
+      <a href="https://github.com/valtors/reflow/blob/main/docs/comparison.md">Comparison</a>
+    </p>
+  </div>
+</footer>
+
+</body>
 </html>
-
-
