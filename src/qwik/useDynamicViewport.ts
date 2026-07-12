@@ -7,9 +7,11 @@ export interface DynamicViewport {
   lvh: number;
 }
 
-export function useDynamicViewport(
-  serverDefault: DynamicViewport = { dvh: 0, svh: 0, lvh: 0 },
-): { dvh: Signal<number>; svh: Signal<number>; lvh: Signal<number> } {
+export function useDynamicViewport(serverDefault: DynamicViewport = { dvh: 0, svh: 0, lvh: 0 }): {
+  dvh: Signal<number>;
+  svh: Signal<number>;
+  lvh: Signal<number>;
+} {
   const v = useSignal<DynamicViewport>({ ...serverDefault });
 
   useVisibleTask$(({ cleanup }) => {
