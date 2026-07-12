@@ -16,6 +16,11 @@ Closes #
 
 ## Checklist
 
-- [ ] I added or updated tests where needed.
-- [ ] I updated documentation where needed.
-- [ ] I added a changeset (`npx changeset`) for user-visible changes.
+- [ ] `npm run verify` passes locally
+- [ ] Added or updated tests for the changes
+- [ ] Updated documentation if needed
+- [ ] No new warnings or console errors
+
+## Notes for the reviewer
+
+<!-- Anything the reviewer should pay attention to, or context that would help them review faster. -->
