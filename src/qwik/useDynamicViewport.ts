@@ -1,4 +1,4 @@
-import { type Signal, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { type Signal, useComputed$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { readDynamicViewportPx } from "../styles/viewport-units.js";
 
 export interface DynamicViewport {
@@ -9,8 +9,8 @@ export interface DynamicViewport {
 
 export function useDynamicViewport(
   serverDefault: DynamicViewport = { dvh: 0, svh: 0, lvh: 0 },
-): Signal<DynamicViewport> {
-  const v = useSignal<DynamicViewport>(serverDefault);
+): { dvh: Signal<number>; svh: Signal<number>; lvh: Signal<number> } {
+  const v = useSignal<DynamicViewport>({ ...serverDefault });
 
   useVisibleTask$(({ cleanup }) => {
     const read = () => {
@@ -38,5 +38,9 @@ export function useDynamicViewport(
     });
   });
 
-  return v;
+  return {
+    dvh: useComputed$(() => v.value.dvh),
+    svh: useComputed$(() => v.value.svh),
+    lvh: useComputed$(() => v.value.lvh),
+  };
 }
