@@ -21,9 +21,13 @@ export function useElementSize(
     }
 
     size.value = getContainerSize(element);
-    const unsubscribe = observeContainer(element, (nextSize) => {
-      size.value = nextSize;
-    }, options);
+    const unsubscribe = observeContainer(
+      element,
+      (nextSize) => {
+        size.value = nextSize;
+      },
+      options,
+    );
 
     cleanup(unsubscribe);
   });
