@@ -1,0 +1,29 @@
+name: Good First Issue Help
+description: Get help starting on a good first issue
+title: "[Help]: "
+labels: ["good first issue", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Stuck on a good first issue? Let us know where you're blocked.
+  - type: input
+    id: issue
+    attributes:
+      label: Which issue are you working on?
+      placeholder: "#10"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you stuck on?
+      description: Share the error, the step, or the question. Screenshots welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried so far?
+    validations:
+      required: false
