@@ -6,6 +6,7 @@ import { containerQuery } from "../src/svelte/containerQuery.ts";
 import { mediaQuery } from "../src/svelte/mediaQuery.ts";
 import { preference } from "../src/svelte/preference.ts";
 import { viewport } from "../src/svelte/viewport.ts";
+import { responsiveImage } from "../src/svelte/responsiveImage.ts";
 import {
   type MatchMediaMockController,
   type ResizeObserverMockController,
@@ -64,6 +65,25 @@ describe("Svelte adapter", () => {
     localStorage.clear();
     ro.uninstall();
     mm.uninstall();
+  });
+
+  it("responsiveImage() mirrors core img attrs for Svelte", () => {
+    const config = {
+      alt: "Forest path",
+      sizes: "50vw",
+      loading: "eager" as const,
+      sources: [
+        { src: "/forest-800.jpg", width: 800 },
+        { src: "/forest-400.jpg", width: 400 },
+      ],
+    };
+    expect(responsiveImage(config)).toEqual({
+      srcSet: "/forest-400.jpg 400w, /forest-800.jpg 800w",
+      sizes: "50vw",
+      src: "/forest-400.jpg",
+      alt: "Forest path",
+      loading: "eager",
+    });
   });
 
   it("breakpoint() exposes active breakpoint helpers and updates on resize", () => {
