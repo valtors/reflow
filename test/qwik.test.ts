@@ -137,4 +137,24 @@ describe("qwik adapter (core integration)", () => {
     expect(snap.width).toBe(0);
     expect(snap.height).toBe(0);
   });
+
+  it("useResponsiveImage() mirrors core responsiveImage attrs", async () => {
+    const { useResponsiveImage } = await import("../src/qwik/useResponsiveImage.ts");
+    const config = {
+      alt: "Forest path",
+      sizes: "50vw",
+      loading: "eager" as const,
+      sources: [
+        { src: "/forest-800.jpg", width: 800 },
+        { src: "/forest-400.jpg", width: 400 },
+      ],
+    };
+    expect(useResponsiveImage(config)).toEqual({
+      srcSet: "/forest-400.jpg 400w, /forest-800.jpg 800w",
+      sizes: "50vw",
+      src: "/forest-400.jpg",
+      alt: "Forest path",
+      loading: "eager",
+    });
+  });
 });
