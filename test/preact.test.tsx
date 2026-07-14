@@ -6,6 +6,7 @@ import {
   useBreakpoint,
   useMediaQuery,
   usePreference,
+  useResponsiveImage,
   useViewport,
 } from "../src/preact";
 import {
@@ -155,6 +156,27 @@ describe("Preact adapter", () => {
 
     expect(typeof result.current.width).toBe("number");
 
+    result.unmount();
+  });
+
+  it("useResponsiveImage() mirrors core responsiveImage attrs", () => {
+    const config = {
+      alt: "Forest path",
+      sizes: "50vw",
+      loading: "eager" as const,
+      sources: [
+        { src: "/forest-800.jpg", width: 800 },
+        { src: "/forest-400.jpg", width: 400 },
+      ],
+    };
+    const result = renderPreactHook(() => useResponsiveImage(config));
+    expect(result.current).toEqual({
+      srcSet: "/forest-400.jpg 400w, /forest-800.jpg 800w",
+      sizes: "50vw",
+      src: "/forest-400.jpg",
+      alt: "Forest path",
+      loading: "eager",
+    });
     result.unmount();
   });
 });
