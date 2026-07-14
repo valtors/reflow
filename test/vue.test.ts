@@ -14,6 +14,7 @@ import {
   useContainerQuery,
   useMediaQuery,
   usePreference,
+  useResponsiveImage,
   useViewport,
 } from "../src/vue";
 
@@ -181,6 +182,26 @@ describe("Vue adapter", () => {
 
     expect(result.colorScheme.value).toBe("dark");
     expect(result.isDark.value).toBe(true);
+  });
+
+  it("useResponsiveImage() mirrors core responsiveImage attrs", async () => {
+    const config = {
+      alt: "Forest path",
+      sizes: "50vw",
+      loading: "eager" as const,
+      sources: [
+        { src: "/forest-800.jpg", width: 800 },
+        { src: "/forest-400.jpg", width: 400 },
+      ],
+    };
+    const { result } = await mountComposable(() => useResponsiveImage(config));
+    expect(result).toEqual({
+      srcSet: "/forest-400.jpg 400w, /forest-800.jpg 800w",
+      sizes: "50vw",
+      src: "/forest-400.jpg",
+      alt: "Forest path",
+      loading: "eager",
+    });
   });
 
   it("useContainerQuery() tracks container width ranges", async () => {
