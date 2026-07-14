@@ -17,3 +17,4 @@ export { PreferenceController } from "./PreferenceController.js";
 export type { PreferenceControllerOptions } from "./PreferenceController.js";
 export { responsiveMixin } from "./responsive-mixin.js";
 export type { ResponsiveElement } from "./responsive-mixin.js";
+export { useResponsiveImage } from "./useResponsiveImage.js";
