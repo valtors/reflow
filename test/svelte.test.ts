@@ -5,8 +5,8 @@ import { colorScheme } from "../src/svelte/colorScheme.ts";
 import { containerQuery } from "../src/svelte/containerQuery.ts";
 import { mediaQuery } from "../src/svelte/mediaQuery.ts";
 import { preference } from "../src/svelte/preference.ts";
-import { viewport } from "../src/svelte/viewport.ts";
 import { responsiveImage } from "../src/svelte/responsiveImage.ts";
+import { viewport } from "../src/svelte/viewport.ts";
 import {
   type MatchMediaMockController,
   type ResizeObserverMockController,
