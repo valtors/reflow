@@ -9,3 +9,4 @@ export * from "./preference.signal.js";
 export * from "./safe-area.signal.js";
 export * from "./device-pixel-ratio.signal.js";
 export * from "./show.component.js";
+export * from "./useResponsiveImage.js";
