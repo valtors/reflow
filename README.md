@@ -9,8 +9,8 @@
 
 **SSR-safe responsive toolkit for TypeScript. One API, every framework.**
 
-[![npm version](https://img.shields.io/npm/v/reflow?style=flat-square&color=0EA5A5)](https://www.npmjs.com/package/reflow)
-[![npm downloads](https://img.shields.io/npm/dm/reflow?style=flat-square&label=downloads&color=22D3EE)](https://www.npmjs.com/package/reflow)
+[![npm version](https://img.shields.io/npm/v/usereflow?style=flat-square&color=0EA5A5)](https://www.npmjs.com/package/usereflow)
+[![npm downloads](https://img.shields.io/npm/dm/usereflow?style=flat-square&label=downloads&color=22D3EE)](https://www.npmjs.com/package/usereflow)
 [![CI](https://img.shields.io/github/actions/workflow/status/valtors/reflow/ci.yml?style=flat-square&label=CI)](https://github.com/valtors/reflow/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0F172A?style=flat-square)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square)](https://www.typescriptlang.org/)
@@ -19,7 +19,7 @@
 </div>
 
 ```bash
-npm install reflow
+npm install usereflow
 ```
 
 **Try it live:** [![Open in StackBlitz](https://img.shields.io/badge/StackBlitz-open%20demo-126CF3?style=flat-square&logo=stackblitz)](https://stackblitz.com/github/valtors/reflow/tree/main/examples/vite-react) [![Open in CodeSandbox](https://img.shields.io/badge/CodeSandbox-open%20demo-000000?style=flat-square&logo=codesandbox)](https://codesandbox.io/p/github/valtors/reflow/main?file=/examples/vite-react)
