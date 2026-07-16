@@ -10,3 +10,5 @@ export { pointer } from "./pointer.js";
 export { safeArea } from "./safeArea.js";
 // Show.svelte is exported as a raw Svelte component file.
 // Import it directly: import Show from 'reflow/svelte/Show.svelte';
+export { responsiveImage } from "./responsiveImage.js";
+export type { ResponsiveImageConfig } from "../core/images.js";
