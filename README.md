@@ -9,6 +9,8 @@
 
 **SSR-safe responsive toolkit for TypeScript. One API, every framework.**
 
+Works in React, Vue, Svelte, Solid, Qwik, Preact, Lit, Angular, and plain JS. No hydration mismatch warnings. No `typeof window` checks scattered everywhere. No framework lock-in. One import. One type system.
+
 [![npm version](https://img.shields.io/npm/v/usereflow?style=flat-square&color=0EA5A5)](https://www.npmjs.com/package/usereflow)
 [![npm downloads](https://img.shields.io/npm/dm/usereflow?style=flat-square&label=downloads&color=22D3EE)](https://www.npmjs.com/package/usereflow)
 [![CI](https://img.shields.io/github/actions/workflow/status/valtors/reflow/ci.yml?style=flat-square&label=CI)](https://github.com/valtors/reflow/actions/workflows/ci.yml)
@@ -26,9 +28,9 @@ npm install usereflow
 
 ## What is this?
 
-Reflow gives you breakpoints, container queries, fluid typography, viewport tracking, and user preference detection in one library. It works in React, Vue, Svelte, Solid, Qwik, Preact, Lit, Angular, and plain JS. No hydration mismatch warnings. No `typeof window` checks scattered everywhere.
+Reflow gives you breakpoints, container queries, fluid typography, viewport tracking, and user preference detection in one library. Same API in React, Vue, Svelte, Solid, Qwik, Preact, Lit, Angular, and plain JS. No hydration mismatch warnings. No `typeof window` checks scattered everywhere.
 
-One import. One type system. Zero framework lock-in.
+One import. One type system. Zero framework lock-in. Switch frameworks without rewriting your responsive logic.
 
 ## Quick start
 
