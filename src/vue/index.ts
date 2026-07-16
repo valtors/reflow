@@ -20,3 +20,5 @@ export { createFluidityPlugin } from "./plugin.js";
 export type { FluidityPluginOptions } from "./plugin.js";
 export { Show } from "./Show.js";
 export type { ShowProps } from "./Show.js";
+export { useResponsiveImage } from "./useResponsiveImage.js";
+export type { ResponsiveImageConfig } from "../core/images.js";
