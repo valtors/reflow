@@ -1,253 +1,392 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>reflow - SSR-safe responsive toolkit for TypeScript</title>
-<meta name="description" content="Typed breakpoints, container queries, fluid typography, and user preference hooks. One API across 8 frameworks. Zero runtime deps. SSR-safe." />
-<meta name="theme-color" content="#0a0a0a" />
-<link rel="canonical" href="https://github.com/valtors/reflow" />
-<meta property="og:title" content="reflow - SSR-safe responsive toolkit for TypeScript" />
-<meta property="og:description" content="Typed breakpoints, container queries, fluid typography, and user preference hooks. One API across 8 frameworks. Zero runtime deps. SSR-safe." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://github.com/valtors/reflow" />
-<meta name="twitter:card" content="summary_large_image" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reflow</title>
+<meta name="description" content="responsive toolkit for TypeScript. 8 frameworks, same API, no SSR breakage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root { --bg: #0a0a0a; --fg: #e5e5e5; --muted: #737373; --accent: #22d3ee; --border: #262626; --card: #111111; }
-  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-  code, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  header { border-bottom: 1px solid var(--border); padding: 16px 0; }
-  .header-inner { display: flex; align-items: center; justify-content: space-between; }
-  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--fg); }
-  .logo-mark { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--accent); }
-  .header-links { display: flex; gap: 20px; font-size: 14px; }
-  .header-links a { color: var(--muted); }
-  .header-links a:hover { color: var(--fg); }
+:root {
+  --bg: #0a0a0a;
+  --bg-soft: #111;
+  --bg-card: #141414;
+  --text: #fafafa;
+  --text-soft: #aaa;
+  --text-muted: #555;
+  --border: #1a1a1a;
+  --accent: #e0504f;
+}
 
-  .hero { padding: 80px 0 60px; }
-  .hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
-  .hero p { font-size: 20px; color: var(--muted); max-width: 640px; margin-bottom: 32px; }
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
-  .badge { font-size: 12px; font-weight: 600; padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; color: var(--muted); }
-  .badge.accent { color: var(--accent); border-color: #155e63; }
-  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
-  .cta a { display: inline-block; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
-  .cta-primary { background: var(--accent); color: #000; }
-  .cta-primary:hover { background: #06b6d4; text-decoration: none; }
-  .cta-secondary { border: 1px solid var(--border); color: var(--fg); }
-  .cta-secondary:hover { border-color: var(--muted); text-decoration: none; }
+html { scroll-behavior: smooth; }
 
-  .install { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin: 0 0 60px; display: flex; align-items: center; justify-content: space-between; }
-  .install code { font-size: 15px; color: var(--accent); }
-  .install button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 4px 8px; }
+body {
+  font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
 
-  section { padding: 48px 0; border-top: 1px solid var(--border); }
-  section h2 { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+a { color: var(--text-soft); text-decoration: underline; text-decoration-color: var(--border); transition: color 0.2s, text-decoration-color 0.2s; }
+a:hover { color: var(--text); text-decoration-color: var(--accent); }
 
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
-  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-  .card p { font-size: 14px; color: var(--muted); }
-  .card .mono { font-size: 13px; color: var(--accent); display: block; margin-bottom: 8px; }
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
 
-  .frameworks { width: 100%; }
-  .frameworks th, .frameworks td { text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
-  .frameworks th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .frameworks td:first-child { font-weight: 600; }
-  .frameworks .status { color: var(--accent); font-size: 13px; }
+nav a { text-decoration: none; font-size: 14px; }
+nav a:hover { color: var(--text); }
 
-  .code-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; overflow-x: auto; margin-top: 16px; }
-  .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--fg); }
-  .code-block .kw { color: #c084fc; }
-  .code-block .str { color: #86efac; }
-  .code-block .fn { color: #fcd34d; }
+.nav-brand { font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-cta {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+.nav-cta:hover { border-color: var(--text-soft); text-decoration: none; }
 
-  .stats { display: flex; gap: 48px; }
-  .stat .num { font-size: 32px; font-weight: 800; color: var(--accent); }
-  .stat .label { font-size: 13px; color: var(--muted); }
+.hero {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 140px 24px 80px;
+}
 
-  footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; }
-  footer p { font-size: 13px; color: var(--muted); }
-  footer a { color: var(--muted); }
-  footer a:hover { color: var(--fg); }
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
 
-  @media (max-width: 640px) {
-    .hero h1 { font-size: 36px; }
-    .hero p { font-size: 17px; }
-    .grid { grid-template-columns: 1fr; }
-    .stats { flex-wrap: wrap; gap: 24px; }
-    .frameworks th, .frameworks td { padding: 8px 10px; font-size: 13px; }
-  }
+.hero h1 {
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.hero p {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  max-width: 560px;
+}
+
+.hero .accent { color: var(--accent); }
+
+.install {
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.install code {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg-card);
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.section h2 {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.section p {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--text-soft);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+
+.section p strong { font-weight: 500; color: var(--text); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.frameworks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.fw {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-soft);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+code {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg-card);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+pre {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 22px;
+  overflow-x: auto;
+  margin: 24px 0;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin: 32px 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.footer {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.footer a { color: var(--text-soft); }
+
+@media (max-width: 640px) {
+  .hero { padding: 120px 20px 60px; }
+  .hero h1 { font-size: 30px; }
+  .hero p { font-size: 16px; }
+  .section { padding: 50px 20px; }
+  .section h2 { font-size: 22px; }
+  .section p { font-size: 16px; }
+  .stats { gap: 20px; }
+  .stat-num { font-size: 22px; }
+  pre { padding: 14px; font-size: 12px; }
+  pre code { font-size: 12px; }
+  nav { padding: 14px 20px; }
+  .nav-links { gap: 14px; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="container header-inner">
-    <a href="https://github.com/valtors/reflow" class="logo">
-      <span class="logo-mark">r</span>
-      reflow
-    </a>
-    <nav class="header-links">
-      <a href="https://github.com/valtors/reflow#readme">Docs</a>
-      <a href="https://github.com/valtors/reflow/blob/main/CONTRIBUTING.md">Contributing</a>
-      <a href="https://github.com/valtors/reflow">GitHub</a>
-    </nav>
+<nav>
+  <a href="https://valtors.github.io/valtors-landing/" class="nav-brand">valtors</a>
+  <div class="nav-links">
+    <a href="#install">install</a>
+    <a href="https://github.com/valtors/reflow">github</a>
+    <a href="https://www.npmjs.com/package/usereflow" class="nav-cta">npm</a>
   </div>
-</header>
+</nav>
 
-<div class="container">
-  <div class="hero">
-    <h1>SSR-safe responsive toolkit for TypeScript</h1>
-    <p>Typed breakpoints, container queries, fluid typography, and user preference hooks. One API across 8 frameworks. Zero runtime deps.</p>
-    <div class="hero-badges">
-      <span class="badge accent">SSR-safe</span>
-      <span class="badge">Zero deps</span>
-      <span class="badge">8 frameworks</span>
-      <span class="badge">TypeScript strict</span>
-    </div>
-    <div class="cta">
-      <a href="https://github.com/valtors/reflow" class="cta-primary">View on GitHub</a>
-      <a href="https://www.npmjs.com/package/reflow" class="cta-secondary">npm install reflow</a>
-    </div>
-  </div>
-
-  <div class="install">
-    <code>npm install reflow</code>
-    <button onclick="navigator.clipboard.writeText('npm install reflow')">copy</button>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><div class="num">40+</div><div class="label">Hooks &amp; utilities</div></div>
-    <div class="stat"><div class="num">8</div><div class="label">Framework adapters</div></div>
-    <div class="stat"><div class="num">0</div><div class="label">Runtime deps</div></div>
-    <div class="stat"><div class="num">100%</div><div class="label">TypeScript strict</div></div>
+<div class="hero">
+  <div class="hero-eyebrow">reflow</div>
+  <h1>8 frameworks. same API. no SSR breakage.</h1>
+  <p>every responsive design library is the same 15 lines copied into a different package name. reflow is those 15 lines, written once, tested across 8 frameworks, and it doesn't break your server.</p>
+  <p>react, vue, svelte, solid, qwik, preact, angular, vanilla. same hook. same output. no <code>typeof window</code> checks sprinkled in your components. no hydration mismatch warnings at 2am.</p>
+  <div class="install" id="install">
+    <code>npm install usereflow</code>
   </div>
 </div>
 
-<section>
-  <div class="container">
-    <h2>What you get</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="mono">useBreakpoint</span>
-        <h3>Typed breakpoints</h3>
-        <p>Define breakpoints once. Get typed keys, active detection, above/below/between checks. Mobile-first.</p>
-      </div>
-      <div class="card">
-        <span class="mono">useContainerQuery</span>
-        <h3>Container queries</h3>
-        <p>Track element size with ResizeObserver. React, Vue, Svelte, Solid adapters included.</p>
-      </div>
-      <div class="card">
-        <span class="mono">fluidClamp</span>
-        <h3>Fluid typography</h3>
-        <p>Generate clamp() values from min/max px and viewport bounds. No magic numbers.</p>
-      </div>
-      <div class="card">
-        <span class="mono">useColorScheme</span>
-        <h3>User preferences</h3>
-        <p>Detect color scheme, reduced motion, contrast, forced colors, pointer type. All reactive.</p>
-      </div>
-      <div class="card">
-        <span class="mono">ResponsiveProvider</span>
-        <h3>SSR-safe</h3>
-        <p>Server snapshot support. No hydration mismatch warnings. No typeof window checks.</p>
-      </div>
-      <div class="card">
-        <span class="mono">useResponsiveValue</span>
-        <h3>Responsive values</h3>
-        <p>Pass an object keyed by breakpoint, get the matching value back. Works in any framework.</p>
-      </div>
+<hr>
+
+<div class="section">
+  <div class="section-eyebrow">why</div>
+  <h2>responsive design is a solved problem that nobody solved.</h2>
+  <p>you need breakpoints. you need container queries. you need fluid typography. you need to know if the user prefers dark mode or reduced motion. every framework has its own way to do this. every way is different. every way breaks on the server.</p>
+  <p>reflow does it one way. <code>useResponsiveImage</code> returns the right srcset for the current viewport. <code>useBreakpoint</code> tells you where you are. <code>usePrefersDark</code> knows what the user wants. same function name in every framework. same output. no surprises.</p>
+</div>
+
+<hr>
+
+<div class="section">
+  <div class="section-eyebrow">frameworks</div>
+  <h2>one API. eight implementations.</h2>
+  <p>not a wrapper. not a polyfill. each framework adapter is written for that framework. react hooks obey rules of hooks. vue composables use reactivity. svelte stores are reactive. solid signals are fine-grained. the API is the same. the internals respect the framework.</p>
+  <div class="frameworks">
+    <span class="fw">react</span>
+    <span class="fw">vue</span>
+    <span class="fw">svelte</span>
+    <span class="fw">solid</span>
+    <span class="fw">qwik</span>
+    <span class="fw">preact</span>
+    <span class="fw">angular</span>
+    <span class="fw">vanilla</span>
+  </div>
+</div>
+
+<hr>
+
+<div class="section">
+  <div class="section-eyebrow">code</div>
+  <h2>it looks like this.</h2>
+  <p>react:</p>
+  <pre><code>import { useResponsiveImage } from '@valtors/reflow/react'
+
+function MyImage() {
+  const src = useResponsiveImage({
+    src: '/img/photo.jpg',
+    widths: [400, 800, 1200],
+    sizes: '(max-width: 600px) 100vw, 50vw'
+  })
+  return &lt;img src={src} /&gt;
+}</code></pre>
+  <p>vue:</p>
+  <pre><code>import { useResponsiveImage } from '@valtors/reflow/vue'
+
+const src = useResponsiveImage({
+  src: '/img/photo.jpg',
+  widths: [400, 800, 1200],
+  sizes: '(max-width: 600px) 100vw, 50vw'
+})</code></pre>
+  <p>same import path pattern. same options. same return. the framework changes. nothing else does.</p>
+</div>
+
+<hr>
+
+<div class="section">
+  <div class="section-eyebrow">ssr</div>
+  <h2>it works on the server. that's the whole point.</h2>
+  <p>most responsive libraries assume there's a window. there isn't always a window. SSR doesn't have one. static generation doesn't have one. the first render happens in node, not in a browser, and <code>window.innerWidth</code> doesn't exist there.</p>
+  <p>reflow doesn't crash. it returns a sensible default on the server and hydrates on the client. no flash. no mismatch. no <code>useEffect</code> hack to detect the browser. it just works.</p>
+</div>
+
+<hr>
+
+<div class="section">
+  <div class="section-eyebrow">numbers</div>
+  <h2>small. like it should be.</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">5kb</div>
+      <div class="stat-label">core, gzipped</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">runtime deps</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8</div>
+      <div class="stat-label">frameworks</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1.8k+</div>
+      <div class="stat-label">monthly downloads</div>
     </div>
   </div>
-</section>
+  <p>zero dependencies means zero supply chain attacks. zero transitive updates breaking your build. zero node_modules bloat. you install usereflow and you get usereflow. nothing else.</p>
+</div>
 
-<section>
-  <div class="container">
-    <h2>One API, every framework</h2>
-    <table class="frameworks">
-      <thead><tr><th>Framework</th><th>Entry</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr><td>React</td><td class="mono">reflow/react</td><td class="status">Full hooks + components</td></tr>
-        <tr><td>Vue 3</td><td class="mono">reflow/vue</td><td class="status">Composables + plugin</td></tr>
-        <tr><td>Svelte 5</td><td class="mono">reflow/svelte</td><td class="status">Stores</td></tr>
-        <tr><td>Solid</td><td class="mono">reflow/solid</td><td class="status">Core + responsive hooks</td></tr>
-        <tr><td>Qwik</td><td class="mono">reflow/qwik</td><td class="status">Core functions</td></tr>
-        <tr><td>Preact</td><td class="mono">reflow/preact</td><td class="status">React-compatible</td></tr>
-        <tr><td>Angular</td><td class="mono">reflow/angular</td><td class="status">Core functions</td></tr>
-        <tr><td>Lit</td><td class="mono">reflow/lit</td><td class="status">Core functions</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+<hr>
 
-<section>
-  <div class="container">
-    <h2>Quick example</h2>
-    <div class="code-block">
-<pre><span class="kw">import</span> { ResponsiveProvider, useBreakpoint, useResponsiveValue } <span class="kw">from</span> <span class="str">"reflow/react"</span>;
-<span class="kw">import</span> { fluidClamp } <span class="kw">from</span> <span class="str">"reflow/styles"</span>;
+<div class="section">
+  <div class="section-eyebrow">install</div>
+  <h2>one command. pick your framework.</h2>
+  <pre><code>npm install usereflow
 
-<span class="kw">function</span> <span class="fn">App</span>() {
-  <span class="kw">const</span> bp = <span class="fn">useBreakpoint</span>();
-  <span class="kw">const</span> cols = <span class="fn">useResponsiveValue</span>({ xs: <span class="str">1</span>, md: <span class="str">2</span>, xl: <span class="str">4</span> });
+# react
+npm install @valtors/reflow-react
 
-  <span class="kw">return</span> (
-    <span class="kw">&lt;main</span> style={{ fontSize: <span class="fn">fluidClamp</span>({ minPx: <span class="str">16</span>, maxPx: <span class="str">22</span> }) }}&gt;
-      &lt;p&gt;Breakpoint: {bp.active}&lt;/p&gt;
-      &lt;Grid columns={cols} /&gt;
-    &lt;/main&gt;
-  );
-}
+# vue
+npm install @valtors/reflow-vue
 
-<span class="kw">export default</span> () =&gt; (
-  <span class="kw">&lt;ResponsiveProvider</span> serverWidth={<span class="str">1024</span>}&gt;
-    <span class="kw">&lt;App</span> /&gt;
-  <span class="kw">&lt;/ResponsiveProvider&gt;</span>
-);</pre>
-    </div>
-  </div>
-</section>
+# or just use the core
+import { responsiveImage } from 'usereflow'</code></pre>
+  <p>or read the <a href="https://github.com/valtors/reflow">docs on github</a>. or the <a href="https://www.npmjs.com/package/usereflow">npm page</a>. it's all there.</p>
+</div>
 
-<section>
-  <div class="container">
-    <h2>Why reflow</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>vs react-responsive</h3>
-        <p>Reflow gives you more than media queries: container queries, fluid typography, user preferences, and SSR helpers. Works in 8 frameworks, not just React.</p>
-      </div>
-      <div class="card">
-        <h3>vs usehooks-ts</h3>
-        <p>Reflow is a focused responsive toolkit, not a grab bag. Every API is typed, SSR-safe, and framework-agnostic. Zero deps means zero conflicts.</p>
-      </div>
-    </div>
-    <p style="margin-top: 24px; font-size: 14px; color: var(--muted);">
-      Full comparison: <a href="https://github.com/valtors/reflow/blob/main/docs/comparison.md">reflow vs react-responsive vs @vueuse/core vs usehooks-ts</a>
-    </p>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <p>MIT licensed. Built by <a href="https://github.com/valtors">Valtors</a>.</p>
-    <p style="margin-top: 8px;">
-      <a href="https://github.com/valtors/reflow">GitHub</a> &middot;
-      <a href="https://www.npmjs.com/package/reflow">npm</a> &middot;
-      <a href="https://github.com/valtors/reflow/blob/main/CONTRIBUTING.md">Contributing</a> &middot;
-      <a href="https://github.com/valtors/reflow/blob/main/docs/comparison.md">Comparison</a>
-    </p>
-  </div>
-</footer>
+<div class="footer">
+  reflow by <a href="https://valtors.github.io/valtors-landing/">valtors</a>. MIT licensed. no telemetry. no bullshit. <a href="https://github.com/valtors/reflow">source</a>.
+</div>
 
 </body>
 </html>
